@@ -3,27 +3,172 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A0F44F92496155A00CE2971 /* OnScreenStepsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F44F82496155A00CE2971 /* OnScreenStepsVC.swift */; };
+		8A12F91E2466FFB000A479CB /* PopUpWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A12F91C2466FFAF00A479CB /* PopUpWindow.swift */; };
+		8A13B0612450491E00382687 /* food.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A13B0602450491E00382687 /* food.jpg */; };
+		8A13B06524504C1C00382687 /* LBTATools in Frameworks */ = {isa = PBXBuildFile; productRef = 8A13B06424504C1C00382687 /* LBTATools */; };
+		8A13B06A245050D400382687 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13B069245050D400382687 /* HomeCell.swift */; };
+		8A36B44D25347CAF00105A24 /* ShimmerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A36B44C25347CAF00105A24 /* ShimmerSwift.framework */; };
+		8A36B44E25347CAF00105A24 /* ShimmerSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A36B44C25347CAF00105A24 /* ShimmerSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A3B4C9B245310E8007547DF /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A245310E8007547DF /* UserProfileVC.swift */; };
+		8A3B4C9D245319E4007547DF /* HomeDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9C245319E4007547DF /* HomeDetailVC.swift */; };
+		8A3B58782451FE5B00B2F1D1 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B58772451FE5B00B2F1D1 /* Protocols.swift */; };
+		8A3B587A2451FE9300B2F1D1 /* FavoritedRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B58792451FE9300B2F1D1 /* FavoritedRecipe.swift */; };
+		8A416A6A254EC1EA00B80F87 /* CategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A416A69254EC1EA00B80F87 /* CategoryService.swift */; };
+		8A416A6C254EDC3400B80F87 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A416A6B254EDC3400B80F87 /* CategoryViewModel.swift */; };
+		8A6218A9253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6218A7253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift */; };
+		8A6218AA253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6218A8253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift */; };
+		8A67AD172551C8E600FD328E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC536B7249DF82B00D1DF5D /* RealmSwift.framework */; };
+		8A67AD182551C8E600FD328E /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC536B7249DF82B00D1DF5D /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A7C3E16247BDD74002EEA6F /* breakfast.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E12247BDD74002EEA6F /* breakfast.jpg */; };
+		8A7C3E17247BDD74002EEA6F /* burger1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E13247BDD74002EEA6F /* burger1.jpg */; };
+		8A7C3E18247BDD74002EEA6F /* fruits.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E14247BDD74002EEA6F /* fruits.jpg */; };
+		8A7C3E19247BDD74002EEA6F /* aceron.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E15247BDD74002EEA6F /* aceron.jpg */; };
+		8A7F4D2B247C11CB005AAA7E /* recipes.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A7F4D2A247C11CB005AAA7E /* recipes.json */; };
+		8A7F4D2D247C14C6005AAA7E /* RecipeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7F4D2C247C14C6005AAA7E /* RecipeService.swift */; };
+		8A90348325360E2A002D739B /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A90348125360E2A002D739B /* CoreDataModel.xcdatamodeld */; };
+		8A90612025270FD5003AABDE /* RecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90611F25270FD5003AABDE /* RecipeViewModel.swift */; };
+		8A90612225270FE2003AABDE /* CoreDataDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90612125270FE2003AABDE /* CoreDataDB.swift */; };
+		8AA8825A2499AC9800A8DF18 /* FoodInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA882592499AC9800A8DF18 /* FoodInfoVC.swift */; };
+		8AA8825C2499C14900A8DF18 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8825B2499C14900A8DF18 /* Charts.framework */; };
+		8AA8825D2499C14900A8DF18 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8825B2499C14900A8DF18 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AA88268249A071900A8DF18 /* CustomizedPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA88266249A010100A8DF18 /* CustomizedPopUpView.swift */; };
+		8AAC0BDA2541E9A00027F03B /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC0BD92541E9A00027F03B /* CategoryModel.swift */; };
 		8AADFAE624503E3C005CA7C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AADFAE524503E3C005CA7C1 /* AppDelegate.swift */; };
 		8AADFAE824503E3C005CA7C1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AADFAE724503E3C005CA7C1 /* SceneDelegate.swift */; };
-		8AADFAEA24503E3C005CA7C1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AADFAE924503E3C005CA7C1 /* ViewController.swift */; };
-		8AADFAED24503E3C005CA7C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AADFAEB24503E3C005CA7C1 /* Main.storyboard */; };
 		8AADFAEF24503E3C005CA7C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AADFAEE24503E3C005CA7C1 /* Assets.xcassets */; };
 		8AADFAF224503E3C005CA7C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AADFAF024503E3C005CA7C1 /* LaunchScreen.storyboard */; };
+		8AADFAFA24504000005CA7C1 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AADFAF924504000005CA7C1 /* HomeVC.swift */; };
+		8AAE47092486B23B002D9A21 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE47082486B23B002D9A21 /* LoadingCell.swift */; };
+		8ABA670124973BDC0064F1B6 /* SwiftyOnboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */; };
+		8ABA670224973BDC0064F1B6 /* SwiftyOnboard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8ABA6707249751390064F1B6 /* SwiftyOnboardOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA6704249751390064F1B6 /* SwiftyOnboardOverlay.swift */; };
+		8ABA6708249751390064F1B6 /* SwiftyOnboardPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA6705249751390064F1B6 /* SwiftyOnboardPage.swift */; };
+		8ABA6709249751390064F1B6 /* SwiftyOnboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA6706249751390064F1B6 /* SwiftyOnboard.swift */; };
+		8ABFFBC8246411DE006F1C91 /* Ingre&DirectTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBC7246411DE006F1C91 /* Ingre&DirectTV.swift */; };
+		8ABFFBCA24641418006F1C91 /* Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBC924641418006F1C91 /* Typealias.swift */; };
+		8ABFFBCC246456E0006F1C91 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBCB246456E0006F1C91 /* Recipe.swift */; };
+		8ABFFBD224652C3D006F1C91 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBD124652C3D006F1C91 /* CategoryCell.swift */; };
+		8ABFFBD424653722006F1C91 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBD324653722006F1C91 /* FavoriteCell.swift */; };
+		8ABFFBD624653A55006F1C91 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBD524653A55006F1C91 /* SearchCell.swift */; };
+		8ABFFBD824654458006F1C91 /* SearchHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBD724654458006F1C91 /* SearchHeaderCell.swift */; };
+		8ABFFBDF24657115006F1C91 /* pizza.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8ABFFBDE24657115006F1C91 /* pizza.jpg */; };
+		8ABFFBE124657178006F1C91 /* CategoryDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBE024657178006F1C91 /* CategoryDetailsVC.swift */; };
+		8ABFFBE324657240006F1C91 /* CategoryDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABFFBE224657240006F1C91 /* CategoryDetailsCell.swift */; };
+		8AC536B2249DEE8600D1DF5D /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC536B1249DEE8600D1DF5D /* Realm.framework */; };
+		8AC536B3249DEE8600D1DF5D /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC536B1249DEE8600D1DF5D /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AC536B6249DF32A00D1DF5D /* RecipeRealmObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC536B5249DF32A00D1DF5D /* RecipeRealmObject.swift */; };
+		8AC536BB249E0D6300D1DF5D /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC536BA249E0D6300D1DF5D /* RealmService.swift */; };
+		8AC7FDF52463D9F9007E85A1 /* HomeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC7FDF42463D9F9007E85A1 /* HomeHeader.swift */; };
+		8ACAE1ABFEA46622966792D8 /* Pods_Recipe_Craze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE92FC0E7DC3AAE4DABD3B7 /* Pods_Recipe_Craze.framework */; };
+		8AD808A32469980500E0715B /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD808A22469980500E0715B /* PersistenceManager.swift */; };
+		8AE6AD102450416B00A874E2 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD0F2450416B00A874E2 /* TabController.swift */; };
+		8AE6AD122450422900A874E2 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD112450422900A874E2 /* FavoriteVC.swift */; };
+		8AE6AD142450424700A874E2 /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD132450424700A874E2 /* CategoryVC.swift */; };
+		8AE6AD162450425B00A874E2 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD152450425B00A874E2 /* SearchVC.swift */; };
+		8AE6AD1E2450475E00A874E2 /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD182450475E00A874E2 /* KeyboardLayoutConstraint.swift */; };
+		8AE6AD1F2450475E00A874E2 /* UIFeedBackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD192450475E00A874E2 /* UIFeedBackGenerator.swift */; };
+		8AE6AD202450475E00A874E2 /* TrashBinCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1A2450475E00A874E2 /* TrashBinCode.swift */; };
+		8AE6AD212450475E00A874E2 /* MyActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1B2450475E00A874E2 /* MyActivityIndicator.swift */; };
+		8AE6AD222450475E00A874E2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1C2450475E00A874E2 /* Extensions.swift */; };
+		8AE6AD232450475E00A874E2 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1D2450475E00A874E2 /* SpeechService.swift */; };
+		8AF84247247AF13300E89F4E /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF84246247AF13300E89F4E /* Structs.swift */; };
+		8AFD852425027E7400E23E38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AFD852325027E7400E23E38 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8ABA670324973BDC0064F1B6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8AC536B3249DEE8600D1DF5D /* Realm.framework in Embed Frameworks */,
+				8A67AD182551C8E600FD328E /* RealmSwift.framework in Embed Frameworks */,
+				8ABA670224973BDC0064F1B6 /* SwiftyOnboard.framework in Embed Frameworks */,
+				8A36B44E25347CAF00105A24 /* ShimmerSwift.framework in Embed Frameworks */,
+				8AA8825D2499C14900A8DF18 /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0542250AF325291ACA05288F /* Pods-Recipe Craze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipe Craze.release.xcconfig"; path = "Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze.release.xcconfig"; sourceTree = "<group>"; };
+		6EE92FC0E7DC3AAE4DABD3B7 /* Pods_Recipe_Craze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Recipe_Craze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A0F44F82496155A00CE2971 /* OnScreenStepsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnScreenStepsVC.swift; sourceTree = "<group>"; };
+		8A12F91C2466FFAF00A479CB /* PopUpWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpWindow.swift; sourceTree = "<group>"; };
+		8A13B0602450491E00382687 /* food.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = food.jpg; sourceTree = "<group>"; };
+		8A13B069245050D400382687 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		8A36B44C25347CAF00105A24 /* ShimmerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShimmerSwift.framework; path = Carthage/Build/iOS/ShimmerSwift.framework; sourceTree = "<group>"; };
+		8A3B4C9A245310E8007547DF /* UserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVC.swift; sourceTree = "<group>"; };
+		8A3B4C9C245319E4007547DF /* HomeDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailVC.swift; sourceTree = "<group>"; };
+		8A3B58772451FE5B00B2F1D1 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		8A3B58792451FE9300B2F1D1 /* FavoritedRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritedRecipe.swift; sourceTree = "<group>"; };
+		8A416A69254EC1EA00B80F87 /* CategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryService.swift; sourceTree = "<group>"; };
+		8A416A6B254EDC3400B80F87 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		8A6218A7253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoritedRecipeToCD+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		8A6218A8253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoritedRecipeToCD+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		8A7C3E12247BDD74002EEA6F /* breakfast.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = breakfast.jpg; sourceTree = "<group>"; };
+		8A7C3E13247BDD74002EEA6F /* burger1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = burger1.jpg; sourceTree = "<group>"; };
+		8A7C3E14247BDD74002EEA6F /* fruits.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fruits.jpg; sourceTree = "<group>"; };
+		8A7C3E15247BDD74002EEA6F /* aceron.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = aceron.jpg; sourceTree = "<group>"; };
+		8A7F4D2A247C11CB005AAA7E /* recipes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = recipes.json; sourceTree = "<group>"; };
+		8A7F4D2C247C14C6005AAA7E /* RecipeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeService.swift; sourceTree = "<group>"; };
+		8A90348225360E2A002D739B /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		8A90611F25270FD5003AABDE /* RecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewModel.swift; sourceTree = "<group>"; };
+		8A90612125270FE2003AABDE /* CoreDataDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDB.swift; sourceTree = "<group>"; };
+		8AA882592499AC9800A8DF18 /* FoodInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodInfoVC.swift; sourceTree = "<group>"; };
+		8AA8825B2499C14900A8DF18 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
+		8AA88266249A010100A8DF18 /* CustomizedPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizedPopUpView.swift; sourceTree = "<group>"; };
+		8AAC0BD92541E9A00027F03B /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		8AADFAE224503E3C005CA7C1 /* Recipe Craze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Recipe Craze.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AADFAE524503E3C005CA7C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8AADFAE724503E3C005CA7C1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8AADFAE924503E3C005CA7C1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8AADFAEC24503E3C005CA7C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8AADFAEE24503E3C005CA7C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AADFAF124503E3C005CA7C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8AADFAF324503E3C005CA7C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8AADFAF924504000005CA7C1 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		8AAE47082486B23B002D9A21 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyOnboard.framework; path = Carthage/Build/iOS/SwiftyOnboard.framework; sourceTree = "<group>"; };
+		8ABA6704249751390064F1B6 /* SwiftyOnboardOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyOnboardOverlay.swift; path = Carthage/Checkouts/SwiftyOnboard/SwiftyOnboard/SwiftyOnboardOverlay.swift; sourceTree = SOURCE_ROOT; };
+		8ABA6705249751390064F1B6 /* SwiftyOnboardPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyOnboardPage.swift; path = Carthage/Checkouts/SwiftyOnboard/SwiftyOnboard/SwiftyOnboardPage.swift; sourceTree = SOURCE_ROOT; };
+		8ABA6706249751390064F1B6 /* SwiftyOnboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyOnboard.swift; path = Carthage/Checkouts/SwiftyOnboard/SwiftyOnboard/SwiftyOnboard.swift; sourceTree = SOURCE_ROOT; };
+		8ABFFBC7246411DE006F1C91 /* Ingre&DirectTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ingre&DirectTV.swift"; sourceTree = "<group>"; };
+		8ABFFBC924641418006F1C91 /* Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealias.swift; sourceTree = "<group>"; };
+		8ABFFBCB246456E0006F1C91 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		8ABFFBD124652C3D006F1C91 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		8ABFFBD324653722006F1C91 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
+		8ABFFBD524653A55006F1C91 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		8ABFFBD724654458006F1C91 /* SearchHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderCell.swift; sourceTree = "<group>"; };
+		8ABFFBDE24657115006F1C91 /* pizza.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pizza.jpg; sourceTree = "<group>"; };
+		8ABFFBE024657178006F1C91 /* CategoryDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailsVC.swift; sourceTree = "<group>"; };
+		8ABFFBE224657240006F1C91 /* CategoryDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailsCell.swift; sourceTree = "<group>"; };
+		8AC536B1249DEE8600D1DF5D /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		8AC536B5249DF32A00D1DF5D /* RecipeRealmObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRealmObject.swift; sourceTree = "<group>"; };
+		8AC536B7249DF82B00D1DF5D /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		8AC536BA249E0D6300D1DF5D /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
+		8AC7FDF42463D9F9007E85A1 /* HomeHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeader.swift; sourceTree = "<group>"; };
+		8AD808A22469980500E0715B /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		8AE6AD0F2450416B00A874E2 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
+		8AE6AD112450422900A874E2 /* FavoriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
+		8AE6AD132450424700A874E2 /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
+		8AE6AD152450425B00A874E2 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
+		8AE6AD182450475E00A874E2 /* KeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
+		8AE6AD192450475E00A874E2 /* UIFeedBackGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFeedBackGenerator.swift; sourceTree = "<group>"; };
+		8AE6AD1A2450475E00A874E2 /* TrashBinCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashBinCode.swift; sourceTree = "<group>"; };
+		8AE6AD1B2450475E00A874E2 /* MyActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyActivityIndicator.swift; sourceTree = "<group>"; };
+		8AE6AD1C2450475E00A874E2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		8AE6AD1D2450475E00A874E2 /* SpeechService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		8AF842452478084500E89F4E /* RecipeCrazePlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RecipeCrazePlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		8AF84246247AF13300E89F4E /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		8AFD852325027E7400E23E38 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E176FB908E147C4D82541B3C /* Pods-Recipe Craze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipe Craze.debug.xcconfig"; path = "Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +176,101 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A36B44D25347CAF00105A24 /* ShimmerSwift.framework in Frameworks */,
+				8AC536B2249DEE8600D1DF5D /* Realm.framework in Frameworks */,
+				8A67AD172551C8E600FD328E /* RealmSwift.framework in Frameworks */,
+				8AA8825C2499C14900A8DF18 /* Charts.framework in Frameworks */,
+				8A13B06524504C1C00382687 /* LBTATools in Frameworks */,
+				8ABA670124973BDC0064F1B6 /* SwiftyOnboard.framework in Frameworks */,
+				8ACAE1ABFEA46622966792D8 /* Pods_Recipe_Craze.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A13B0622450492100382687 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8A13B0602450491E00382687 /* food.jpg */,
+				8ABFFBDE24657115006F1C91 /* pizza.jpg */,
+				8A7C3E15247BDD74002EEA6F /* aceron.jpg */,
+				8A7C3E12247BDD74002EEA6F /* breakfast.jpg */,
+				8A7C3E13247BDD74002EEA6F /* burger1.jpg */,
+				8A7C3E14247BDD74002EEA6F /* fruits.jpg */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		8A13B0662450506500382687 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8A90611F25270FD5003AABDE /* RecipeViewModel.swift */,
+				8A416A6B254EDC3400B80F87 /* CategoryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8A13B0672450507100382687 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8AA88265249A00B600A8DF18 /* CustomVIews */,
+				8ABFFBCD24652B3C006F1C91 /* Home */,
+				8ABFFBCE24652B53006F1C91 /* Category */,
+				8ABFFBCF24652B74006F1C91 /* Favorite */,
+				8ABFFBD024652B7E006F1C91 /* Search */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8A13B0682450507A00382687 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8A3B58772451FE5B00B2F1D1 /* Protocols.swift */,
+				8A3B58792451FE9300B2F1D1 /* FavoritedRecipe.swift */,
+				8A7F4D2A247C11CB005AAA7E /* recipes.json */,
+				8ABFFBCB246456E0006F1C91 /* Recipe.swift */,
+				8A7F4D2C247C14C6005AAA7E /* RecipeService.swift */,
+				8AF84246247AF13300E89F4E /* Structs.swift */,
+				8AAC0BD92541E9A00027F03B /* CategoryModel.swift */,
+				8A416A69254EC1EA00B80F87 /* CategoryService.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8A69F7622538A951005B7667 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				8A6218A7253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift */,
+				8A6218A8253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift */,
+				8A90348125360E2A002D739B /* CoreDataModel.xcdatamodeld */,
+				8A90612125270FE2003AABDE /* CoreDataDB.swift */,
+				8AD808A22469980500E0715B /* PersistenceManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		8AA88265249A00B600A8DF18 /* CustomVIews */ = {
+			isa = PBXGroup;
+			children = (
+				8A12F91C2466FFAF00A479CB /* PopUpWindow.swift */,
+				8AA88266249A010100A8DF18 /* CustomizedPopUpView.swift */,
+				8ABA6706249751390064F1B6 /* SwiftyOnboard.swift */,
+				8ABA6704249751390064F1B6 /* SwiftyOnboardOverlay.swift */,
+				8ABA6705249751390064F1B6 /* SwiftyOnboardPage.swift */,
+				8A3B4C9A245310E8007547DF /* UserProfileVC.swift */,
+			);
+			path = CustomVIews;
+			sourceTree = "<group>";
+		};
 		8AADFAD924503E3C005CA7C1 = {
 			isa = PBXGroup;
 			children = (
+				8AF842452478084500E89F4E /* RecipeCrazePlayground.playground */,
 				8AADFAE424503E3C005CA7C1 /* Recipe Craze */,
 				8AADFAE324503E3C005CA7C1 /* Products */,
+				DCFDA52EB2DD5718C0740CAD /* Pods */,
+				8ABA66FF24973BDC0064F1B6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +285,120 @@
 		8AADFAE424503E3C005CA7C1 /* Recipe Craze */ = {
 			isa = PBXGroup;
 			children = (
-				8AADFAE524503E3C005CA7C1 /* AppDelegate.swift */,
-				8AADFAE724503E3C005CA7C1 /* SceneDelegate.swift */,
-				8AADFAE924503E3C005CA7C1 /* ViewController.swift */,
-				8AADFAEB24503E3C005CA7C1 /* Main.storyboard */,
-				8AADFAEE24503E3C005CA7C1 /* Assets.xcassets */,
-				8AADFAF024503E3C005CA7C1 /* LaunchScreen.storyboard */,
 				8AADFAF324503E3C005CA7C1 /* Info.plist */,
+				8AFD852225027E4700E23E38 /* MyApp */,
+				8A13B0622450492100382687 /* Images */,
+				8AE6AD172450475E00A874E2 /* utils */,
+				8AC536B4249DEF0800D1DF5D /* RealDatabase */,
+				8A69F7622538A951005B7667 /* CoreData */,
+				8A13B0682450507A00382687 /* Model */,
+				8A13B0672450507100382687 /* View */,
+				8A13B0662450506500382687 /* ViewModel */,
 			);
 			path = "Recipe Craze";
+			sourceTree = "<group>";
+		};
+		8ABA66FF24973BDC0064F1B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8A36B44C25347CAF00105A24 /* ShimmerSwift.framework */,
+				8AC536B7249DF82B00D1DF5D /* RealmSwift.framework */,
+				8AC536B1249DEE8600D1DF5D /* Realm.framework */,
+				8AA8825B2499C14900A8DF18 /* Charts.framework */,
+				8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */,
+				6EE92FC0E7DC3AAE4DABD3B7 /* Pods_Recipe_Craze.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8ABFFBCD24652B3C006F1C91 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				8AE6AD0F2450416B00A874E2 /* TabController.swift */,
+				8AADFAF924504000005CA7C1 /* HomeVC.swift */,
+				8A13B069245050D400382687 /* HomeCell.swift */,
+				8AC7FDF42463D9F9007E85A1 /* HomeHeader.swift */,
+				8AAE47082486B23B002D9A21 /* LoadingCell.swift */,
+				8A3B4C9C245319E4007547DF /* HomeDetailVC.swift */,
+				8ABFFBC7246411DE006F1C91 /* Ingre&DirectTV.swift */,
+				8A0F44F82496155A00CE2971 /* OnScreenStepsVC.swift */,
+				8AA882592499AC9800A8DF18 /* FoodInfoVC.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		8ABFFBCE24652B53006F1C91 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				8AE6AD132450424700A874E2 /* CategoryVC.swift */,
+				8ABFFBD124652C3D006F1C91 /* CategoryCell.swift */,
+				8ABFFBE024657178006F1C91 /* CategoryDetailsVC.swift */,
+				8ABFFBE224657240006F1C91 /* CategoryDetailsCell.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		8ABFFBCF24652B74006F1C91 /* Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				8AE6AD112450422900A874E2 /* FavoriteVC.swift */,
+				8ABFFBD324653722006F1C91 /* FavoriteCell.swift */,
+			);
+			path = Favorite;
+			sourceTree = "<group>";
+		};
+		8ABFFBD024652B7E006F1C91 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				8AE6AD152450425B00A874E2 /* SearchVC.swift */,
+				8ABFFBD524653A55006F1C91 /* SearchCell.swift */,
+				8ABFFBD724654458006F1C91 /* SearchHeaderCell.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		8AC536B4249DEF0800D1DF5D /* RealDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				8AC536B5249DF32A00D1DF5D /* RecipeRealmObject.swift */,
+				8AC536BA249E0D6300D1DF5D /* RealmService.swift */,
+			);
+			path = RealDatabase;
+			sourceTree = "<group>";
+		};
+		8AE6AD172450475E00A874E2 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				8AE6AD182450475E00A874E2 /* KeyboardLayoutConstraint.swift */,
+				8AE6AD192450475E00A874E2 /* UIFeedBackGenerator.swift */,
+				8AE6AD1A2450475E00A874E2 /* TrashBinCode.swift */,
+				8AE6AD1B2450475E00A874E2 /* MyActivityIndicator.swift */,
+				8AE6AD1C2450475E00A874E2 /* Extensions.swift */,
+				8AE6AD1D2450475E00A874E2 /* SpeechService.swift */,
+				8ABFFBC924641418006F1C91 /* Typealias.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		8AFD852225027E4700E23E38 /* MyApp */ = {
+			isa = PBXGroup;
+			children = (
+				8AADFAF024503E3C005CA7C1 /* LaunchScreen.storyboard */,
+				8AADFAE524503E3C005CA7C1 /* AppDelegate.swift */,
+				8AADFAE724503E3C005CA7C1 /* SceneDelegate.swift */,
+				8AADFAEE24503E3C005CA7C1 /* Assets.xcassets */,
+				8AFD852325027E7400E23E38 /* GoogleService-Info.plist */,
+			);
+			path = MyApp;
+			sourceTree = "<group>";
+		};
+		DCFDA52EB2DD5718C0740CAD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E176FB908E147C4D82541B3C /* Pods-Recipe Craze.debug.xcconfig */,
+				0542250AF325291ACA05288F /* Pods-Recipe Craze.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,15 +408,21 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AADFAF624503E3C005CA7C1 /* Build configuration list for PBXNativeTarget "Recipe Craze" */;
 			buildPhases = (
+				A135E38A2FA82677E9FF931E /* [CP] Check Pods Manifest.lock */,
 				8AADFADE24503E3C005CA7C1 /* Sources */,
 				8AADFADF24503E3C005CA7C1 /* Frameworks */,
 				8AADFAE024503E3C005CA7C1 /* Resources */,
+				8ABA670324973BDC0064F1B6 /* Embed Frameworks */,
+				8E1D02241BD093F7B7BBFCDC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Recipe Craze";
+			packageProductDependencies = (
+				8A13B06424504C1C00382687 /* LBTATools */,
+			);
 			productName = "Recipe Craze";
 			productReference = 8AADFAE224503E3C005CA7C1 /* Recipe Craze.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +451,11 @@
 				Base,
 			);
 			mainGroup = 8AADFAD924503E3C005CA7C1;
+			packageReferences = (
+				8A13B06324504C1C00382687 /* XCRemoteSwiftPackageReference "LBTATools" */,
+				8AC536A9249DA83F00D1DF5D /* XCRemoteSwiftPackageReference "RxSwift" */,
+				8AC536AC249DAA5600D1DF5D /* XCRemoteSwiftPackageReference "R.swift" */,
+			);
 			productRefGroup = 8AADFAE324503E3C005CA7C1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -126,35 +471,122 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AADFAF224503E3C005CA7C1 /* LaunchScreen.storyboard in Resources */,
+				8A7C3E19247BDD74002EEA6F /* aceron.jpg in Resources */,
+				8A7C3E18247BDD74002EEA6F /* fruits.jpg in Resources */,
+				8A13B0612450491E00382687 /* food.jpg in Resources */,
+				8ABFFBDF24657115006F1C91 /* pizza.jpg in Resources */,
+				8A7C3E16247BDD74002EEA6F /* breakfast.jpg in Resources */,
+				8A7C3E17247BDD74002EEA6F /* burger1.jpg in Resources */,
+				8AFD852425027E7400E23E38 /* GoogleService-Info.plist in Resources */,
+				8A7F4D2B247C11CB005AAA7E /* recipes.json in Resources */,
 				8AADFAEF24503E3C005CA7C1 /* Assets.xcassets in Resources */,
-				8AADFAED24503E3C005CA7C1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8E1D02241BD093F7B7BBFCDC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A135E38A2FA82677E9FF931E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Recipe Craze-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8AADFADE24503E3C005CA7C1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AADFAEA24503E3C005CA7C1 /* ViewController.swift in Sources */,
+				8AA88268249A071900A8DF18 /* CustomizedPopUpView.swift in Sources */,
+				8AC536BB249E0D6300D1DF5D /* RealmService.swift in Sources */,
+				8ABFFBD224652C3D006F1C91 /* CategoryCell.swift in Sources */,
+				8ABFFBE124657178006F1C91 /* CategoryDetailsVC.swift in Sources */,
+				8A3B58782451FE5B00B2F1D1 /* Protocols.swift in Sources */,
+				8AC536B6249DF32A00D1DF5D /* RecipeRealmObject.swift in Sources */,
+				8AE6AD232450475E00A874E2 /* SpeechService.swift in Sources */,
+				8A12F91E2466FFB000A479CB /* PopUpWindow.swift in Sources */,
+				8A7F4D2D247C14C6005AAA7E /* RecipeService.swift in Sources */,
+				8AE6AD142450424700A874E2 /* CategoryVC.swift in Sources */,
+				8AE6AD202450475E00A874E2 /* TrashBinCode.swift in Sources */,
+				8A90612225270FE2003AABDE /* CoreDataDB.swift in Sources */,
+				8AC7FDF52463D9F9007E85A1 /* HomeHeader.swift in Sources */,
+				8A90348325360E2A002D739B /* CoreDataModel.xcdatamodeld in Sources */,
+				8AADFAFA24504000005CA7C1 /* HomeVC.swift in Sources */,
+				8AAC0BDA2541E9A00027F03B /* CategoryModel.swift in Sources */,
+				8AD808A32469980500E0715B /* PersistenceManager.swift in Sources */,
+				8AE6AD102450416B00A874E2 /* TabController.swift in Sources */,
+				8A6218A9253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift in Sources */,
+				8A3B4C9D245319E4007547DF /* HomeDetailVC.swift in Sources */,
 				8AADFAE624503E3C005CA7C1 /* AppDelegate.swift in Sources */,
 				8AADFAE824503E3C005CA7C1 /* SceneDelegate.swift in Sources */,
+				8AA8825A2499AC9800A8DF18 /* FoodInfoVC.swift in Sources */,
+				8ABA6708249751390064F1B6 /* SwiftyOnboardPage.swift in Sources */,
+				8AF84247247AF13300E89F4E /* Structs.swift in Sources */,
+				8ABFFBD624653A55006F1C91 /* SearchCell.swift in Sources */,
+				8AE6AD1E2450475E00A874E2 /* KeyboardLayoutConstraint.swift in Sources */,
+				8A90612025270FD5003AABDE /* RecipeViewModel.swift in Sources */,
+				8A416A6A254EC1EA00B80F87 /* CategoryService.swift in Sources */,
+				8A3B587A2451FE9300B2F1D1 /* FavoritedRecipe.swift in Sources */,
+				8ABA6709249751390064F1B6 /* SwiftyOnboard.swift in Sources */,
+				8A416A6C254EDC3400B80F87 /* CategoryViewModel.swift in Sources */,
+				8A13B06A245050D400382687 /* HomeCell.swift in Sources */,
+				8ABFFBCA24641418006F1C91 /* Typealias.swift in Sources */,
+				8AE6AD222450475E00A874E2 /* Extensions.swift in Sources */,
+				8ABA6707249751390064F1B6 /* SwiftyOnboardOverlay.swift in Sources */,
+				8A6218AA253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift in Sources */,
+				8AE6AD122450422900A874E2 /* FavoriteVC.swift in Sources */,
+				8ABFFBC8246411DE006F1C91 /* Ingre&DirectTV.swift in Sources */,
+				8ABFFBE324657240006F1C91 /* CategoryDetailsCell.swift in Sources */,
+				8AE6AD162450425B00A874E2 /* SearchVC.swift in Sources */,
+				8AE6AD1F2450475E00A874E2 /* UIFeedBackGenerator.swift in Sources */,
+				8A3B4C9B245310E8007547DF /* UserProfileVC.swift in Sources */,
+				8AAE47092486B23B002D9A21 /* LoadingCell.swift in Sources */,
+				8ABFFBD824654458006F1C91 /* SearchHeaderCell.swift in Sources */,
+				8ABFFBD424653722006F1C91 /* FavoriteCell.swift in Sources */,
+				8AE6AD212450475E00A874E2 /* MyActivityIndicator.swift in Sources */,
+				8A0F44F92496155A00CE2971 /* OnScreenStepsVC.swift in Sources */,
+				8ABFFBCC246456E0006F1C91 /* Recipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		8AADFAEB24503E3C005CA7C1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8AADFAEC24503E3C005CA7C1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		8AADFAF024503E3C005CA7C1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -282,10 +714,15 @@
 		};
 		8AADFAF724503E3C005CA7C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E176FB908E147C4D82541B3C /* Pods-Recipe Craze.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P2QGR75A2K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Recipe Craze/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -294,16 +731,21 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.valterandremachado.Recipe-Craze";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		8AADFAF824503E3C005CA7C1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0542250AF325291ACA05288F /* Pods-Recipe Craze.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P2QGR75A2K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Recipe Craze/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -312,7 +754,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.valterandremachado.Recipe-Craze";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -338,6 +780,54 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8A13B06324504C1C00382687 /* XCRemoteSwiftPackageReference "LBTATools" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bhlvoong/LBTATools";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.17;
+			};
+		};
+		8AC536A9249DA83F00D1DF5D /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+		8AC536AC249DAA5600D1DF5D /* XCRemoteSwiftPackageReference "R.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift.Library";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A13B06424504C1C00382687 /* LBTATools */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A13B06324504C1C00382687 /* XCRemoteSwiftPackageReference "LBTATools" */;
+			productName = LBTATools;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		8A90348125360E2A002D739B /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8A90348225360E2A002D739B /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = 8A90348225360E2A002D739B /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 8AADFADA24503E3C005CA7C1 /* Project object */;
 }

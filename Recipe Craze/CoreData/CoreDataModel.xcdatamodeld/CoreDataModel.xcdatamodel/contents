@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FavoritedRecipeToCD" representedClassName=".FavoritedRecipeToCD" syncable="YES">
+        <attribute name="duration" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="ingredientCDArray" optional="YES" attributeType="Binary"/>
+        <attribute name="isFavorited" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="nutritionCDArray" optional="YES" attributeType="Binary"/>
+        <attribute name="preparationCDArray" optional="YES" attributeType="Binary"/>
+        <attribute name="servingsNo" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="FavoritedRecipeToCD" positionX="-54" positionY="-9" width="128" height="178"/>
+    </elements>
+</model>

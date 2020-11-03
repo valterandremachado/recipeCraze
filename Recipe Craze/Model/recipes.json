@@ -1,0 +1,74 @@
+[
+    {
+        "id": 0,
+        "name": " Melt-In-Your-Mouth Baked Chicken Breasts",
+        "image": "pizza",
+        "rating": 5,
+        "review": 27,
+        "duration": 50,
+        "fats": 180,
+        "calories": 50
+    },
+    { 
+        "id": 1,
+        "name": "Pizza",
+        "image": "pizza",
+        "rating": 5,
+        "review": 27,
+        "duration": 50,
+        "fats": 180,
+        "calories": 50
+    },
+    {
+        "id": 2,
+        "name": "Burger",
+        "image": "burger1",
+        "rating": 5,
+        "review": 21,
+        "duration": 30,
+        "fats": 180,
+        "calories": 26
+    },
+    {
+        "id": 3,
+        "name": "Fruit Salad",
+        "image": "fruits",
+        "rating": 5,
+        "review": 21,
+        "duration": 30,
+        "fats": 180,
+        "calories": 70
+    },
+    {
+        "id": 4,
+        "name": "Veggies",
+        "image": "aceron",
+        "rating": 4,
+        "review": 30,
+        "duration": 20,
+        "fats": 181,
+        "calories": 90
+    },
+    {
+        "id": 5,
+        "name": "Strawberry",
+        "image": "food",
+        "rating": 3,
+        "review": 22,
+        "duration": 31,
+        "fats": 18,
+        "calories": 120
+    },
+    {
+        "id": 6,
+        "name": "Breakfast",
+        "image": "breakfast",
+        "rating": 5,
+        "review": 21,
+        "duration": 30,
+        "fats": 180,
+        "calories": 150
+    }
+    
+]
+ 
