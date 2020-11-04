@@ -16,6 +16,8 @@ class SearchVC: UIViewController, UISearchBarDelegate {
     var filteredData: [RecipeViewModel2] = []
     //    var data = viewModel.recipePostArray
     var isSearching = false
+    var buttonStates = [Bool]()
+
     
     private let searchCellID = "cellID"
     private let headerCellID = "headerCellID"
@@ -63,6 +65,10 @@ class SearchVC: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading view.
         //        setStatusBar(color: .white)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchData()
     }
     
@@ -72,17 +78,24 @@ class SearchVC: UIViewController, UISearchBarDelegate {
     //    }
     
     fileprivate func fetchData() {
-//            Service2.shared.fetchRecipes { (recipes, err) in
-//                if let err = err {
-//                    print("Failed to fetch courses:", err)
-//                    return
-//                }
-//                self.recipeViewModels = recipes?.map({ return RecipeViewModel2(recipe: $0)}) ?? []
-//            }
-//            DispatchQueue.main.async {
-//                self.collectionView.reloadData()
-//            }
-//        }
+        
+        Service2.shared.fetchRecipes { (recipes, err) in
+            if let err = err {
+                print("Failed to fetch recipes:", err)
+                return
+            }
+            
+            let data = recipes?.map({ return RecipeViewModel2(recipe: $0)}) ?? []
+            self.recipeViewModels.append(contentsOf: data)
+            /// Give default state to the buttons based on the amount of data retrieved
+            for _ in 0..<(self.recipeViewModels.count) {
+                self.buttonStates.append(false)
+                // in my case, all buttons are off, but be sure to implement logic here
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
     }
     
     fileprivate func setupViews(){
@@ -200,42 +213,94 @@ extension SearchVC: CollectionDataSourceAndDelegate {
         DispatchQueue.main.async { [self] in
             //            let searchedData = self.data[indexPath.item].image
             
-//            if filteredData.isEmpty != true {
-//                collectionView.isUserInteractionEnabled = true
-//
-//                cell.shimmerView.isShimmering = false
-//                // fadeOut viewForShimmer
-//                cell.viewForShimmer.fadeOut()
-//                cell.searchImageView.fadeIn()
+            //            if filteredData.isEmpty != true {
+            //                collectionView.isUserInteractionEnabled = true
+            //
+            //                cell.shimmerView.isShimmering = false
+            //                // fadeOut viewForShimmer
+            //                cell.viewForShimmer.fadeOut()
+            //                cell.searchImageView.fadeIn()
+            
+            if self.isSearching == true {
+                let searchedData = self.filteredData[indexPath.item].image
+                /// Load ulr image to UIImage variable
+                UrlImageLoader.sharedInstance.imageForUrl(urlString: searchedData, completionHandler: { (image, url) in
+                    if image != nil {
+                        cell.searchImageView.image = image
+                    }
+                })
                 
-                if self.isSearching == true {
-                    let searchedData = self.filteredData[indexPath.item].image
-                    /// Load ulr image to UIImage variable
-                    UrlImageLoader.sharedInstance.imageForUrl(urlString: searchedData, completionHandler: { (image, url) in
-                        if image != nil {
-                            cell.searchImageView.image = image
-                        }
-                    })
-                    
-                    cell.searchImageView.isHidden = false
-                } else {
-                    cell.searchImageView.image = nil
-                    cell.searchImageView.isHidden = true
-                }
-//            } else {
-//                // disable userInteraction while shimmer animation is running for a good UX
-//                collectionView.isUserInteractionEnabled = false
-//                // fadeIn viewForShimmer
-//                cell.viewForShimmer.fadeIn()
-//                cell.searchImageView.fadeOut()
-//                // add the customView to shimmerContent
-//                cell.shimmerView.contentView = cell.viewForShimmer
-//                cell.shimmerView.isShimmering = true
-//            }
+                cell.searchImageView.isHidden = false
+            } else {
+                cell.searchImageView.image = nil
+                cell.searchImageView.isHidden = true
+            }
+            //            } else {
+            //                // disable userInteraction while shimmer animation is running for a good UX
+            //                collectionView.isUserInteractionEnabled = false
+            //                // fadeIn viewForShimmer
+            //                cell.viewForShimmer.fadeIn()
+            //                cell.searchImageView.fadeOut()
+            //                // add the customView to shimmerContent
+            //                cell.shimmerView.contentView = cell.viewForShimmer
+            //                cell.shimmerView.isShimmering = true
+            //            }
             
         }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let detailVC = HomeDetailVC()
+        
+        let indexedFilteredData = self.filteredData[indexPath.item]
+        print("tryout: \(indexPath.item)")
+        detailVC.recipeID = indexedFilteredData.id
+        detailVC.recipeNameLabel.text = indexedFilteredData.name
+//        detailVC.recipeImageView.image = UIImage(imageLiteralResourceName: indexedRecipe.image)
+//        print("arrayCount: \(indexedRecipe.nutrientArray?.count)")
+
+        detailVC.buttonStatesHomeVC = buttonStates
+        detailVC.indexPathHomeVC = indexPath
+        detailVC.recipeItemIndexPath = indexedFilteredData
+        detailVC.title = "Quick and Easy".uppercased()
+//        detailVC.indexedIngredArray = indexedRecipe.ingredientArray ?? []
+            
+        UrlImageLoader.sharedInstance.imageForUrl(urlString: indexedFilteredData.image, completionHandler: { (image, url) in
+            if image != nil {
+                detailVC.recipeImageView.image = image
+            }
+        })
+
+        detailVC.durationLabel.text = indexedFilteredData.duration
+        detailVC.servingsLbl = indexedFilteredData.numberOfServings
+        
+        /// Prevent app from crash because of nil/empty object coming from the json array
+        if !indexedFilteredData.nutrientArray!.isEmpty {
+            /// Prevent app from crash because of missing object in json array
+            if indexedFilteredData.nutrientArray!.contains(where: { $0.nutrientName == "FAT" }) {
+                print("FAT exists in the array")
+                detailVC.calLabel.text = String(format:"%.0f", indexedFilteredData.nutrientArray![0].nutrientAmount) + " kcal"
+                detailVC.fatsLabel.text = String(format:"%.0f", indexedFilteredData.nutrientArray![13].nutrientAmount) + " g"
+            } else {
+                print("FAT does not exists in the array")
+                detailVC.calLabel.text = String(format:"%.0f", indexedFilteredData.nutrientArray![1].nutrientAmount) + " kcal"
+                detailVC.fatsLabel.text = String(format:"%.0f", indexedFilteredData.nutrientArray![2].nutrientAmount) + " g"
+            }
+            print("indexedRecipe: \(indexPath.item)")
+
+        } else {
+            detailVC.calLabel.text = "N/A"
+            detailVC.fatsLabel.text = "N/A"
+        }
+
+        detailVC.nutritionArray = indexedFilteredData.nutrientArray!
+        detailVC.ingredientArray = indexedFilteredData.ingredientArray!
+        detailVC.preparationSteps = indexedFilteredData.preparationStepsArray
+        
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

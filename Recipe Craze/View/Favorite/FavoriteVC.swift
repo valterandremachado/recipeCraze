@@ -42,10 +42,11 @@ class FavoriteVC: UIViewController {
     var favoritedPostArray = [FavoritedRecipeToCD]()
     private let faveCellID = "cellID"
     var selectedIndexPathDic: [IndexPath: Bool] = [:]
-
+    var isSelectedAll = false
+    
     var selectionMode: SelectionMode = .more {
+        
         didSet {
-            
             switch selectionMode {
                 
             case .more:
@@ -64,15 +65,13 @@ class FavoriteVC: UIViewController {
 
                 navigationItem.leftBarButtonItem = nil
                 collectionView.allowsMultipleSelection = false
-                
+
             case .select:
                 moreBarButton.image = UIImage(systemName: "")
                 moreBarButton.title = "Cancel"
                 moreBarButton.tintColor = .systemPink
 
-                //          moreBarButton.image = UIImage(systemName: "ellipsis")
                 navigationItem.leftBarButtonItem = unSaveBarButton
-//                navigationItem.rightBarButtonItem = nil
                 collectionView.allowsMultipleSelection = true
                 
             }
@@ -120,8 +119,8 @@ class FavoriteVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading view.
 //        viewModel.getFavoritedPost()
-        print("recipeViewModels: \(recipeViewModels)")
 //        print("CoreData: \(favoritedPostArray.first?.ingredientCDArray)")
+//        print("recipeViewModels: \(recipeViewModels)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -225,16 +224,33 @@ class FavoriteVC: UIViewController {
             }
         } // End of selectAction
         
+        let selectAllAction = UIAlertAction(title: "Select All", style: .default) { alert in
+            print("SelectAll")
+            if self.favoritedPostArray.isEmpty == false {
+                self.selectionMode = self.selectionMode == .more ? .select : .more
+                // enables selectAll action
+                self.isSelectedAll = true
+                self.getAllIndexPaths()
+            } else {
+                let alert = UIAlertAction(title: "OK", style: .cancel)
+                alertAC.addAction(alert)
+                self.present(alertAC, animated: true)
+                print("no item left")
+                
+            }
+        } // End of selectAllAction
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 //        { (alert) in
 //            self.selectionMode = self.selectionMode == .more ? .select : .more
 //        }
         
         actionSheetAC.addAction(selectAction)
+        actionSheetAC.addAction(selectAllAction)
         actionSheetAC.addAction(cancelAction)
         
         if moreBarButton.title == "Cancel" {
-            print("Cant open menu")
+//            print("Cant open menu")
             self.selectionMode = self.selectionMode == .more ? .select : .more
             // bug fixing (clear completely selected items)
             collectionView.allowsSelection = true
@@ -245,6 +261,11 @@ class FavoriteVC: UIViewController {
             actionSheetAC.fixActionSheetConstraintsError()
             present(actionSheetAC, animated: true)
         }
+        
+        // Handles selection of all items in the collectionView
+        isSelectedAll = false
+        selectedIndexPathDic.removeAll() // Empty the array right after press cancel btn
+        collectionView.reloadData()
         
 //        guard let indexPath = collectionView.indexPathForView(collectionView) else { return }
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: faveCellID, for: indexPath) as! FavoriteCell
@@ -279,12 +300,10 @@ class FavoriteVC: UIViewController {
             }
             
             for i in deleteNeededIndexPaths.sorted(by: { $0.item > $1.item }) {
-//                if self.favoritedPostArray[i.item].name <= 1 {
-//                    
-//                }
+
                 // remove item from Firebase
                 self.ref.child("FavoritedRecipes/post: \(self.favoritedPostArray[i.item].id ?? "")").removeValue()
-                /// removes item from CoreData (must delete this item last to avoid index out of bound)
+                /// removes item from CoreData (must delete this item last to avoid index out of bound error)
                 self.coreDataDB.deleteItem(name: self.favoritedPostArray[i.item].name!)
                 self.favoritedPostArray.remove(at: i.item)
             }
@@ -316,43 +335,30 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: faveCellID, for: indexPath) as! FavoriteCell
-        
-//        if favoritedPostArray.isEmpty != true {
-//            collectionView.isUserInteractionEnabled = true
-//            cell.shimmerView.isShimmering = false
-////            // fadeOut viewForShimmer
-//            cell.viewForShimmer.fadeOut()
           
         let favorited = favoritedPostArray[indexPath.item]
 
         if let imageData = favorited.image {
             cell.favoritedImageView.image = UIImage(data: imageData)
         }
-//        cell.highlightIndicator.isHidden = true
-//        cell.selectIndicator.isHidden = true
+//        cell.highlightIndicator.isHidden = !isSelectedAll
+//        cell.selectIndicator.isHidden = !isSelectedAll
+//        cell.isSelected = self.isSelectedAll
+        
         let widthConstraint = cell.heightAnchor.constraint(equalToConstant: 750)
         widthConstraint.priority = UILayoutPriority(rawValue: 750)
         widthConstraint.isActive = true
-//        addContextMenuInteraction(toCell: cell)
-//        } else {
-//            // disable userInteraction while shimmer animation is running for a good UX
-//            collectionView.isUserInteractionEnabled = false
-//            // fadeIn viewForShimmer
-//            cell.viewForShimmer.fadeIn()
-//            // add the customView to shimmerContent
-//            cell.shimmerView.contentView = cell.viewForShimmer
-//            cell.shimmerView.isShimmering = true
-//        }
+    
+        isSelectedAll == true ? (cell.isSelected = true) : (cell.isSelected = false)
 
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.item)
-
+        let recipe = self.favoritedPostArray[indexPath.item]
         switch selectionMode {
         case .more:
-            let recipe = self.favoritedPostArray[indexPath.item]
             
             let detailVC = HomeDetailVC()
             detailVC.heartBtn.isHidden = true
@@ -411,18 +417,35 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
             self.navigationController?.pushViewController(detailVC, animated: true)
 
             collectionView.deselectItem(at: indexPath, animated: true)
-            print("more")
+//            print("more")
+        
         case .select:
-            print("selected")
+//            print("selected")
             selectedIndexPathDic[indexPath] = true
             print("selectedIndexPathDic: \(selectedIndexPathDic)")
             checkSelectedIndexPathDic()
         }
+    
+    }
+    
+    func getAllIndexPaths() {
+//        let indexPaths: [IndexPath : Bool] = [:]
+//        let cell = collectionView.cellForItem(at: tappedIndexPath!) as! FavoriteCell
+
+        // Assuming that tableView is your self.tableView defined somewhere
+        for i in 0..<collectionView.numberOfSections {
+            for j in 0..<collectionView.numberOfItems(inSection: i) {
+//                indexPaths.append(IndexPath(row: j, section: i))
+                                
+                selectedIndexPathDic[IndexPath(row: j, section: i)] = true
+                collectionView.reloadData()
+                print("indexPaths: \(selectedIndexPathDic)")
+                checkSelectedIndexPathDic()
+            }
+        }
         
-//        let favoritedArray = favoritedPostArray[indexPath.item]
-//        favoritedPostArray.remove(at: indexPath.item)
-//        collectionView.deleteItems(at: [indexPath])
-//        collectionView.reloadData()
+       
+//        return indexPaths
     }
     
     func checkSelectedIndexPathDic(){

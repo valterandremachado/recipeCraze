@@ -448,6 +448,8 @@ class HomeDetailVC: UIViewController {
         
         guard let nav = navigationController?.navigationBar else { return }
         nav.titleTextAttributes = [.foregroundColor: UIColor.black]
+        nav.barStyle = .default
+
         //        storeUserDefaults()
         //        fetchUserDefaults()
         
@@ -635,11 +637,17 @@ class HomeDetailVC: UIViewController {
         let translation = gesture.translation(in: self.view)
         
         guard let centerY = gesture.view?.center.y else { return }
-        
         if gesture.state == .began || gesture.state == .changed {
             
+            var tempConstant: CGFloat = 0
+            if UIScreen.main.bounds.height <= 667 {
+                tempConstant = -325
+            } else {
+                tempConstant = -401
+            }
+            
             // Dragging view (move view downward) 192 407
-            if self.imageViewDynamicConstraint.constant < 0 && self.imageViewDynamicConstraint.constant >= -327 {
+            if self.imageViewDynamicConstraint.constant < 0 && self.imageViewDynamicConstraint.constant >= tempConstant {
                 //                recipeImageView.center.y += translation.y
                 self.imageViewDynamicConstraint.constant += translation.y
                 //                gesture.setTranslation(.zero, in: view)
@@ -652,7 +660,7 @@ class HomeDetailVC: UIViewController {
                         //                        recipeImageView.center.y -= -translation.y
                         self.imageViewDynamicConstraint.constant -= -translation.y
                         //                        tableView.center.y -= -translation.y
-                        //                        print("translation: \(translation.y) centerY:\(centerY) velocity:\(velocity.y)")
+                                                print("translation: \(translation.y) centerY:\(centerY) velocity:\(velocity.y)")
                         gesture.setTranslation(.zero, in: view)
                     } else {
 //                        print("centerY limit1: \(centerY)")
@@ -740,7 +748,7 @@ class HomeDetailVC: UIViewController {
             UIView.animate(withDuration: 0.5) { [self] in
                 self.dynamicConstraint.constant = 25
                 self.imageViewDynamicConstraint.constant = self.imageConstantHeight
-                
+
                 if UIScreen.main.bounds.height <= 667 {
                     UIView.transition(with: recipeNameLabel, duration: 2.8, options: .curveEaseInOut, animations: {
                         recipeNameLabel.font = .boldSystemFont(ofSize: 30)
@@ -752,7 +760,8 @@ class HomeDetailVC: UIViewController {
                     }) { isFinished in }
                 }
                 
-                
+//                print("imageViewDynamicConstraint: \(self.imageViewDynamicConstraint.constant)")
+
                 //                self.view.setNeedsLayout()
                 self.view.layoutIfNeeded()
             }

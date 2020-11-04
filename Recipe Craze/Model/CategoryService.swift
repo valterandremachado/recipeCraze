@@ -19,7 +19,7 @@ class CategoryService: NSObject {
                 "Content-Type": "application/json",
         ]
         
-        let param = ["apiKey": "cd03dd3f4f204f4cb3dca72ef6e97c14", //myAcc -> b22f28fb671d4c7ba1e37cf19363b694
+        let param = ["apiKey": "b22f28fb671d4c7ba1e37cf19363b694", //myAcc -> cd03dd3f4f204f4cb3dca72ef6e97c14
                      "number": "\(limit)",
 //                     "query": "chicken with rice",
                      "fillIngredients": "true",

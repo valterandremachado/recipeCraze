@@ -35,7 +35,7 @@ class CategoryDetailsVC: UIViewController {
     }()
     
     lazy var mealType = ""
-    lazy var fetchingLimitNumber = 30
+    lazy var fetchingLimitNumber = 100
     lazy var fetchMore = 30
     
     // MARK: - Init
@@ -76,6 +76,7 @@ class CategoryDetailsVC: UIViewController {
                 self.buttonStates.append(false)
                 // in my case, all buttons are off, but be sure to implement logic here
             }
+//            print("beginBatchFetch!: \(self.categoryViewModel.count)")
             self.collectionView.reloadData()
         }
     }
@@ -222,24 +223,23 @@ extension CategoryDetailsVC: CollectionDataSourceAndDelegate {
         let positionY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         
-        if  (positionY > (contentHeight - scrollView.frame.height*1.3) + 5) && (positionY != 0.0) {
+        if  (positionY > (contentHeight - scrollView.frame.height*1.1) + 5) && (positionY != 0.0) {
+            print("fetchingLimitNumber: \(fetchingLimitNumber)")
+//            fetchingLimitNumber != 100 ? (self.isFetching = true) : (self.isFetching = false)
+//
+//            if isFetching {
+//                beginFetchMoreData()
+//            }
             
-            if !isFetching {
-                beginFetchMoreData()
-            }
         }
         
     }
     
     func beginFetchMoreData(){
         isFetching = true
-        fetchingLimitNumber == 100 ? (self.isFetching = false) : (self.isFetching = true)
-        
-        print("beginBatchFetch!: \(self.categoryViewModel.count)")
-       
+               
         print("fetchingLimitNumber: \(fetchingLimitNumber)")
         
-        if self.isFetching {
             fetchingLimitNumber == 90 ? (fetchingLimitNumber += 10) : (fetchingLimitNumber += fetchMore)
             print("fetchingLimitNumber: \(fetchingLimitNumber)")
 
@@ -258,10 +258,9 @@ extension CategoryDetailsVC: CollectionDataSourceAndDelegate {
                 }
                 self.isFetching = false
                 print("fetchingLimitNumber: \(self.isFetching)")
-                
+                print("beginBatchFetch!: \(self.categoryViewModel.count)")
                 self.collectionView.reloadData()
             }
-        }
         
     }
 }
