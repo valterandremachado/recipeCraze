@@ -58,27 +58,24 @@ class FavoriteVC: UIViewController {
                 }
                 
                 selectedIndexPathDic.removeAll()
+                print(selectedIndexPathDic)
+                navigationItem.rightBarButtonItem = editBarButton
+                editBarButton.style = .plain
+                closeSelectionBar()
                 
-                navigationItem.rightBarButtonItem = moreBarButton
-                moreBarButton.image = UIImage(systemName: "ellipsis")?.withTintColor(.systemPink, renderingMode: .alwaysOriginal)
-                moreBarButton.title = nil
-
-                navigationItem.leftBarButtonItem = nil
                 collectionView.allowsMultipleSelection = false
 
             case .select:
-                moreBarButton.image = UIImage(systemName: "")
-                moreBarButton.title = "Cancel"
-                moreBarButton.tintColor = .systemPink
+                editBarButton.style = .done
+                presentSelectionBar()
+                checkSelectedIndexPathDic()
 
-                navigationItem.leftBarButtonItem = unSaveBarButton
                 collectionView.allowsMultipleSelection = true
                 
             }
         }
     }
     
-
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -95,16 +92,49 @@ class FavoriteVC: UIViewController {
         return cv
     }()
     
-    lazy var moreBarButton: UIBarButtonItem = {
-        let rightBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis")?.withTintColor(.systemPink, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(moreBarBtnPressed))
+    lazy var editBarButton: UIBarButtonItem = {
+        let rightBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action:  #selector(editBarBtnPressed))
+        rightBarButton.tintColor = .systemPink
       return rightBarButton
     }()
-
-    lazy var unSaveBarButton: UIBarButtonItem = {
-        let leftBarButton = UIBarButtonItem(title: "Unsave", style: .plain, target: self, action: #selector(unSaveBarBtnPressed))
-        leftBarButton.isEnabled = false
-        leftBarButton.tintColor = .red
-      return leftBarButton
+    
+    lazy var selectionBarView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        view.backgroundColor = .gray //UIColor(named: "profileMenuAppearance")
+        return view
+    }()
+    
+    lazy var selectAllBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.tintColor = .systemPink
+        btn.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        btn.setTitle("Select All", for: .normal)
+        btn.addTarget(self, action: #selector(selectAllBtnPressed), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var unsaveBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        btn.tintColor = .red
+        btn.setTitle("Unsave", for: .normal)
+        btn.addTarget(self, action: #selector(unsaveBtnPressed), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var selectionBarStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [selectAllBtn, unsaveBtn])
+//        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.axis = .horizontal
+        sv.alignment = .center
+        sv.distribution = .fillProportionally
+        sv.spacing = 10
+        sv.addBackground(color: UIColor(named: "profileMenuAppearance")!)
+        return sv
     }()
     
     // MARK: - Init
@@ -128,6 +158,7 @@ class FavoriteVC: UIViewController {
 //        coreDataDB.resetAllRecords(in: "FavoritedPost")
         self.setupNavBar()
         self.fetchDataFromCoreData()
+//        presentSelectionBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -141,11 +172,53 @@ class FavoriteVC: UIViewController {
     }
     
     // MARK: - Methods
+    fileprivate func presentSelectionBar() {
+        let screenSize = UIScreen.main.bounds.size
+        guard let tabHeight = tabBarController?.tabBar.frame.height else { return }
+//        guard let tabWidth = tabBarController?.tabBar.frame.width else { return }
+
+
+        // window
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        // selectionBarView
+//        selectionBarView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: tabHeight)
+//        window.addSubview(selectionBarView)
+
+        // selectionBarStackView
+        selectionBarStackView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: tabHeight)
+        window.addSubview(selectionBarStackView)
+        
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+//            self.selectionBarView.frame = CGRect(x: 0, y: screenSize.height - tabHeight, width: screenSize.width, height: tabHeight)
+            
+            self.selectionBarStackView.frame = CGRect(x: 0, y: screenSize.height - (tabHeight), width: screenSize.width, height: tabHeight)
+
+        }, completion: nil)
+    }
+    
+    fileprivate func closeSelectionBar() {
+        let screenSize = UIScreen.main.bounds.size
+        guard let tabHeight = tabBarController?.tabBar.frame.height else { return }
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.selectionBarStackView.frame = CGRect(x: 0, y: (screenSize.height - tabHeight)/0.9, width: screenSize.width, height: tabHeight)
+            
+        }, completion: nil)
+            // Handles selection of all items in the collectionView
+            isSelectedAll = false
+            selectedIndexPathDic.removeAll() // Empty the array right after press cancel btn
+            collectionView.reloadData()
+        
+      
+    }
+    
     fileprivate func presentShareSheet(indexPath: IndexPath) {
         
         let thingsToShare = [favoritedPostArray[indexPath.item].name]
 //        guard let image = UIImage(systemName: "bell"), let url = URL(string: "https://www.google.com") else { return }
-        let shareSheetVC = UIActivityViewController(activityItems: thingsToShare, applicationActivities: nil)
+        let shareSheetVC = UIActivityViewController(activityItems: thingsToShare as [Any], applicationActivities: nil)
         present(shareSheetVC, animated: true)
     }
     
@@ -194,94 +267,36 @@ class FavoriteVC: UIViewController {
         nav.barStyle = .default
         nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
         navigationItem.title = "Favorited"
-        self.navigationItem.rightBarButtonItem = moreBarButton
+        self.navigationItem.rightBarButtonItem = editBarButton
         
         nav.isTranslucent = false
 //        nav.showNavBarSeperator()
     }
     
-    // MARK: - Selectors
-    @objc private func moreBarBtnPressed(_ sender: UIButton){
-        print("moreBarBtnPressed")
-        
-        let actionSheetAC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        actionSheetAC.view.tintColor = .systemPink
-
-        let alertAC = UIAlertController(title: nil, message: "You have no favorited recipe to be selected.", preferredStyle: .alert)
-        alertAC.view.tintColor = .systemPink
-
-        let selectAction = UIAlertAction(title: "Select", style: .default) { alert in
-            print("Select")
-            if self.favoritedPostArray.isEmpty == false {
-                self.selectionMode = self.selectionMode == .more ? .select : .more
-                
-            } else {
-                let alert = UIAlertAction(title: "OK", style: .cancel)
-                alertAC.addAction(alert)
-                self.present(alertAC, animated: true)
-                print("no item left")
-                
+    func getAllIndexPaths() {
+        // Assuming that tableView is your self.tableView defined somewhere
+        for i in 0..<collectionView.numberOfSections {
+            for j in 0..<collectionView.numberOfItems(inSection: i) {
+//                indexPaths.append(IndexPath(row: j, section: i))
+                selectedIndexPathDic[IndexPath(row: j, section: i)] = true
+                collectionView.reloadData()
+                print("indexPaths: \(selectedIndexPathDic)")
+                checkSelectedIndexPathDic()
             }
-        } // End of selectAction
-        
-        let selectAllAction = UIAlertAction(title: "Select All", style: .default) { alert in
-            print("SelectAll")
-            if self.favoritedPostArray.isEmpty == false {
-                self.selectionMode = self.selectionMode == .more ? .select : .more
-                // enables selectAll action
-                self.isSelectedAll = true
-                self.getAllIndexPaths()
-            } else {
-                let alert = UIAlertAction(title: "OK", style: .cancel)
-                alertAC.addAction(alert)
-                self.present(alertAC, animated: true)
-                print("no item left")
-                
-            }
-        } // End of selectAllAction
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-//        { (alert) in
-//            self.selectionMode = self.selectionMode == .more ? .select : .more
-//        }
-        
-        actionSheetAC.addAction(selectAction)
-        actionSheetAC.addAction(selectAllAction)
-        actionSheetAC.addAction(cancelAction)
-        
-        if moreBarButton.title == "Cancel" {
-//            print("Cant open menu")
-            self.selectionMode = self.selectionMode == .more ? .select : .more
-            // bug fixing (clear completely selected items)
-            collectionView.allowsSelection = true
-            self.unSaveBarButton.isEnabled = false
-            self.selectedIndexPathDic.removeAll()
-
-        } else {
-            actionSheetAC.fixActionSheetConstraintsError()
-            present(actionSheetAC, animated: true)
         }
         
-        // Handles selection of all items in the collectionView
-        isSelectedAll = false
-        selectedIndexPathDic.removeAll() // Empty the array right after press cancel btn
-        collectionView.reloadData()
-        
-//        guard let indexPath = collectionView.indexPathForView(collectionView) else { return }
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: faveCellID, for: indexPath) as! FavoriteCell
-//        cell.emptyCheck.isHidden = false
     }
     
-    @objc private func unSaveBarBtnPressed(){
-//        guard let indexPath = collectionView.indexPathForView(collectionView) else { return }
-//        self.cancelMode = self.cancelMode == .more ? .cancel : .more
-//        collectionView.deselectItem(at: indexPath, animated: true)
+    func checkSelectedIndexPathDic(){
+        selectedIndexPathDic.count >= 1 ? (unsaveBtn.isEnabled = true) : (unsaveBtn.isEnabled = false)
+        favoritedPostArray.count >= 2 ? (selectAllBtn.isEnabled = true) : (selectAllBtn.isEnabled = false)
+    }
+    
+    // MARK: - Selectors
+    @objc private func unsaveBtnPressed(_ sender: UIButton) {
         
         var dynamicRecipeText = ""
         var dynamicComplementText = ""
-//        if selectedIndexPathDic.count > 1 {
-//            message = "recipes"
-//        }
         
         selectedIndexPathDic.count > 1 ? (dynamicRecipeText = "recipes") : (dynamicRecipeText = "recipe")
         selectedIndexPathDic.count > 1 ? (dynamicComplementText = "them") : (dynamicComplementText = "it")
@@ -300,7 +315,7 @@ class FavoriteVC: UIViewController {
             }
             
             for i in deleteNeededIndexPaths.sorted(by: { $0.item > $1.item }) {
-
+                
                 // remove item from Firebase
                 self.ref.child("FavoritedRecipes/post: \(self.favoritedPostArray[i.item].id ?? "")").removeValue()
                 /// removes item from CoreData (must delete this item last to avoid index out of bound error)
@@ -319,9 +334,18 @@ class FavoriteVC: UIViewController {
         alertAC.addAction(unsaveAction)
         alertAC.addAction(cancelAction)
         present(alertAC, animated: true)
-        
-
     }
+    
+    @objc private func selectAllBtnPressed(_ sender: UIButton) {
+        self.isSelectedAll = true
+        self.getAllIndexPaths()
+    }
+    
+    @objc private func editBarBtnPressed(_ sender: UIButton) {
+        self.selectionMode = self.selectionMode == .more ? .select : .more
+        self.editBarButton.style == .plain ? (self.editBarButton.title = "Edit") :  (self.editBarButton.title = "Done")
+    }
+    
 
 }
 
@@ -330,7 +354,6 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favoritedPostArray.count
-//favoritedPostArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -341,10 +364,7 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
         if let imageData = favorited.image {
             cell.favoritedImageView.image = UIImage(data: imageData)
         }
-//        cell.highlightIndicator.isHidden = !isSelectedAll
-//        cell.selectIndicator.isHidden = !isSelectedAll
-//        cell.isSelected = self.isSelectedAll
-        
+
         let widthConstraint = cell.heightAnchor.constraint(equalToConstant: 750)
         widthConstraint.priority = UILayoutPriority(rawValue: 750)
         widthConstraint.isActive = true
@@ -426,34 +446,6 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
             checkSelectedIndexPathDic()
         }
     
-    }
-    
-    func getAllIndexPaths() {
-//        let indexPaths: [IndexPath : Bool] = [:]
-//        let cell = collectionView.cellForItem(at: tappedIndexPath!) as! FavoriteCell
-
-        // Assuming that tableView is your self.tableView defined somewhere
-        for i in 0..<collectionView.numberOfSections {
-            for j in 0..<collectionView.numberOfItems(inSection: i) {
-//                indexPaths.append(IndexPath(row: j, section: i))
-                                
-                selectedIndexPathDic[IndexPath(row: j, section: i)] = true
-                collectionView.reloadData()
-                print("indexPaths: \(selectedIndexPathDic)")
-                checkSelectedIndexPathDic()
-            }
-        }
-        
-       
-//        return indexPaths
-    }
-    
-    func checkSelectedIndexPathDic(){
-        if selectedIndexPathDic.count >= 1 {
-            unSaveBarButton.isEnabled = true
-        } else {
-            unSaveBarButton.isEnabled = false
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -658,3 +650,79 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
 //      }
 //  }
 
+
+
+
+
+
+
+
+
+
+//let actionSheetAC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+//actionSheetAC.view.tintColor = .systemPink
+//
+//let alertAC = UIAlertController(title: nil, message: "You have no favorited recipe to be selected.", preferredStyle: .alert)
+//alertAC.view.tintColor = .systemPink
+//
+//let selectAction = UIAlertAction(title: "Select", style: .default) { alert in
+//    print("Select")
+//    if self.favoritedPostArray.isEmpty == false {
+//        self.selectionMode = self.selectionMode == .more ? .select : .more
+//        self.presentSelectionBar()
+//    } else {
+//        let alert = UIAlertAction(title: "OK", style: .cancel)
+//        alertAC.addAction(alert)
+//        self.present(alertAC, animated: true)
+//        print("no item left")
+//
+//    }
+//} // End of selectAction
+//
+//let selectAllAction = UIAlertAction(title: "Select All", style: .default) { alert in
+//    print("SelectAll")
+//    if self.favoritedPostArray.isEmpty == false {
+//        self.selectionMode = self.selectionMode == .more ? .select : .more
+//        // enables selectAll action
+//        self.isSelectedAll = true
+//        self.getAllIndexPaths()
+//    } else {
+//        let alert = UIAlertAction(title: "OK", style: .cancel)
+//        alertAC.addAction(alert)
+//        self.present(alertAC, animated: true)
+//        print("no item left")
+//
+//    }
+//} // End of selectAllAction
+//
+//let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+////        { (alert) in
+////            self.selectionMode = self.selectionMode == .more ? .select : .more
+////        }
+//
+//actionSheetAC.addAction(selectAction)
+//actionSheetAC.addAction(selectAllAction)
+//actionSheetAC.addAction(cancelAction)
+//
+//if moreBarButton.title == "Cancel" {
+////            print("Cant open menu")
+//    self.selectionMode = self.selectionMode == .more ? .select : .more
+//    // bug fixing (clear completely selected items)
+//    closeSelectionBar()
+//    collectionView.allowsSelection = true
+//    self.unSaveBarButton.isEnabled = false
+//    self.selectedIndexPathDic.removeAll()
+//
+//} else {
+//    actionSheetAC.fixActionSheetConstraintsError()
+//    present(actionSheetAC, animated: true)
+//}
+//
+//// Handles selection of all items in the collectionView
+//isSelectedAll = false
+//selectedIndexPathDic.removeAll() // Empty the array right after press cancel btn
+//collectionView.reloadData()
+//
+////        guard let indexPath = collectionView.indexPathForView(collectionView) else { return }
+////        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: faveCellID, for: indexPath) as! FavoriteCell
+////        cell.emptyCheck.isHidden = false
