@@ -25,7 +25,7 @@ extension FavoritedRecipeToCD {
     @NSManaged public var nutritionCDArray: Data?
     @NSManaged public var preparationCDArray: Data?
     @NSManaged public var servingsNo: Int32
-    @NSManaged public var isFavorited: Bool
+    @NSManaged public var sourceUrl: String?
 
 }
 

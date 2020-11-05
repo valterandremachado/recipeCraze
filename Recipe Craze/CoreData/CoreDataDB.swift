@@ -24,7 +24,7 @@ final class CoreDataDB: NSObject {
     }
     
     // MARK: - Methods
-    func createFavoritedPost(id: String, name: String, image: UIImage?, ingredArray: [String]?, duration: String?, servingsNo: Int32?, prepArray: [String]?, nutriArray: [Any]?, isFavorited: Bool) {
+    func createFavoritedPost(id: String, name: String, image: UIImage?, ingredArray: [String]?, duration: String?, servingsNo: Int32?, prepArray: [String]?, nutriArray: [Any]?, sourceUrl: String) {
         let favoritedPost = FavoritedRecipeToCD(context: persistenceManager.context)
         favoritedPost.id = id
         favoritedPost.name = name
@@ -33,7 +33,7 @@ final class CoreDataDB: NSObject {
         favoritedPost.image = imageData
         favoritedPost.duration = duration!
         favoritedPost.servingsNo = servingsNo!
-        favoritedPost.isFavorited = isFavorited
+        favoritedPost.sourceUrl = sourceUrl
         // Convert arrays to data to facilitate put them in the coreData
         let ingredArrayToData = try! JSONSerialization.data(withJSONObject: ingredArray!, options: [])
         let prepArrayToData = try! JSONSerialization.data(withJSONObject: prepArray!, options: [])
@@ -46,7 +46,7 @@ final class CoreDataDB: NSObject {
         persistenceManager.save()
     }
     
-    @discardableResult func checkIfItemExist(id: String, name: String, image: UIImage?, ingredArray: [String]?, duration: String?, servingsNo: Int32?, prepArray: [String]?, nutriArray: [Any]?, isFavorited: Bool) -> Bool {
+    @discardableResult func checkIfItemExist(id: String, name: String, image: UIImage?, ingredArray: [String]?, duration: String?, servingsNo: Int32?, prepArray: [String]?, nutriArray: [Any]?, sourceUrl: String) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavoritedRecipeToCD")
         fetchRequest.fetchLimit =  1
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
@@ -56,7 +56,7 @@ final class CoreDataDB: NSObject {
                 print("The item you're trying to add already exist in the db")
                 return true
             } else {
-                createFavoritedPost(id: id, name: name, image: image, ingredArray: ingredArray, duration: duration, servingsNo: servingsNo, prepArray: prepArray, nutriArray: nutriArray, isFavorited: isFavorited)
+                createFavoritedPost(id: id, name: name, image: image, ingredArray: ingredArray, duration: duration, servingsNo: servingsNo, prepArray: prepArray, nutriArray: nutriArray, sourceUrl: sourceUrl)
                 return false
             }
         }catch let error as NSError {

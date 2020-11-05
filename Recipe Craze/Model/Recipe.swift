@@ -22,6 +22,7 @@ struct ContentList: Codable {
     var review: Int
     var hdRecipeImage: Videos?
     var numberOfServings: Int
+    var sourceUrl: String
     
     var ownerName: String
     var ownerProfilePic: String
@@ -34,6 +35,15 @@ struct ContentList: Codable {
     private enum RootKeys: String, CodingKey {
         case content
         case display
+        case seo
+    }
+    
+    private enum SeoKeys: String, CodingKey {
+        case web
+    }
+    
+    private enum WebKeys: String, CodingKey {
+        case sourceUrl = "link-tags"
     }
     
     private enum DisplayKeys: String, CodingKey {
@@ -77,6 +87,9 @@ struct ContentList: Codable {
         let contentContainer = try rootContainer.nestedContainer(keyedBy: ContentKeys.self, forKey: .content)
         let reviewsContainer = try contentContainer.nestedContainer(keyedBy: ReviewsKeys.self, forKey: .reviews)
 
+        let sourceUrlContainer = try rootContainer.nestedContainer(keyedBy: SeoKeys.self, forKey: .seo)
+        let webContainer = try sourceUrlContainer.nestedContainer(keyedBy: WebKeys.self, forKey: .web)
+
         let displayContainer = try rootContainer.nestedContainer(keyedBy: DisplayKeys.self, forKey: .display)
         let detailsContainer = try contentContainer.nestedContainer(keyedBy: DetailsKeys.self, forKey: .details)
         let nutritionContainer = try contentContainer.nestedContainer(keyedBy: NutritionKeys.self, forKey: .nutrition)
@@ -85,6 +98,7 @@ struct ContentList: Codable {
         self.preparationSteps = try contentContainer.decode([String]?.self, forKey: .preparationSteps) ?? []
         self.hdRecipeImage = try contentContainer.decodeIfPresent(Videos.self, forKey: .videos)
 
+        let urlContainer = try webContainer.decode([SourceUrl].self, forKey: .sourceUrl)
         let imagesContainer = try detailsContainer.decode([Images].self, forKey: .image)
         let ownerContainer = try displayContainer.decode([Profiles].self, forKey: .profile)
         //Decode nutrition array then pass decoded array to the variable nutritionArray
@@ -100,12 +114,17 @@ struct ContentList: Codable {
         
 //        self.hdRecipeImage = try videosContainer.decode(String?.self, forKey: .hdRecipeImage) ?? ""
         
+        self.sourceUrl = urlContainer.first?.href ?? ""
         self.image = imagesContainer.first?.resizableImageUrl ?? ""
         self.ownerName = ownerContainer.first?.displayName ?? ""
         self.ownerProfilePic = ownerContainer.first?.pictureUrl ?? ""
 //        self.ingredientLine = ingredientContainer.first?.ingredient ?? ""
         
     }
+}
+
+struct SourceUrl: Codable {
+    var href: String
 }
 
 struct Videos: Codable {

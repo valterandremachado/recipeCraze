@@ -403,7 +403,8 @@ class HomeDetailVC: UIViewController {
     }()
     
     var recipeID = ""
-    
+    var recipeSourceUrl = ""
+
     // MARK: - init
     override func loadView() {
         super.loadView()
@@ -816,7 +817,7 @@ class HomeDetailVC: UIViewController {
             let newRef = ref.child("FavoritedRecipes").child("post: \(recipeID)")
             newRef.updateChildValues(dynamicDic)
             
-            coreDataDB.checkIfItemExist(id: recipeID, name: recipeNameLabel.text!, image: recipeImageView.image, ingredArray: tempIngredArray, duration: durationLabel.text!, servingsNo: Int32(servingsLbl), prepArray: self.preparationSteps, nutriArray: nutriCDArray, isFavorited: buttonStatesHomeVC[indexPathHomeVC.item])
+            coreDataDB.checkIfItemExist(id: recipeID, name: recipeNameLabel.text!, image: recipeImageView.image, ingredArray: tempIngredArray, duration: durationLabel.text!, servingsNo: Int32(servingsLbl), prepArray: self.preparationSteps, nutriArray: nutriCDArray, sourceUrl: recipeSourceUrl)
             sender.setImage(imageSaved, for: .normal)
             buttonStatesHomeVC[indexPathHomeVC.item] = true
         } else {

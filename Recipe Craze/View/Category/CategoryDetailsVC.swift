@@ -159,6 +159,7 @@ extension CategoryDetailsVC: CollectionDataSourceAndDelegate {
         
         detailsVC.categIsVisible = self.isVisible
         detailsVC.recipeID = "\(indexedViewModel.id)"
+        detailsVC.recipeSourceUrl = indexedViewModel.sourceUrl
         detailsVC.recipeNameLabel.text = indexedViewModel.name
         detailsVC.durationLabel.text = "\(indexedViewModel.duration) min"
         detailsVC.servingsLbl = indexedViewModel.numberOfServings

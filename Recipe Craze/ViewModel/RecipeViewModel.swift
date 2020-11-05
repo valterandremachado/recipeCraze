@@ -47,7 +47,8 @@ struct RecipeViewModel2: Codable {
     var ownerPic: String
     var numberOfServings: Int
     var hdRecipeImage: String
-    
+    var sourceUrl: String
+
     var nutrientArray: [Nutrition]? = [Nutrition]()
     var ingredientArray: [Ingredient]? = [Ingredient]()
     var preparationStepsArray: [String]
@@ -66,6 +67,7 @@ struct RecipeViewModel2: Codable {
         self.ownerPic = recipe.ownerProfilePic
         self.numberOfServings = recipe.numberOfServings
         self.hdRecipeImage = recipe.hdRecipeImage?.snapshotUrl ?? ""
+        self.sourceUrl = recipe.sourceUrl
         
         self.nutrientArray = recipe.nutritionArray
         self.ingredientArray = recipe.ingredientArray

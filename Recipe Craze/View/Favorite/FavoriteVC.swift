@@ -11,16 +11,9 @@ import CoreData
 import FirebaseDatabase
 
 enum SelectionMode {
-    case more
+    case edit
     case select
-//    case cancel
 }
-
-enum CancelMode {
-    case cancel
-    case more
-}
-
 class FavoriteVC: UIViewController {
     
     let tempArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
@@ -44,12 +37,12 @@ class FavoriteVC: UIViewController {
     var selectedIndexPathDic: [IndexPath: Bool] = [:]
     var isSelectedAll = false
     
-    var selectionMode: SelectionMode = .more {
+    var selectionMode: SelectionMode = .edit {
         
         didSet {
             switch selectionMode {
                 
-            case .more:
+            case .edit:
                 
                 for (key, value) in selectedIndexPathDic {
                     if value {
@@ -57,18 +50,17 @@ class FavoriteVC: UIViewController {
                     }
                 }
                 
-                selectedIndexPathDic.removeAll()
-                print(selectedIndexPathDic)
-                navigationItem.rightBarButtonItem = editBarButton
+//                navigationItem.rightBarButtonItem = editBarButton
                 editBarButton.style = .plain
                 closeSelectionBar()
-                
+                selectedIndexPathDic.removeAll()
+             
                 collectionView.allowsMultipleSelection = false
 
             case .select:
                 editBarButton.style = .done
                 presentSelectionBar()
-                checkSelectedIndexPathDic()
+                checkNumberOfItemsSelected()
 
                 collectionView.allowsMultipleSelection = true
                 
@@ -102,7 +94,7 @@ class FavoriteVC: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.backgroundColor = .gray //UIColor(named: "profileMenuAppearance")
+        view.backgroundColor =  UIColor(named: "shimmerAppearance")
         return view
     }()
     
@@ -110,6 +102,8 @@ class FavoriteVC: UIViewController {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.tintColor = .systemPink
+//        btn.backgroundColor = .cyan
+        btn.contentHorizontalAlignment = .left
         btn.titleLabel?.font = .boldSystemFont(ofSize: 15)
         btn.setTitle("Select All", for: .normal)
         btn.addTarget(self, action: #selector(selectAllBtnPressed), for: .touchUpInside)
@@ -120,7 +114,9 @@ class FavoriteVC: UIViewController {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.titleLabel?.font = .boldSystemFont(ofSize: 15)
-        btn.tintColor = .red
+        btn.tintColor = .systemPink
+        btn.contentHorizontalAlignment = .right
+//        btn.backgroundColor = .systemPink
         btn.setTitle("Unsave", for: .normal)
         btn.addTarget(self, action: #selector(unsaveBtnPressed), for: .touchUpInside)
         return btn
@@ -131,10 +127,17 @@ class FavoriteVC: UIViewController {
 //        sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal
         sv.alignment = .center
-        sv.distribution = .fillProportionally
-        sv.spacing = 10
-        sv.addBackground(color: UIColor(named: "profileMenuAppearance")!)
+        sv.distribution = .fillEqually
+        sv.spacing = 50
+//        sv.addBackground(color: UIColor(named: "profileMenuAppearance")!)
         return sv
+    }()
+    
+    let visualEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .systemMaterial)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     // MARK: - Init
@@ -151,6 +154,7 @@ class FavoriteVC: UIViewController {
 //        viewModel.getFavoritedPost()
 //        print("CoreData: \(favoritedPostArray.first?.ingredientCDArray)")
 //        print("recipeViewModels: \(recipeViewModels)")
+//        checkNumberOfItemsSelected()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -158,7 +162,6 @@ class FavoriteVC: UIViewController {
 //        coreDataDB.resetAllRecords(in: "FavoritedPost")
         self.setupNavBar()
         self.fetchDataFromCoreData()
-//        presentSelectionBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -176,49 +179,72 @@ class FavoriteVC: UIViewController {
         let screenSize = UIScreen.main.bounds.size
         guard let tabHeight = tabBarController?.tabBar.frame.height else { return }
 //        guard let tabWidth = tabBarController?.tabBar.frame.width else { return }
-
-
+        
         // window
         guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        // visualEffectView
+        visualEffectView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: tabHeight)
+        window.addSubview(visualEffectView)
+        
         // selectionBarView
-//        selectionBarView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: tabHeight)
-//        window.addSubview(selectionBarView)
+        selectionBarView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: 0.35)
+        visualEffectView.window!.addSubview(selectionBarView)
+        visualEffectView.window?.bringSubviewToFront(selectionBarView)
+        visualEffectView.alpha = 1.0
 
         // selectionBarStackView
-        selectionBarStackView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: tabHeight)
+        selectionBarStackView.frame = CGRect(x: 20, y: screenSize.height, width: screenSize.width - 40, height: tabHeight)
         window.addSubview(selectionBarStackView)
         
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-//            self.selectionBarView.frame = CGRect(x: 0, y: screenSize.height - tabHeight, width: screenSize.width, height: tabHeight)
-            
-            self.selectionBarStackView.frame = CGRect(x: 0, y: screenSize.height - (tabHeight), width: screenSize.width, height: tabHeight)
+        UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .transitionCrossDissolve, animations: {
+            self.selectionBarView.frame = CGRect(x: 0, y: screenSize.height  - (tabHeight), width: screenSize.width , height: 0.35)
 
-        }, completion: nil)
+            // selectionBarView
+            self.visualEffectView.frame = CGRect(x: 0, y: screenSize.height - (tabHeight), width: screenSize.width, height: tabHeight)
+            
+            // selectionBarStackView
+            self.selectionBarStackView.frame = CGRect(x:  20, y: screenSize.height - (tabHeight), width: screenSize.width - 40, height: tabHeight)
+            
+            self.selectionBarView.isHidden = false
+            
+        }) { (_) in
+            self.tabBarController?.tabBar.isHidden = true
+        }
     }
     
     fileprivate func closeSelectionBar() {
         let screenSize = UIScreen.main.bounds.size
         guard let tabHeight = tabBarController?.tabBar.frame.height else { return }
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
-            self.selectionBarStackView.frame = CGRect(x: 0, y: (screenSize.height - tabHeight)/0.9, width: screenSize.width, height: tabHeight)
+            self.selectionBarView.frame = CGRect(x: 0, y: (screenSize.height - tabHeight)/0.9, width: screenSize.width , height: 0.35)
+
+            self.selectionBarStackView.frame = CGRect(x: 20, y: (screenSize.height - tabHeight)/0.9, width: screenSize.width - 40, height: tabHeight)
             
+            self.visualEffectView.frame = CGRect(x: 0, y: (screenSize.height - tabHeight)/0.9, width: screenSize.width, height: tabHeight)
+
+            self.tabBarController?.tabBar.isHidden = false
+            self.selectionBarView.isHidden = true
         }, completion: nil)
-            // Handles selection of all items in the collectionView
-            isSelectedAll = false
-            selectedIndexPathDic.removeAll() // Empty the array right after press cancel btn
-            collectionView.reloadData()
+        
+        // Handles selection of all items in the collectionView
+        isSelectedAll = false
+        selectedIndexPathDic.removeAll() // Empty the array right after press cancel btn
+        collectionView.reloadData()
         
       
     }
     
     fileprivate func presentShareSheet(indexPath: IndexPath) {
         
-        let thingsToShare = [favoritedPostArray[indexPath.item].name]
+        let indexedUrl = favoritedPostArray[indexPath.item].sourceUrl
+        guard let url = URL(string: indexedUrl!) else { return }
+        let thingsToShare: [Any] = [url]
+        
 //        guard let image = UIImage(systemName: "bell"), let url = URL(string: "https://www.google.com") else { return }
-        let shareSheetVC = UIActivityViewController(activityItems: thingsToShare as [Any], applicationActivities: nil)
+        let shareSheetVC = UIActivityViewController(activityItems: thingsToShare , applicationActivities: nil)
         present(shareSheetVC, animated: true)
     }
     
@@ -241,6 +267,7 @@ class FavoriteVC: UIViewController {
             do {
                 self.favoritedPostArray = try managedContext.fetch(fetchRequest) as! [FavoritedRecipeToCD]
                 DispatchQueue.main.async {
+                    self.favoritedPostArray.count != 0 ? (self.editBarButton.isEnabled = true) : (self.editBarButton.isEnabled = false)
                     self.collectionView.reloadData()
                 }
             } catch let error as NSError {
@@ -281,13 +308,13 @@ class FavoriteVC: UIViewController {
                 selectedIndexPathDic[IndexPath(row: j, section: i)] = true
                 collectionView.reloadData()
                 print("indexPaths: \(selectedIndexPathDic)")
-                checkSelectedIndexPathDic()
+                checkNumberOfItemsSelected()
             }
         }
         
     }
     
-    func checkSelectedIndexPathDic(){
+    func checkNumberOfItemsSelected(){
         selectedIndexPathDic.count >= 1 ? (unsaveBtn.isEnabled = true) : (unsaveBtn.isEnabled = false)
         favoritedPostArray.count >= 2 ? (selectAllBtn.isEnabled = true) : (selectAllBtn.isEnabled = false)
     }
@@ -325,8 +352,10 @@ class FavoriteVC: UIViewController {
             
             self.collectionView.deleteItems(at: deleteNeededIndexPaths)
             self.selectedIndexPathDic.removeAll()
-            self.selectionMode = self.selectionMode == .more ? .select : .more
-            
+            self.selectionMode = self.selectionMode == .edit ? .select : .edit
+            self.editBarButton.style == .plain ? (self.editBarButton.title = "Edit") :  (self.editBarButton.title = "Done")
+            self.selectedIndexPathDic.count != 0 ? (self.editBarButton.isEnabled = true) : (self.editBarButton.isEnabled = false)
+
         } // End of unsaveAction
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -342,7 +371,7 @@ class FavoriteVC: UIViewController {
     }
     
     @objc private func editBarBtnPressed(_ sender: UIButton) {
-        self.selectionMode = self.selectionMode == .more ? .select : .more
+        self.selectionMode = self.selectionMode == .edit ? .select : .edit
         self.editBarButton.style == .plain ? (self.editBarButton.title = "Edit") :  (self.editBarButton.title = "Done")
     }
     
@@ -378,7 +407,7 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
         print(indexPath.item)
         let recipe = self.favoritedPostArray[indexPath.item]
         switch selectionMode {
-        case .more:
+        case .edit:
             
             let detailVC = HomeDetailVC()
             detailVC.heartBtn.isHidden = true
@@ -443,7 +472,7 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
 //            print("selected")
             selectedIndexPathDic[indexPath] = true
             print("selectedIndexPathDic: \(selectedIndexPathDic)")
-            checkSelectedIndexPathDic()
+            checkNumberOfItemsSelected()
         }
     
     }
@@ -455,7 +484,7 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
         selectedIndexPathDic[indexPath] = false
         selectedIndexPathDic.removeValue(forKey: indexPath)
         print("selectedIndexPathDic: \(selectedIndexPathDic)")
-        checkSelectedIndexPathDic()
+        checkNumberOfItemsSelected()
       }
         
     }

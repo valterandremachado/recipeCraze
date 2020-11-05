@@ -18,6 +18,7 @@ struct RecipeResults: Codable {
     var recipeImage: String
     var durationInMinutes: Int
     var servings: Int
+    var sourceUrl: String
     
     var ingredientArray = [IngredientArray]()
     var stepArray = [InstructionArray]()
@@ -33,6 +34,7 @@ struct RecipeResults: Codable {
         case recipeName = "title"
         case recipeImage = "image"
         case servings
+        case sourceUrl
         case durationInMinutes = "readyInMinutes"
     }
     
@@ -50,6 +52,7 @@ struct RecipeResults: Codable {
         
         recipeName = try rootContainer.decode(String?.self, forKey: .recipeName) ?? ""
         recipeImage = try rootContainer.decode(String?.self, forKey: .recipeImage) ?? ""
+        sourceUrl = try rootContainer.decode(String?.self, forKey: .sourceUrl) ?? ""
         recipeId = try rootContainer.decode(Int?.self, forKey: .recipeId) ?? 0
         servings = try rootContainer.decode(Int?.self, forKey: .servings) ?? 0
         durationInMinutes = try rootContainer.decode(Int?.self, forKey: .durationInMinutes) ?? 0

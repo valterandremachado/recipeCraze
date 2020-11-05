@@ -28,7 +28,6 @@ final class TabController: UITabBarController {
         tabBar.tintColor = .systemPink
         tabBar.isTranslucent = true
 //        navigationController?.tabBarItem.selectedImage = UIImage(systemName: "heart.fill")
-
         viewControllers = [
             createControllers(title: "Home", image: "chefhat", selectedImage: "chefhat.fill", vc: homeVC),
             createControllers(title: "Category", image: "list", selectedImage: "listfilled", vc: categoryVC),

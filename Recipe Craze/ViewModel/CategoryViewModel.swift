@@ -15,7 +15,8 @@ struct CategoryViewModel: Codable {
     var image: String
     var duration: Int
     var numberOfServings: Int
-    
+    var sourceUrl: String
+        
     var ingredientArray = [IngredientArray]()
     var preparationStepsArray = [StepArray]()
     var nutritionArray = [NutritionArray]()
@@ -27,6 +28,7 @@ struct CategoryViewModel: Codable {
         self.image = recipeModel.recipeImage
         self.duration = recipeModel.durationInMinutes
         self.numberOfServings = recipeModel.servings
+        self.sourceUrl = recipeModel.sourceUrl
         
         self.nutritionArray = recipeModel.nutritionArray
         self.ingredientArray = recipeModel.ingredientArray

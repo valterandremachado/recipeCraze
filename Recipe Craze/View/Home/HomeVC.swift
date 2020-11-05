@@ -215,8 +215,6 @@ class HomeVC: UIViewController, HomeVCDelegate {
     }()
     
     // MARK: - PopUp window property
-    //    var success = true
-    
     lazy var popUpView: PopUpWindow = {
         let view = PopUpWindow()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -242,70 +240,10 @@ class HomeVC: UIViewController, HomeVCDelegate {
         // Do any additional setup after loading view.
         
 //        fetchData()
-        
-//        test()
 //        fetchDataFromCoreData()
 //        recipeViewModels2.isEmpty ? (refresher.isEnabled = true) :  (refresher.isEnabled = false)
     }
     
-    func test(){
-//        let url2 = "https://api.edamam.com/search?"
-        let url = "whttps://api.spoonacular.com/recipes/complexSearch"
-            
-        let headers = [
-                "Content-Type": "application/json",
-        ]
-        
-        let param = ["apiKey": "b22f28fb671d4c7ba1e37cf19363b694",
-                     "number": "1",
-//                     "query": "chicken with rice",
-                     "fillIngredients": "true",
-                     "addRecipeInformation": "true",
-                     "instructionsRequired": "false",
-                     "addRecipeNutrition": "true",
-                     "type": "breakfast"]
-        
-//        let headers = [
-//            // API Key (required)
-//            "Content-Type": "application/json",
-//        ]
-//
-//        let param = ["app_key": "2f068593f24adb3f5d74514987bf0d7b",
-//                    "q": "chicken",
-//                     "app_id": "1e04c681",
-//                     "meal_type": "dinner"]
-        
-        var urlComponents = URLComponents(string: url)
-
-        var queryItems = [URLQueryItem]()
-        for (key, value) in param {
-            queryItems.append(URLQueryItem(name: key, value: value))
-        }
-
-        urlComponents?.queryItems = queryItems
-
-        var request = URLRequest(url: (urlComponents?.url)!)
-        request.httpMethod = "GET"
-
-        for (key, value) in headers {
-            request.setValue(value, forHTTPHeaderField: key)
-        }
-
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) -> Void in
-            print(response)
-            guard let data = data else { return }
-            
-            do {
-                let recipes = try JSONDecoder().decode(RecipeResultsArray.self, from: data)
-                print("testList: \(recipes.results)")
-                
-            } catch let jsonErr {
-                print("Failed to decode:", jsonErr)
-            }
-        }
-        task.resume()
-        
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -530,7 +468,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
                 UrlImageLoader.sharedInstance.imageForUrl(urlString: recipe.image, completionHandler: { [self] (image, url) in
                     if image != nil {
                         // CoreData presistence
-                        self.coreDataDB.checkIfItemExist(id: recipe.id, name: recipe.name, image: image, ingredArray: tempIngredArray, duration: recipe.duration, servingsNo: Int32(recipe.numberOfServings), prepArray: recipe.preparationStepsArray, nutriArray: tempNutriArray, isFavorited: buttonStates[tappedIndexPath.item])
+                        self.coreDataDB.checkIfItemExist(id: recipe.id, name: recipe.name, image: image, ingredArray: tempIngredArray, duration: recipe.duration, servingsNo: Int32(recipe.numberOfServings), prepArray: recipe.preparationStepsArray, nutriArray: tempNutriArray, sourceUrl: recipe.sourceUrl)
                     }
                 })
 
@@ -553,7 +491,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
         collectionView.reloadItems(at: [tappedIndexPath])
         Vibration.medium.vibrate()
         /// Custom access to HomeCell
-        let outsiderHomeCellAccess = collectionView.cellForItem(at: tappedIndexPath) as! HomeCell
+        guard let outsiderHomeCellAccess = collectionView.cellForItem(at: tappedIndexPath) as? HomeCell else { return }
         
         //        let windowWithOptional = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         //        guard let window = windowWithOptional else { return }
@@ -802,6 +740,7 @@ extension HomeVC: CollectionDataSourceAndDelegate {
         
         let indexedRecipe = recipeViewModels2[indexPath.item]
         detailVC.recipeID = indexedRecipe.id
+        detailVC.recipeSourceUrl = indexedRecipe.sourceUrl
         detailVC.recipeNameLabel.text = indexedRecipe.name
 //        detailVC.recipeImageView.image = UIImage(imageLiteralResourceName: indexedRecipe.image)
 //        print("arrayCount: \(indexedRecipe.nutrientArray?.count)")
