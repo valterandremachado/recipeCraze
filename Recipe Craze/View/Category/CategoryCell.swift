@@ -47,15 +47,18 @@ import UIKit
 
 class CategoryCell: UICollectionViewCell {
     
+    //    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Snack", "Vegetarian", "Vegan", "Appetizer"]
+    
     // MARK: - Properties
     let recipeImage = UIImage(named: "fast food-food")?.withTintColor(.white)
-        
+    
     lazy var categoryImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.isUserInteractionEnabled = true
+        iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFill
-        iv.image = recipeImage
+        //        iv.image = recipeImage
         return iv
     }()
     
@@ -63,9 +66,9 @@ class CategoryCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.text = "Dinner"
-        lbl.textColor = .white
-//        lbl.textAlignment = .center
-//        lbl.font = lbl.font.withSize(40)
+        lbl.textColor = .systemPink
+        //        lbl.textAlignment = .center
+        //        lbl.font = lbl.font.withSize(40)
         lbl.font = .boldSystemFont(ofSize: 35)
         lbl.clipsToBounds = true
         lbl.layer.cornerRadius = 10
@@ -81,29 +84,73 @@ class CategoryCell: UICollectionViewCell {
         return sv
     }()
     
+    let view: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(named: "backgroundAppearance")
+        return view
+    }()
+    
+    var categoryArray: String! {
+        didSet {
+            DispatchQueue.main.async { [self] in 
+                self.categoryImageView.image = UIImage(named: categoryArray)
+                self.titleLabel.text = categoryArray //.uppercased()
+            }
+            
+        }
+    }
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        backgroundColor = .systemPink
-        DispatchQueue.main.async {
-            self.addGradientBackground(firstColor: .systemPink, secondColor: .black)
+        //        backgroundColor = .systemPink
+        DispatchQueue.main.async { [self] in
+            //            self.addGradientBackground(firstColor: .systemPink, secondColor: .black)
+            //            self.view.addGradientBackground(firstColor: UIColor.white, secondColor: UIColor.black)
+            
+            transparentFading()
         }
+        
         setupViews()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Methods
+    fileprivate func transparentFading() {
+        let mask = CAGradientLayer()
+        mask.startPoint = CGPoint(x: 1.25, y: 0)
+        mask.endPoint = CGPoint(x: 0, y: 0)
+        guard let whiteColor = UIColor(named: "backgroundAppearance") else { return }
+        mask.colors = [whiteColor.withAlphaComponent(0.0).cgColor,
+                       whiteColor.withAlphaComponent(1.0),
+                       whiteColor.withAlphaComponent(1.0).cgColor]
+        mask.locations = [NSNumber(value: 0.0),
+                          NSNumber(value: 0.2),
+                          NSNumber(value: 1.0)]
+        mask.frame = view.bounds
+        view.layer.mask = mask
+    }
+    
     fileprivate func setupViews(){
-        [mainStackView].forEach({contentView.addSubview($0)})
-                
-//        categoryImageView.withHeight(20)
-        mainStackView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        [categoryImageView, titleLabel].forEach({contentView.addSubview($0)})
         
-//        titleLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: UIEdgeInsets(top: 0, left: 30, bottom: 15, right: 0))
+        //        categoryImageView.withHeight(20)
+        categoryImageView.addSubview(view)
+        contentView.bringSubviewToFront(titleLabel)
+        
+        categoryImageView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0))
+        
+        view.anchor(top: categoryImageView.topAnchor, leading: categoryImageView.leadingAnchor, bottom: categoryImageView.bottomAnchor, trailing: categoryImageView.trailingAnchor, padding: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: (UIScreen.main.bounds.width/3) - 20), size: CGSize(width: 0, height: 0))
+        
+        
+        titleLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: UIEdgeInsets(top: 0, left: 15, bottom: 20, right: 0))
     }
     
     // MARK: - Selectors
-
+    
 }
+

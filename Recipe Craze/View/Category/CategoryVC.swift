@@ -9,14 +9,14 @@
 import UIKit
 
 class CategoryVC: UIViewController {
-    let categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Snack", "Main Course", "Marinade", "Appetizer"]
+    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Snack", "Vegetarian", "Vegan", "Appetizer"]
     private let cellID = "cellID"
         
     // MARK: - Properties
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
+        layout.minimumLineSpacing = 3
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsVerticalScrollIndicator = false
@@ -89,8 +89,14 @@ extension CategoryVC: CollectionDataSourceAndDelegate {
 //        cell.layer.masksToBounds = false
 //        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
         
-        cell.titleLabel.text = indexPathForCategories
-        cell.clipsToBounds = true
+        cell.categoryArray = indexPathForCategories
+       
+ 
+//        DispatchQueue.main.async {
+//            cell.categoryImageView.image = UIImage(imageLiteralResourceName: indexPathForCategories)
+//        }
+//        cell.titleLabel.text = indexPathForCategories
+//        cell.clipsToBounds = true
 //        cell.layer.cornerRadius = 15
         return cell
     }
@@ -98,7 +104,7 @@ extension CategoryVC: CollectionDataSourceAndDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        let viewHeight = view.frame.height
         let viewWidth = view.frame.width
-        let size = CGSize(width: viewWidth - 20, height: 150)
+        let size = CGSize(width: viewWidth - 10, height: 150)
         
         return size
     }
@@ -117,13 +123,6 @@ extension CategoryVC: CollectionDataSourceAndDelegate {
     
     
 }
-
-
-
-
-
-
-
 
 
 

@@ -148,7 +148,7 @@ final class HomeCell: UICollectionViewCell {
     }()
 
     
-    // MARK: - Populate cells with data coming from ViewModel
+    // MARK: - Populates cells with data coming from ViewModel
     var recipeViewModel: RecipeViewModel2! {
         didSet {
             
