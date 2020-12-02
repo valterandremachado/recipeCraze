@@ -191,7 +191,14 @@ class LoginVC: UIViewController {
         super.viewWillAppear(animated)
         // Singleton delegate
         userAuthViewModel.delegate = self
+        
+        // Remove keyboard's height observer from signUpVC
+        NotificationCenter.default.removeObserver(self)
     }
+    
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -372,7 +379,7 @@ extension LoginVC: UserAuthSingleton {
             let tryAgainAction = UIAlertAction(title: "OK", style: .cancel) { UIAlertAction in }
             // enable UX
             self.indicator!.stop()
-            self.loginBtn.setTitle("Log In", for: .normal)
+            self.loginBtn.setTitle("Continue", for: .normal)
             print("Couldn't sign in: " + errorReader)
             self.view.isUserInteractionEnabled = true
             self.loginBtn.isEnabled = true
@@ -390,7 +397,7 @@ extension LoginVC: UserAuthSingleton {
             let tryAgainAction = UIAlertAction(title: "OK", style: .cancel) { UIAlertAction in }
             // enable UX
             self.indicator!.stop()
-            self.loginBtn.setTitle("Log In", for: .normal)
+            self.loginBtn.setTitle("Continue", for: .normal)
             print("Couldn't sign in: " + errorReader)
             self.view.isUserInteractionEnabled = true
             self.loginBtn.isEnabled = true
@@ -408,7 +415,7 @@ extension LoginVC: UserAuthSingleton {
             let tryAgainAction = UIAlertAction(title: "OK", style: .cancel) { UIAlertAction in }
             // enable UX
             self.indicator!.stop()
-            self.loginBtn.setTitle("Log In", for: .normal)
+            self.loginBtn.setTitle("Continue", for: .normal)
             print("Couldn't sign in: " + errorReader)
             self.view.isUserInteractionEnabled = true
             self.loginBtn.isEnabled = true
@@ -431,7 +438,7 @@ extension LoginVC: UserAuthSingleton {
             let tryAgainAction = UIAlertAction(title: "No", style: .cancel) { UIAlertAction in }
             // enable UX
             self.indicator!.stop()
-            self.loginBtn.setTitle("Log In", for: .normal)
+            self.loginBtn.setTitle("Continue", for: .normal)
             print("Couldn't sign in: " + errorReader)
             self.view.isUserInteractionEnabled = true
             self.loginBtn.isEnabled = true
@@ -447,7 +454,7 @@ extension LoginVC: UserAuthSingleton {
         let tryAgainAction = UIAlertAction(title: "OK", style: .cancel) { UIAlertAction in }
         // enable UX
         self.indicator!.stop()
-        self.loginBtn.setTitle("Log In", for: .normal)
+        self.loginBtn.setTitle("Continue", for: .normal)
         print("Couldn't sign in: " + errorReader)
         self.view.isUserInteractionEnabled = true
         self.loginBtn.isEnabled = true
@@ -466,7 +473,7 @@ extension LoginVC: UserAuthSingleton {
         print("signed in successfully")
         
         self.indicator!.stop()
-        self.loginBtn.setTitle("Log In", for: .normal)
+        self.loginBtn.setTitle("Continue", for: .normal)
         self.view.isUserInteractionEnabled = state
         self.indicator?.isHidden = state
 //        let test = TestVC()

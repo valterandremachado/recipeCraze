@@ -266,16 +266,12 @@ class SignupVC: UIViewController {
         super.viewWillAppear(animated)
         // Singleton delegate
         userRegistrationViewModel.delegate = self
-        
-        // Remove keyboard's height observer
-        let center = NotificationCenter.default
-        center.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
     }
     
-//    override func viewDidDisappear(_ animated: Bool) {
-//        let center = NotificationCenter.default
-//        center.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
-//    }
+    override func viewDidDisappear(_ animated: Bool) {
+        // Remove keyboard's height observer
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -392,9 +388,11 @@ class SignupVC: UIViewController {
     
     // MARK: - Selectors
     @objc func keyBoardDidShow(_ notification:Notification) {
+        
         let keyboardHeight = (notification.userInfo?["UIKeyboardBoundsUserInfoKey"] as! CGRect).height
         let stackViewsHeight = (pickerStackView.frame.height + signUpStackView.frame.height + 25)
-        let stackViewsFullHeight = stackViewsHeight + keyboardHeight + (navigationController?.navigationBar.frame.height)!
+        guard let navBarHeight = navigationController?.navigationBar.frame.height else { return }
+        let stackViewsFullHeight = stackViewsHeight + keyboardHeight + navBarHeight
         let screenViewHeight = view.frame.size.height
         
         let dynamicLineUpCalcForKeyboard = (screenViewHeight - stackViewsHeight - keyboardHeight) + 10

@@ -254,11 +254,16 @@ class OnboardingVC: UIViewController {
         [customView].forEach {view.addSubview($0)}
         [signUpStackView].forEach {customView.addSubview($0)}
         
-        customView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, size: CGSize(width: 0, height: view.frame.width/2.5))
+        var customViewDynamicHeight: CGFloat = 0
+        var svDynamicPadding: CGFloat = 0
+        view.bounds.height <= 667 ? (customViewDynamicHeight = 100) : (customViewDynamicHeight = view.frame.width/2.8)
+        view.bounds.height <= 667 ? (svDynamicPadding = (customViewDynamicHeight - btnsSize)/2) : (svDynamicPadding = (view.frame.width - btnsSize)/5.6)
+
+        customView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, size: CGSize(width: 0, height: customViewDynamicHeight))
         
         layoutBtnsCornerRadius()
         
-        signUpStackView.anchor(top: nil, leading: customView.leadingAnchor, bottom: customView.bottomAnchor, trailing: customView.trailingAnchor, padding: UIEdgeInsets(top: 0, left: 15, bottom: (view.frame.width - btnsSize)/5, right: 15), size: CGSize(width: 0, height: btnsSize))
+        signUpStackView.anchor(top: nil, leading: customView.leadingAnchor, bottom: customView.bottomAnchor, trailing: customView.trailingAnchor, padding: UIEdgeInsets(top: 0, left: 15, bottom: svDynamicPadding, right: 15), size: CGSize(width: 0, height: btnsSize))
         
 //        onboardingView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: customView.topAnchor, trailing: view.trailingAnchor, padding: UIEdgeInsets(top: 44, left: 0, bottom: -15, right: 0))
         
