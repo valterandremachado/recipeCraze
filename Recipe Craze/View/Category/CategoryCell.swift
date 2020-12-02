@@ -8,43 +8,6 @@
 
 import UIKit
 
-
-
-//class CategoryCell2: UITableViewCell {
-//
-//      lazy var titleLabel2: UILabel = {
-//            let lbl = UILabel()
-//            lbl.translatesAutoresizingMaskIntoConstraints = false
-//            lbl.text = "Dinner"
-//            lbl.textColor = .white
-//    //        lbl.textAlignment = .center
-//    //        lbl.font = lbl.font.withSize(40)
-//            lbl.font = .boldSystemFont(ofSize: 35)
-//            lbl.clipsToBounds = true
-//            lbl.layer.cornerRadius = 10
-//            return lbl
-//        }()
-//    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-////        setupViews()
-//    }
-//    
-//   
-//    // MARK: - Methods
-//        fileprivate func setupViews(){
-//            [titleLabel2].forEach({contentView.addSubview($0)})
-//            
-//    //        categoryImageView.addSubview(titleLabel)
-//            
-//    //        categoryImageView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor)
-//            
-//            titleLabel2.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
-//        }
-//}
-
-
 class CategoryCell: UICollectionViewCell {
     
     //    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Snack", "Vegetarian", "Vegan", "Appetizer"]
@@ -65,7 +28,7 @@ class CategoryCell: UICollectionViewCell {
     lazy var titleLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Dinner"
+//        lbl.text = "Dinner"
         lbl.textColor = .systemPink
         //        lbl.textAlignment = .center
         //        lbl.font = lbl.font.withSize(40)

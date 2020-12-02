@@ -14,6 +14,33 @@ import UIKit
 //    }
 //}
 
+/// setupToHideKeyboardOnTapOnView
+extension UIViewController {
+    func setupToHideKeyboardOnTapOnView()
+    {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(UIViewController.dismissKeyboard))
+
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard()
+    {
+        view.endEditing(true)
+    }
+}
+
+extension UIImage {
+    func imageResized(to size: CGSize) -> UIImage {
+        let newImage = UIGraphicsImageRenderer(size: size).image { image in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+        return newImage.withRenderingMode(.alwaysOriginal) // returns the image with its true color
+    }
+}
+
 extension UIViewController {
     public var isVisible: Bool {
         if isViewLoaded {
@@ -177,6 +204,12 @@ extension UIView {
         mask.path = path.cgPath
         layer.mask = mask
     }
+    
+    func roundTopLeftAndRightCorners(radius: CGFloat) {
+        self.clipsToBounds = false
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+     }
 }
 
 extension UIView {

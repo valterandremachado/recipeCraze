@@ -14,9 +14,17 @@ import UIKit
 //    print(days)
 //} // End of loop
 
-var thisString: String = "https://spoonacular.com/recipeImages/516705-636x393.jpg"
 
-var newString = thisString.prefix(37)
 
-print(newString)
+var item = "initial value" {
+    didSet { //called when item changes
+        print("changed")
+        item
+    }
+    willSet {
+        print("about to change")
+        item
+    }
+}
+item = "p"
 

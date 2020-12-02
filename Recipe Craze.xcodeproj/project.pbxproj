@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A01D9DC255C05FD004920E0 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A01D9DB255C05FD004920E0 /* TestVC.swift */; };
 		8A0F44F92496155A00CE2971 /* OnScreenStepsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F44F82496155A00CE2971 /* OnScreenStepsVC.swift */; };
 		8A12F91E2466FFB000A479CB /* PopUpWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A12F91C2466FFAF00A479CB /* PopUpWindow.swift */; };
 		8A13B0612450491E00382687 /* food.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A13B0602450491E00382687 /* food.jpg */; };
@@ -24,6 +25,7 @@
 		8A6218AA253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6218A8253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift */; };
 		8A67AD172551C8E600FD328E /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC536B7249DF82B00D1DF5D /* RealmSwift.framework */; };
 		8A67AD182551C8E600FD328E /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC536B7249DF82B00D1DF5D /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A76A0032576307600541620 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76A0002576307600541620 /* UIScrollView+.swift */; };
 		8A7C3E16247BDD74002EEA6F /* breakfast.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E12247BDD74002EEA6F /* breakfast.jpg */; };
 		8A7C3E17247BDD74002EEA6F /* burger1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E13247BDD74002EEA6F /* burger1.jpg */; };
 		8A7C3E18247BDD74002EEA6F /* fruits.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7C3E14247BDD74002EEA6F /* fruits.jpg */; };
@@ -44,6 +46,10 @@
 		8AADFAF224503E3C005CA7C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AADFAF024503E3C005CA7C1 /* LaunchScreen.storyboard */; };
 		8AADFAFA24504000005CA7C1 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AADFAF924504000005CA7C1 /* HomeVC.swift */; };
 		8AAE47092486B23B002D9A21 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE47082486B23B002D9A21 /* LoadingCell.swift */; };
+		8AB64D36255BBC5600E9C509 /* UserAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64D35255BBC5600E9C509 /* UserAuthViewModel.swift */; };
+		8AB64D4C255BF5C300E9C509 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64D4B255BF5C300E9C509 /* SignupVC.swift */; };
+		8AB64D4E255BF5DB00E9C509 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64D4D255BF5DB00E9C509 /* LoginVC.swift */; };
+		8AB64D50255BF5F100E9C509 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64D4F255BF5F100E9C509 /* ForgotPasswordVC.swift */; };
 		8ABA670124973BDC0064F1B6 /* SwiftyOnboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */; };
 		8ABA670224973BDC0064F1B6 /* SwiftyOnboard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8ABA6707249751390064F1B6 /* SwiftyOnboardOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA6704249751390064F1B6 /* SwiftyOnboardOverlay.swift */; };
@@ -66,6 +72,7 @@
 		8AC7FDF52463D9F9007E85A1 /* HomeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC7FDF42463D9F9007E85A1 /* HomeHeader.swift */; };
 		8ACAE1ABFEA46622966792D8 /* Pods_Recipe_Craze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE92FC0E7DC3AAE4DABD3B7 /* Pods_Recipe_Craze.framework */; };
 		8AD808A32469980500E0715B /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD808A22469980500E0715B /* PersistenceManager.swift */; };
+		8AE247C72565579400CE3842 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE247C62565579300CE3842 /* OnboardingVC.swift */; };
 		8AE6AD102450416B00A874E2 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD0F2450416B00A874E2 /* TabController.swift */; };
 		8AE6AD122450422900A874E2 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD112450422900A874E2 /* FavoriteVC.swift */; };
 		8AE6AD142450424700A874E2 /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD132450424700A874E2 /* CategoryVC.swift */; };
@@ -76,7 +83,8 @@
 		8AE6AD212450475E00A874E2 /* MyActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1B2450475E00A874E2 /* MyActivityIndicator.swift */; };
 		8AE6AD222450475E00A874E2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1C2450475E00A874E2 /* Extensions.swift */; };
 		8AE6AD232450475E00A874E2 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6AD1D2450475E00A874E2 /* SpeechService.swift */; };
-		8AF84247247AF13300E89F4E /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF84246247AF13300E89F4E /* Structs.swift */; };
+		8AF38399255A5445006C4E9A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF38398255A5445006C4E9A /* User.swift */; };
+		8AF3839B255A5808006C4E9A /* UserRegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3839A255A5808006C4E9A /* UserRegistrationViewModel.swift */; };
 		8AFD852425027E7400E23E38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AFD852325027E7400E23E38 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +109,7 @@
 /* Begin PBXFileReference section */
 		0542250AF325291ACA05288F /* Pods-Recipe Craze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipe Craze.release.xcconfig"; path = "Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze.release.xcconfig"; sourceTree = "<group>"; };
 		6EE92FC0E7DC3AAE4DABD3B7 /* Pods_Recipe_Craze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Recipe_Craze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A01D9DB255C05FD004920E0 /* TestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
 		8A0F44F82496155A00CE2971 /* OnScreenStepsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnScreenStepsVC.swift; sourceTree = "<group>"; };
 		8A12F91C2466FFAF00A479CB /* PopUpWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpWindow.swift; sourceTree = "<group>"; };
 		8A13B0602450491E00382687 /* food.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = food.jpg; sourceTree = "<group>"; };
@@ -114,6 +123,7 @@
 		8A416A6B254EDC3400B80F87 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		8A6218A7253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoritedRecipeToCD+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		8A6218A8253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoritedRecipeToCD+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		8A76A0002576307600541620 /* UIScrollView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
 		8A7C3E12247BDD74002EEA6F /* breakfast.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = breakfast.jpg; sourceTree = "<group>"; };
 		8A7C3E13247BDD74002EEA6F /* burger1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = burger1.jpg; sourceTree = "<group>"; };
 		8A7C3E14247BDD74002EEA6F /* fruits.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fruits.jpg; sourceTree = "<group>"; };
@@ -135,6 +145,10 @@
 		8AADFAF324503E3C005CA7C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AADFAF924504000005CA7C1 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		8AAE47082486B23B002D9A21 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		8AB64D35255BBC5600E9C509 /* UserAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthViewModel.swift; sourceTree = "<group>"; };
+		8AB64D4B255BF5C300E9C509 /* SignupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
+		8AB64D4D255BF5DB00E9C509 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		8AB64D4F255BF5F100E9C509 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		8ABA670024973BDC0064F1B6 /* SwiftyOnboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyOnboard.framework; path = Carthage/Build/iOS/SwiftyOnboard.framework; sourceTree = "<group>"; };
 		8ABA6704249751390064F1B6 /* SwiftyOnboardOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyOnboardOverlay.swift; path = Carthage/Checkouts/SwiftyOnboard/SwiftyOnboard/SwiftyOnboardOverlay.swift; sourceTree = SOURCE_ROOT; };
 		8ABA6705249751390064F1B6 /* SwiftyOnboardPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyOnboardPage.swift; path = Carthage/Checkouts/SwiftyOnboard/SwiftyOnboard/SwiftyOnboardPage.swift; sourceTree = SOURCE_ROOT; };
@@ -155,6 +169,7 @@
 		8AC536BA249E0D6300D1DF5D /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
 		8AC7FDF42463D9F9007E85A1 /* HomeHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeader.swift; sourceTree = "<group>"; };
 		8AD808A22469980500E0715B /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		8AE247C62565579300CE3842 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		8AE6AD0F2450416B00A874E2 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		8AE6AD112450422900A874E2 /* FavoriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
 		8AE6AD132450424700A874E2 /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
@@ -165,8 +180,9 @@
 		8AE6AD1B2450475E00A874E2 /* MyActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyActivityIndicator.swift; sourceTree = "<group>"; };
 		8AE6AD1C2450475E00A874E2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8AE6AD1D2450475E00A874E2 /* SpeechService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		8AF38398255A5445006C4E9A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8AF3839A255A5808006C4E9A /* UserRegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationViewModel.swift; sourceTree = "<group>"; };
 		8AF842452478084500E89F4E /* RecipeCrazePlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RecipeCrazePlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		8AF84246247AF13300E89F4E /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 		8AFD852325027E7400E23E38 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E176FB908E147C4D82541B3C /* Pods-Recipe Craze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipe Craze.debug.xcconfig"; path = "Target Support Files/Pods-Recipe Craze/Pods-Recipe Craze.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +223,8 @@
 			children = (
 				8A90611F25270FD5003AABDE /* RecipeViewModel.swift */,
 				8A416A6B254EDC3400B80F87 /* CategoryViewModel.swift */,
+				8AF3839A255A5808006C4E9A /* UserRegistrationViewModel.swift */,
+				8AB64D35255BBC5600E9C509 /* UserAuthViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -214,6 +232,7 @@
 		8A13B0672450507100382687 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8AB64D3B255BD42D00E9C509 /* AuthVC */,
 				8AA88265249A00B600A8DF18 /* CustomVIews */,
 				8ABFFBCD24652B3C006F1C91 /* Home */,
 				8ABFFBCE24652B53006F1C91 /* Category */,
@@ -229,10 +248,10 @@
 				8A3B58772451FE5B00B2F1D1 /* Protocols.swift */,
 				8A3B58792451FE9300B2F1D1 /* FavoritedRecipe.swift */,
 				8A7F4D2A247C11CB005AAA7E /* recipes.json */,
+				8AF38398255A5445006C4E9A /* User.swift */,
 				8ABFFBCB246456E0006F1C91 /* Recipe.swift */,
-				8A7F4D2C247C14C6005AAA7E /* RecipeService.swift */,
-				8AF84246247AF13300E89F4E /* Structs.swift */,
 				8AAC0BD92541E9A00027F03B /* CategoryModel.swift */,
+				8A7F4D2C247C14C6005AAA7E /* RecipeService.swift */,
 				8A416A69254EC1EA00B80F87 /* CategoryService.swift */,
 			);
 			path = Model;
@@ -296,6 +315,18 @@
 				8A13B0662450506500382687 /* ViewModel */,
 			);
 			path = "Recipe Craze";
+			sourceTree = "<group>";
+		};
+		8AB64D3B255BD42D00E9C509 /* AuthVC */ = {
+			isa = PBXGroup;
+			children = (
+				8AB64D4B255BF5C300E9C509 /* SignupVC.swift */,
+				8AB64D4D255BF5DB00E9C509 /* LoginVC.swift */,
+				8AB64D4F255BF5F100E9C509 /* ForgotPasswordVC.swift */,
+				8A01D9DB255C05FD004920E0 /* TestVC.swift */,
+				8AE247C62565579300CE3842 /* OnboardingVC.swift */,
+			);
+			path = AuthVC;
 			sourceTree = "<group>";
 		};
 		8ABA66FF24973BDC0064F1B6 /* Frameworks */ = {
@@ -369,6 +400,7 @@
 		8AE6AD172450475E00A874E2 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				8A76A0002576307600541620 /* UIScrollView+.swift */,
 				8AE6AD182450475E00A874E2 /* KeyboardLayoutConstraint.swift */,
 				8AE6AD192450475E00A874E2 /* UIFeedBackGenerator.swift */,
 				8AE6AD1A2450475E00A874E2 /* TrashBinCode.swift */,
@@ -538,6 +570,7 @@
 				8ABFFBE124657178006F1C91 /* CategoryDetailsVC.swift in Sources */,
 				8A3B58782451FE5B00B2F1D1 /* Protocols.swift in Sources */,
 				8AC536B6249DF32A00D1DF5D /* RecipeRealmObject.swift in Sources */,
+				8AF38399255A5445006C4E9A /* User.swift in Sources */,
 				8AE6AD232450475E00A874E2 /* SpeechService.swift in Sources */,
 				8A12F91E2466FFB000A479CB /* PopUpWindow.swift in Sources */,
 				8A7F4D2D247C14C6005AAA7E /* RecipeService.swift in Sources */,
@@ -552,15 +585,19 @@
 				8AE6AD102450416B00A874E2 /* TabController.swift in Sources */,
 				8A6218A9253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataClass.swift in Sources */,
 				8A3B4C9D245319E4007547DF /* HomeDetailVC.swift in Sources */,
+				8AB64D50255BF5F100E9C509 /* ForgotPasswordVC.swift in Sources */,
 				8AADFAE624503E3C005CA7C1 /* AppDelegate.swift in Sources */,
 				8AADFAE824503E3C005CA7C1 /* SceneDelegate.swift in Sources */,
 				8AA8825A2499AC9800A8DF18 /* FoodInfoVC.swift in Sources */,
 				8ABA6708249751390064F1B6 /* SwiftyOnboardPage.swift in Sources */,
-				8AF84247247AF13300E89F4E /* Structs.swift in Sources */,
+				8AB64D36255BBC5600E9C509 /* UserAuthViewModel.swift in Sources */,
+				8AE247C72565579400CE3842 /* OnboardingVC.swift in Sources */,
 				8ABFFBD624653A55006F1C91 /* SearchCell.swift in Sources */,
 				8AE6AD1E2450475E00A874E2 /* KeyboardLayoutConstraint.swift in Sources */,
+				8AB64D4C255BF5C300E9C509 /* SignupVC.swift in Sources */,
 				8A90612025270FD5003AABDE /* RecipeViewModel.swift in Sources */,
 				8A416A6A254EC1EA00B80F87 /* CategoryService.swift in Sources */,
+				8AF3839B255A5808006C4E9A /* UserRegistrationViewModel.swift in Sources */,
 				8A3B587A2451FE9300B2F1D1 /* FavoritedRecipe.swift in Sources */,
 				8ABA6709249751390064F1B6 /* SwiftyOnboard.swift in Sources */,
 				8A416A6C254EDC3400B80F87 /* CategoryViewModel.swift in Sources */,
@@ -569,8 +606,10 @@
 				8AE6AD222450475E00A874E2 /* Extensions.swift in Sources */,
 				8ABA6707249751390064F1B6 /* SwiftyOnboardOverlay.swift in Sources */,
 				8A6218AA253B1BD000E6E1BF /* FavoritedRecipeToCD+CoreDataProperties.swift in Sources */,
+				8A01D9DC255C05FD004920E0 /* TestVC.swift in Sources */,
 				8AE6AD122450422900A874E2 /* FavoriteVC.swift in Sources */,
 				8ABFFBC8246411DE006F1C91 /* Ingre&DirectTV.swift in Sources */,
+				8AB64D4E255BF5DB00E9C509 /* LoginVC.swift in Sources */,
 				8ABFFBE324657240006F1C91 /* CategoryDetailsCell.swift in Sources */,
 				8AE6AD162450425B00A874E2 /* SearchVC.swift in Sources */,
 				8AE6AD1F2450475E00A874E2 /* UIFeedBackGenerator.swift in Sources */,
@@ -579,6 +618,7 @@
 				8ABFFBD824654458006F1C91 /* SearchHeaderCell.swift in Sources */,
 				8ABFFBD424653722006F1C91 /* FavoriteCell.swift in Sources */,
 				8AE6AD212450475E00A874E2 /* MyActivityIndicator.swift in Sources */,
+				8A76A0032576307600541620 /* UIScrollView+.swift in Sources */,
 				8A0F44F92496155A00CE2971 /* OnScreenStepsVC.swift in Sources */,
 				8ABFFBCC246456E0006F1C91 /* Recipe.swift in Sources */,
 			);

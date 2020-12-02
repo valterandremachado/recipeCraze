@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -17,14 +18,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
+        // windowScene
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-//        let navigation = UINavigationController(rootViewController: HomeVC())
+        // VCs
+        let onBoardingVC = UINavigationController(rootViewController: OnboardingVC())
+        let mainVC = TabController()
+        // Window setup
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = TabController()
+        
+        /// Checks if the user is logged in, in order to handle which view to show when the app is launched
+        Auth.auth().currentUser == nil ? (window?.rootViewController = onBoardingVC) : (window?.rootViewController = mainVC)
+        // Window visibility
         window?.makeKeyAndVisible()
 
+    }
+    
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else {
+            return
+        }
+        
+        // change the root view controller to your specific view controller
+        window.rootViewController = vc
+        
+        UIView.transition(with: window,
+                              duration: 0.4,
+                              options: [.transitionCrossDissolve],
+                              animations: nil,
+                              completion: nil)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -11,7 +11,7 @@ import LBTATools
 import CoreData
 import UserNotifications
 import FirebaseDatabase
-//import FirebaseAuth
+import FirebaseAuth
 import ShimmerSwift
 
 let notificationID = "notificationID"
@@ -20,6 +20,9 @@ class HomeVC: UIViewController, HomeVCDelegate {
     
     let tempArray = ["1", "2"]
     var savedRecipes = [FavoritedRecipeToCD]()
+    
+    // UserAuthViewModel
+    var userAuthViewModel = UserAuthViewModel.shared
     
     /// FirebaseDB setup
     let ref = Database.database().reference()
@@ -63,7 +66,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
     lazy var welcomingLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Hello, Valter!"
+        lbl.text = ""//"Hello, Valter!"
         lbl.textColor = UIColor(named: "userNameLabelAppearance")
         return lbl
     }()
@@ -151,6 +154,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
         btn.contentHorizontalAlignment = .right
         //        btn.backgroundColor = .blue
         btn.withWidth(70)
+        btn.addTarget(self, action: #selector(logoutBtnPressed), for: .touchUpInside)
         return btn
     }()
     
@@ -225,6 +229,46 @@ class HomeVC: UIViewController, HomeVCDelegate {
     
     var scheduledTimer: Timer?
     
+    lazy var shimmerView: ShimmeringView = {
+        let shimmer = ShimmeringView()
+        shimmer.translatesAutoresizingMaskIntoConstraints = false
+//        shimmer.backgroundColor = .gray
+        return shimmer
+    }()
+    
+    lazy var viewForShimmer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(named: "shimmerAppearance")
+        return view
+    }()
+    
+    let config = UIImage.SymbolConfiguration(pointSize: CGFloat(30))
+    lazy var wiredProfileImage = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+    
+    
+    // RightNavBarBtn
+    lazy var profileBtn: UIButton = {
+    let profileBtn = UIButton(type: .custom)
+    profileBtn.imageView?.contentMode = .scaleAspectFill
+    profileBtn.setImage(wiredProfileImage, for: .normal)
+    profileBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+    profileBtn.layer.cornerRadius = profileBtn.frame.size.height/2
+    profileBtn.layer.masksToBounds = false
+    profileBtn.clipsToBounds = true
+    //        profileBtn.layer.borderWidth = 1.5
+//    profileBtn.backgroundColor = .red
+    profileBtn.sizeToFit()
+    //        profileBtn.layer.borderColor = UIColor.red.cgColor
+    
+    /// height and width constrainnts of profileBtn
+    let widthConstraint = profileBtn.widthAnchor.constraint(equalToConstant: 30)
+    let heightConstraint = profileBtn.heightAnchor.constraint(equalToConstant: 30)
+    heightConstraint.isActive = true
+    widthConstraint.isActive = true
+    profileBtn.addTarget(self, action: #selector(profileImagePressed), for: .touchUpInside)
+        return profileBtn
+    }()
     // MARK: - Init
     override func loadView() {
         super.loadView()
@@ -239,6 +283,8 @@ class HomeVC: UIViewController, HomeVCDelegate {
         //setupLocalNotification()
         // Do any additional setup after loading view.
         
+        userAuthViewModel.delegate = self
+        userAuthViewModel.fetchCurrentUserInfo()
 //        fetchData()
 //        fetchDataFromCoreData()
 //        recipeViewModels2.isEmpty ? (refresher.isEnabled = true) :  (refresher.isEnabled = false)
@@ -338,25 +384,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
         //            navigationController?.navigationBar.topItem?.largeTitleDisplayMode = .always
         //            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
-        let profileImage = UIImage.init(named: "food.jpg")
-        /// profileBtn instance
-        let profileBtn = UIButton(type: .custom)
-        profileBtn.imageView?.contentMode = .scaleAspectFill
-        profileBtn.setImage(profileImage, for: .normal)
-        profileBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        profileBtn.layer.cornerRadius = profileBtn.frame.size.height/2
-        profileBtn.layer.masksToBounds = false
-        profileBtn.clipsToBounds = true
-        //        profileBtn.layer.borderWidth = 1.5
-        profileBtn.sizeToFit()
-        //        profileBtn.layer.borderColor = UIColor.red.cgColor
         
-        /// height and width constrainnts of profileBtn
-        let widthConstraint = profileBtn.widthAnchor.constraint(equalToConstant: 30)
-        let heightConstraint = profileBtn.heightAnchor.constraint(equalToConstant: 30)
-        heightConstraint.isActive = true
-        widthConstraint.isActive = true
-        profileBtn.addTarget(self, action: #selector(profileImagePressed), for: .touchUpInside)
         //
         /// add profileBtn to UIBarButtonItem on the left side
         let profileItem = UIBarButtonItem(customView: profileBtn)
@@ -522,6 +550,23 @@ class HomeVC: UIViewController, HomeVCDelegate {
     
     
     // MARK: - Selectors
+    @objc private func logoutBtnPressed() {
+        do {
+            try Auth.auth().signOut()
+            // Switch rootView in order to avoid memory leak as well as stack of views 
+            let onboardingVC = UINavigationController(rootViewController: OnboardingVC())
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(onboardingVC)
+        } catch let logoutError {
+            print(logoutError)
+        }
+        
+//        let onboardingVC = OnboardingVC()
+//        let navigationController = UINavigationController(rootViewController: onboardingVC)
+//        navigationController.modalPresentationStyle = .fullScreen
+//        self.present(navigationController, animated: false, completion: nil)
+//        print("Logout")
+    }
+    
     @objc func refreshData(_ refreshController: UIRefreshControl){
         print("123")
         
@@ -878,34 +923,64 @@ extension HomeVC: PopUpDelegate {
     
 }
 
-struct EndPoint: Codable {
-    var q: String
-//    var count: String
-    var hits: [Hits]
-}
-
-struct Hits: Codable {
-   
-    var recipe: Recipe2
+// MARK: - UserAuthSingleton Extension
+extension HomeVC: UserAuthSingleton {
     
-    private enum RootKeys: String, CodingKey {
-        case recipe
-    }
-    init(from decoder: Decoder) throws {
-        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-        recipe = try rootContainer.decode(Recipe2.self, forKey: .recipe)
-    }
-   
-}
-
-struct Recipe2: Codable {
-    var name: String
-    private enum RecipeKeys: String, CodingKey {
-        case name = "label"
+    func userAuthCallBack(errorMessage: String) {
+        print(errorMessage)
     }
     
-    init(from decoder: Decoder) throws {
-        let rootContainer = try decoder.container(keyedBy: RecipeKeys.self)
-        name = try rootContainer.decode(String.self, forKey: .name)
+    // User Signed in successfully
+    func didEndFetchingUserInfo(didFetchInfo state: Bool, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
+      
+//        profileBtn.tintColor = .red
+        /// Load ulr image to UIImage variable
+        UrlImageLoader.sharedInstance.imageForUrl(urlString: profileImageUrl, completionHandler: { (image, url) in
+            if image != nil {
+                
+                self.userProfileView.image = image
+                self.profileBtn.setImage(image, for: .normal)
+
+            }
+        })
+
+        self.userNameLabel.text = "\(firstName) " + lastName
+        self.userEmailLabel.text = email
+        self.welcomingLabel.text = "Hello, \(firstName)!"
+        
     }
+    
+    
 }
+
+//struct EndPoint: Codable {
+//    var q: String
+////    var count: String
+//    var hits: [Hits]
+//}
+//
+//struct Hits: Codable {
+//   
+//    var recipe: Recipe2
+//    
+//    private enum RootKeys: String, CodingKey {
+//        case recipe
+//    }
+//    init(from decoder: Decoder) throws {
+//        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
+//        recipe = try rootContainer.decode(Recipe2.self, forKey: .recipe)
+//    }
+//   
+//}
+//
+//struct Recipe2: Codable {
+//    var name: String
+//    private enum RecipeKeys: String, CodingKey {
+//        case name = "label"
+//    }
+//    
+//    init(from decoder: Decoder) throws {
+//        let rootContainer = try decoder.container(keyedBy: RecipeKeys.self)
+//        name = try rootContainer.decode(String.self, forKey: .name)
+//    }
+//}

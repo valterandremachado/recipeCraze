@@ -54,7 +54,7 @@ class CategoryService: NSObject {
             
             // check response
             guard let data = data else { return }
-            print(resp)
+//            print(resp)
             
             do {
 

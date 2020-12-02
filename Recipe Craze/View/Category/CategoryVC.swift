@@ -9,7 +9,7 @@
 import UIKit
 
 class CategoryVC: UIViewController {
-    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Snack", "Vegetarian", "Vegan", "Appetizer"]
+    var categoryArray = ["booo", "booo", "booo", "booo", "booo", "booo", "booo", "booo", "booo", "booo"]
     private let cellID = "cellID"
         
     // MARK: - Properties
