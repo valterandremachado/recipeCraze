@@ -79,6 +79,7 @@ class LoginVC: UIViewController {
         btn.setTitle("Continue", for: .normal)
         
         btn.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        btn.titleColor(for: .disabled)
         btn.layer.cornerRadius = 6
         btn.tintColor = .systemGray4
         btn.addTarget(self, action: #selector(loginBtnPressed), for: .touchUpInside)
@@ -177,7 +178,7 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupKeyboardListener()
+//        setupKeyboardListener()
         setupActivityIndicator()
         
         loginBtn.isEnabled = false
@@ -269,7 +270,7 @@ class LoginVC: UIViewController {
     
     fileprivate func setupActivityIndicator(){
         // Setting up activity indicator
-        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.clear, indicatorColor: UIColor.black, msg: "")
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.clear, indicatorColor: UIColor.white, msg: "")
         indicator?.isHidden = true
     }
     
@@ -354,11 +355,12 @@ class LoginVC: UIViewController {
     
     @objc fileprivate func textFldDidChange(){
         guard let email = emailTxtFld.text, !email.isEmpty, let password = passwordTxtFld.text, !password.isEmpty else {
-            self.loginBtn.setTitleColor(.systemGray4, for: .normal)
+            loginBtn.titleColor(for: .disabled)
             self.loginBtn.isEnabled = false
             return
         }
         
+        loginBtn.titleColor(for: .normal)
         loginBtn.setTitleColor(.white, for: .normal)
         loginBtn.isEnabled = true
     }

@@ -13,6 +13,7 @@ import UserNotifications
 import FirebaseDatabase
 import FirebaseAuth
 import ShimmerSwift
+import GoogleSignIn
 
 let notificationID = "notificationID"
 
@@ -551,20 +552,30 @@ class HomeVC: UIViewController, HomeVCDelegate {
     
     // MARK: - Selectors
     @objc private func logoutBtnPressed() {
-        do {
-            try Auth.auth().signOut()
-            // Switch rootView in order to avoid memory leak as well as stack of views 
-            let onboardingVC = UINavigationController(rootViewController: OnboardingVC())
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(onboardingVC)
-        } catch let logoutError {
-            print(logoutError)
+        viewTapped()
+        
+        let alertController = UIAlertController(title: "Log Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
+        
+        let logOutAction = UIAlertAction(title: "Log Out", style: .destructive) { UIAlertAction in
+            
+            // SignOut user linked with GoogleSignIn
+            GIDSignIn.sharedInstance()?.signOut()
+            do {
+                try Auth.auth().signOut()
+                // Switch rootView in order to avoid memory leak as well as stack of views
+                let onboardingVC = UINavigationController(rootViewController: OnboardingVC())
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(onboardingVC)
+            } catch let logoutError {
+                print(logoutError)
+            }
         }
         
-//        let onboardingVC = OnboardingVC()
-//        let navigationController = UINavigationController(rootViewController: onboardingVC)
-//        navigationController.modalPresentationStyle = .fullScreen
-//        self.present(navigationController, animated: false, completion: nil)
-//        print("Logout")
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { UIAlertAction in }
+        
+        alertController.view.tintColor = .systemPink
+        alertController.addAction(logOutAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func refreshData(_ refreshController: UIRefreshControl){

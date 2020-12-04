@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import GoogleSignIn
+import FacebookCore
+import FacebookLogin
+import FirebaseAuth
+import FirebaseDatabase
 
 class OnboardingVC: UIViewController {
     
@@ -238,21 +243,63 @@ class OnboardingVC: UIViewController {
         return pageControl
     }()
     
+    lazy var loginBtn: UIBarButtonItem = {
+        let btn = UIBarButtonItem(title: "Sign In", style: .plain, target: self, action:  #selector(signInNavBarBtn))
+        btn.tintColor = .systemPink
+        return btn
+
+    }()
+    
+    let loginManager = LoginManager()
+    var biggerIndicator: ProgressIndicatorLarge!
+    
+    lazy var indicatorLayerTransparentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = false
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        view.isHidden = true
+        
+        biggerIndicator = ProgressIndicatorLarge(inview: self.view, loadingViewColor: UIColor.clear, indicatorColor: UIColor.black, msg: "")
+        biggerIndicator.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(biggerIndicator!)
+        
+        NSLayoutConstraint.activate([
+            biggerIndicator!.widthAnchor.constraint(equalToConstant: 20),
+            biggerIndicator!.heightAnchor.constraint(equalToConstant: 50),
+            biggerIndicator!.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            biggerIndicator!.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        
+        return view
+    }()
+    
     // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
-       
         setupView()
         setupOnboarding()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        removeLoadingScreen()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        print("deinit")
+    }
     
     // MARK: - SetupView
     func setupView() {
-        [customView].forEach {view.addSubview($0)}
+        [customView, indicatorLayerTransparentView].forEach {view.addSubview($0)}
         [signUpStackView].forEach {customView.addSubview($0)}
+        
+        indicatorLayerTransparentView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, size: CGSize(width: 0, height: 0))
         
         var customViewDynamicHeight: CGFloat = 0
         var svDynamicPadding: CGFloat = 0
@@ -268,9 +315,140 @@ class OnboardingVC: UIViewController {
 //        onboardingView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: customView.topAnchor, trailing: view.trailingAnchor, padding: UIEdgeInsets(top: 44, left: 0, bottom: -15, right: 0))
         
         setNavigationBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didSignInWithGoogleObserver), name: NSNotification.Name("SuccessfulSignInNotification"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(progressIndicatorStartObserver), name: NSNotification.Name("ProgressIndicatorDidStartNotification"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(progressIndicatorStopObserver), name: NSNotification.Name("ProgressIndicatorDidStopNotification"), object: nil)
+        
+    }
+        
+    @objc func didSignInWithGoogleObserver()  {
+        biggerIndicator?.stop()
+        // Switch rootView after user gets signedIn
+        let mainVC = TabController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainVC)
     }
     
+    @objc func progressIndicatorStartObserver() {
+        addLoadingScreen()
+        print("start")
+    }
+    
+    @objc func progressIndicatorStopObserver() {
+        removeLoadingScreen()
+        print("stop")
+    }
+
+    
     // MARK: - Methods
+    func addLoadingScreen() {
+        UIView.animate(withDuration: 0.1, delay: 0, options: .transitionCrossDissolve, animations: { [self] in
+            indicatorLayerTransparentView.isHidden = false
+            view.isUserInteractionEnabled = false
+            loginBtn.isEnabled = false
+            loginBtn.tintColor = .systemGray4
+            indicatorLayerTransparentView.layer.zPosition = 5
+            biggerIndicator?.start()
+        }, completion: nil)
+    }
+    
+    func removeLoadingScreen() {
+        UIView.animate(withDuration: 0.1, delay: 0, options: .transitionCrossDissolve, animations: { [self] in
+            indicatorLayerTransparentView.isHidden = true
+            view.isUserInteractionEnabled = true
+            loginBtn.isEnabled = true
+            loginBtn.tintColor = .systemPink
+            indicatorLayerTransparentView.layer.zPosition = -5
+            biggerIndicator.stop()
+        }, completion: nil)
+    }
+    
+    func signInWithGoogle() {
+        if GIDSignIn.sharedInstance()?.currentUser != nil {
+            print("signed in")
+        } else {
+            GIDSignIn.sharedInstance()?.presentingViewController = self
+            GIDSignIn.sharedInstance().signIn()
+        }
+       
+    }
+    
+    func firebaseFaceBookLogin() {
+        
+        // Setup facebookLogin Manager
+        let loginManager = LoginManager()
+        let readPermissions: [Permission] = [ .publicProfile]
+        
+        loginManager.logIn(permissions: readPermissions, viewController: self) { [self] (loginResult) in
+            
+            switch loginResult {
+            case .failed(let error):
+                print(error)
+                removeLoadingScreen()
+            case .cancelled:
+                print("User cancelled login.")
+                removeLoadingScreen()
+            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+                addLoadingScreen()
+                print("Logged in! \(grantedPermissions) \(declinedPermissions) \(accessToken)")
+                
+                let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
+                
+                Auth.auth().signIn(with: credential) { (authResult, error) in
+                    if let error = error {
+                        print("SignIn error \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let userInfo = authResult?.user else { return }
+                    // Allows access full details of the user facebook account
+                    let graphRequest: GraphRequest = GraphRequest(graphPath: "me", parameters: ["fields": "first_name, last_name, email, picture.type(large)"])
+                    
+                    graphRequest.start(completionHandler: { (connection, result, error) -> Void in
+                        
+                        if error != nil {
+                            print("Error: "+error!.localizedDescription)
+                        } else {
+                            
+                            guard let userInfoDic = result as? NSDictionary else { return }
+                            let data = userInfo.providerData[0]
+                            let photoUrl = data.photoURL ?? URL(fileURLWithPath: "N/A")
+                            let profileImageUrl = "\(photoUrl)?height=300&access_token=\(accessToken.tokenString)"
+                            
+                            let firstName = userInfoDic.value(forKey: "first_name") as? String ?? "Unavailable"
+                            let lastName = userInfoDic.value(forKey: "last_name") as? String ?? "Unavailable"
+                            let email = userInfoDic.value(forKey: "email") as? String ?? "Unavailable"
+                            
+                            storeUserFBDataOnFirebase(userInfo.uid, email, firstName, lastName, profileImageUrl)
+                        }
+                    })
+                    
+                    
+                }
+            }
+        }
+    }
+    
+    func storeUserFBDataOnFirebase(_ userID: String, _ email: String, _ firstName: String, _ lastName: String, _ profileImageUrl: String) {
+        
+        // Store userInfo in the Firebase DB
+        let db = Database.database().reference()
+        let useRef = db.child("users")
+        let newUserRef = useRef.child(userID)
+        newUserRef.updateChildValues(["id": userID,
+                                      "firstName": firstName,
+                                      "lastName": lastName,
+                                      "email": email,
+                                      "password": "N/A",
+                                      "profileImageUrl": profileImageUrl])
+        
+        // SignIn observer
+        NotificationCenter.default.post(name: Notification.Name("SuccessfulSignInNotification"), object: nil, userInfo: nil)
+        removeLoadingScreen()
+    }
+    
     func setupOnboarding() {
         [scrollView, pageControl].forEach {view.addSubview($0)}
         
@@ -291,31 +469,12 @@ class OnboardingVC: UIViewController {
         signInWithGoogleBtn.layer.cornerRadius = signInWithGoogleBtn.frame.size.height/2
     }
     
-//    lazy var loginBtn: UIBarButtonItem = {
-//        let btn = UIBarButtonItem(title: "Sign In", style: .plain, target: self, action:  #selector(signInNavBarBtn))
-//        btn.tintColor = .systemPink
-//        return btn
-//    }()
-   
     func setNavigationBar() {
-//        let navItem = UINavigationItem(title: "")
         guard let nav = navigationController?.navigationBar else { return }
-//        let navBar = UINavigationBar()
-//        navBar.translatesAutoresizingMaskIntoConstraints = false
         nav.setBackgroundImage(UIImage(), for: .default)
         nav.hideNavBarSeperator()
         
-        let loginBtn = UIBarButtonItem(title: "Sign In", style: .plain, target: self, action:  #selector(signInNavBarBtn))
-        loginBtn.tintColor = .systemPink
-        
         navigationItem.rightBarButtonItem = loginBtn
-//        navBar.setItems([navItem], animated: false)
-        
-//        self.view.addSubview(navBar)
-//        navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//        navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        navBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
     
     
@@ -324,29 +483,25 @@ class OnboardingVC: UIViewController {
         let signInVC = LoginVC()
 //        signInVC.modalPresentationStyle = .formSheet
         navigationController?.pushViewController(signInVC, animated: true)
-//        present(signInVC, animated: true)
     }
     
     @objc private func signUpWithEmailBtnPressed() {
         let signUpVC = SignupVC()
         signUpVC.modalPresentationStyle = .formSheet
-//        present(signUpVC, animated: true)
         navigationController?.pushViewController(signUpVC, animated: true)
     }
     
     @objc private func signUpWithAppleBtnPressed() {
-        //        let signUpVC = SignupVC()
-        //        navigationController.pushViewController(navigationController, animated: true)
+//        let signUpVC = SignupVC()
+//        navigationController.pushViewController(navigationController, animated: true)
     }
     
     @objc private func signUpWithFacebookBtnPressed() {
-        //        let signUpVC = SignupVC()
-        //        navigationController.pushViewController(navigationController, animated: true)
+        firebaseFaceBookLogin()
     }
     
     @objc private func signUpWithGoogleBtnPressed() {
-        //        let signUpVC = SignupVC()
-        //        navigationController.pushViewController(navigationController, animated: true)
+        signInWithGoogle()
     }
     
     @objc func pageControlTapHandler(sender: UIPageControl) {
@@ -363,3 +518,14 @@ extension OnboardingVC: UIScrollViewDelegate {
     }
 }
 
+struct FacebookPermission
+{
+    static let ID: String = "id"
+    static let NAME: String = "name"
+    static let EMAIL: String = "email"
+    static let PROFILE_PIC: String = "picture"
+    static let LAST_NAME: String = "last_name"
+    static let FIRST_NAME: String = "first_name"
+    static let USER_FRIENDS: String = "user_friends"
+    static let PUBLIC_PROFILE: String = "public_profile"
+}

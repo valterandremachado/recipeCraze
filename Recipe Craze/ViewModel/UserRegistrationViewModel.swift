@@ -27,7 +27,8 @@ class UserRegistrationViewModel {
     
     // Create userObject
     func createUserWith(_ userObject: User) {
-        Auth.auth().createUser(withEmail: userObject.email, password: userObject.password) { [self] (result, error) in
+        let firebaseAuth = Auth.auth()
+        firebaseAuth.createUser(withEmail: userObject.email, password: userObject.password) { [self] (result, error) in
             switch error {
             case .none:
                 
@@ -50,7 +51,7 @@ class UserRegistrationViewModel {
                                 let db = Database.database().reference()
                                 let useRef = db.child("users")
                                 let newUserRef = useRef.child(uid)
-                                newUserRef.setValue(["id": uid,
+                                newUserRef.updateChildValues(["id": uid,
                                                      "firstName": userObject.firstName,
                                                      "lastName": userObject.lastName,
                                                      "email": userObject.email,

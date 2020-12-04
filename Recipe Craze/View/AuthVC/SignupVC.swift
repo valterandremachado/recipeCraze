@@ -131,6 +131,7 @@ class SignupVC: UIViewController {
         
         btn.setTitle("Sign Up", for: .normal)
         btn.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        btn.titleColor(for: .disabled)
         btn.layer.cornerRadius = 6
         btn.tintColor = .systemGray4
         btn.addTarget(self, action: #selector(signupBtnPressed), for: .touchUpInside)
@@ -223,7 +224,7 @@ class SignupVC: UIViewController {
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView(frame : .zero)
         view.frame = self.view.bounds
-        view.contentInsetAdjustmentBehavior = .always
+        view.contentInsetAdjustmentBehavior = .never
         view.contentSize = contentViewSize
 //        view.backgroundColor = .white
         return view
@@ -249,10 +250,9 @@ class SignupVC: UIViewController {
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
         // Setting up activity indicator
-        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.clear, indicatorColor: UIColor.black, msg: "")
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.clear, indicatorColor: UIColor.white, msg: "")
+        
         indicator?.isHidden = true
-        // prevents modal view to be dismissed by gesture.
-        //        self.isModalInPresentation = true
         signupBtn.isEnabled = false
         
         setupView()
@@ -442,11 +442,12 @@ class SignupVC: UIViewController {
             let password = passwordTxtFld.text, !password.isEmpty
         else {
             
-            self.signupBtn.setTitleColor(.systemGray4, for: .normal)
+            self.signupBtn.titleColor(for: .disabled)
             self.signupBtn.isEnabled = false
             return
         }
         
+        signupBtn.titleColor(for: .normal)
         signupBtn.setTitleColor(.white, for: .normal)
         signupBtn.isEnabled = true
     }
@@ -542,7 +543,7 @@ extension SignupVC: UIImagePickerControllerDelegate, UINavigationControllerDeleg
                 guard let selectedImage = self.selectedImage?.jpegData(compressionQuality: 0.4) else { return }
                 
                 // Create user
-                let userObject = User(id: UUID().uuidString, firstName: firstNameTxtFld.text!, lastName: firstNameTxtFld.text!, email: emailTxtFld.text!, password: passwordTxtFld.text!, numberOfFaveRecipes: 0, selectedImageUrl: selectedImage)
+                let userObject = User(id: UUID().uuidString, firstName: firstNameTxtFld.text!, lastName: lastNameTxtFld.text!, email: emailTxtFld.text!, password: passwordTxtFld.text!, numberOfFaveRecipes: 0, selectedImageUrl: selectedImage)
                 // Store user in the Database
                 self.userRegistrationViewModel.createUserWith(userObject)
                 
