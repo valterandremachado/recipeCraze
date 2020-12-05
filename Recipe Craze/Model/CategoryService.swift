@@ -59,7 +59,7 @@ class CategoryService: NSObject {
             do {
 
                 let recipes = try JSONDecoder().decode(RecipeResultsArray.self, from: data)
-                print("RecipeList: \(recipes.results)")
+//                print("RecipeList: \(recipes.results)")
 
                 DispatchQueue.main.async {
                     completion([recipes].first?.results, nil)

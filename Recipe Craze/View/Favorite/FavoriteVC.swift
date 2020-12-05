@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import FirebaseDatabase
+import RealmSwift
 
 enum SelectionMode {
     case edit
@@ -18,13 +19,22 @@ class FavoriteVC: UIViewController {
     
     let tempArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
                      "13", "14", "15", "16", "16", "17", "18", "19", "22", "23", "24", "25"]
+    var userUID = ""
 
     // MARK: - ViewModel Instantiation
     var recipeViewModels = [RecipeViewModel2]()
+    
     /// CoreData Setup
     var coreDataDB = CoreDataDB(persistenceManager: PersistenceManager.shared)
+    
     /// FirebaseDB Setup
     let ref = Database.database().reference()
+
+    // UserAuthViewModel
+    var userAuthViewModel = UserAuthViewModel.shared
+    
+    // RealmDB
+    var realmDB = RealmService.shared.realm
     
     /// Arrays
     lazy var ingredientArray = recipeViewModels.first?.ingredientArray
@@ -140,6 +150,9 @@ class FavoriteVC: UIViewController {
         return view
     }()
     
+    var realObject: Results<RecipeRealmObject>!
+    var tempString = ""
+    
     // MARK: - Init
     override func loadView() {
         super.loadView()
@@ -151,6 +164,8 @@ class FavoriteVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading view.
+        userAuthViewModel.delegate = self
+        userAuthViewModel.fetchCurrentUserInfo()
 //        viewModel.getFavoritedPost()
 //        print("CoreData: \(favoritedPostArray.first?.ingredientCDArray)")
 //        print("recipeViewModels: \(recipeViewModels)")
@@ -162,6 +177,9 @@ class FavoriteVC: UIViewController {
 //        coreDataDB.resetAllRecords(in: "FavoritedPost")
         self.setupNavBar()
         self.fetchDataFromCoreData()
+//        storeUserUIDInRealm()
+//        retrieveUserUIDInRealm()
+        storeUserUIDInRealm()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -175,6 +193,14 @@ class FavoriteVC: UIViewController {
     }
     
     // MARK: - Methods
+    func storeUserUIDInRealm(){
+        realObject = realmDB.objects(RecipeRealmObject.self)
+    }
+    
+//    func retrieveUserUIDInRealm(){
+//        print("realDB: \(realObject.realmUserUID)")
+//    }
+    
     fileprivate func presentSelectionBar() {
         let screenSize = UIScreen.main.bounds.size
         guard let tabHeight = tabBarController?.tabBar.frame.height else { return }
@@ -301,14 +327,16 @@ class FavoriteVC: UIViewController {
     }
     
     func getAllIndexPaths() {
-        // Assuming that tableView is your self.tableView defined somewhere
+        
         for i in 0..<collectionView.numberOfSections {
             for j in 0..<collectionView.numberOfItems(inSection: i) {
-//                indexPaths.append(IndexPath(row: j, section: i))
-                selectedIndexPathDic[IndexPath(row: j, section: i)] = true
+                
+                let indexPath = IndexPath(row: j, section: i)
+                selectedIndexPathDic[indexPath] = true
                 collectionView.reloadData()
-                print("indexPaths: \(selectedIndexPathDic)")
+//                print("indexPaths: \(selectedIndexPathDic)")
                 checkNumberOfItemsSelected()
+                
             }
         }
         
@@ -344,7 +372,7 @@ class FavoriteVC: UIViewController {
             for i in deleteNeededIndexPaths.sorted(by: { $0.item > $1.item }) {
                 
                 // remove item from Firebase
-                self.ref.child("FavoritedRecipes/post: \(self.favoritedPostArray[i.item].id ?? "")").removeValue()
+                self.ref.child("users/\(self.userUID)/favoritedRecipes/recipeID: \(self.favoritedPostArray[i.item].id ?? "")").removeValue()
                 /// removes item from CoreData (must delete this item last to avoid index out of bound error)
                 self.coreDataDB.deleteItem(name: self.favoritedPostArray[i.item].name!)
                 self.favoritedPostArray.remove(at: i.item)
@@ -387,7 +415,13 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: faveCellID, for: indexPath) as! FavoriteCell
-          
+//        print("indexPaths2: \(selectedIndexPathDic)")
+
+        if userUID != tempString {
+            print("Different UID")
+            coreDataDB.resetAllRecords(in: "FavoritedRecipeToCD")
+        }
+        
         let favorited = favoritedPostArray[indexPath.item]
 
         if let imageData = favorited.image {
@@ -398,13 +432,19 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
         widthConstraint.priority = UILayoutPriority(rawValue: 750)
         widthConstraint.isActive = true
     
+        // Toggles the highlight view and check icon on the cell
         isSelectedAll == true ? (cell.isSelected = true) : (cell.isSelected = false)
+    
+        // Enables the didSelectItemAt when user just pressed the Select All button (bug fix)
+        if isSelectedAll == true {
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
+        }
 
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item)
+
         let recipe = self.favoritedPostArray[indexPath.item]
         switch selectionMode {
         case .edit:
@@ -466,12 +506,12 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
             self.navigationController?.pushViewController(detailVC, animated: true)
 
             collectionView.deselectItem(at: indexPath, animated: true)
-//            print("more")
+            print("more")
         
         case .select:
-//            print("selected")
+            print("selected")
             selectedIndexPathDic[indexPath] = true
-            print("selectedIndexPathDic: \(selectedIndexPathDic)")
+//            print("selectedIndexPathDic: \(selectedIndexPathDic)")
             checkNumberOfItemsSelected()
         }
     
@@ -479,13 +519,12 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
-      if selectionMode == .select {
-        
-        selectedIndexPathDic[indexPath] = false
-        selectedIndexPathDic.removeValue(forKey: indexPath)
-        print("selectedIndexPathDic: \(selectedIndexPathDic)")
-        checkNumberOfItemsSelected()
-      }
+        if selectionMode == .select {
+            selectedIndexPathDic[indexPath] = false
+            selectedIndexPathDic.removeValue(forKey: indexPath)
+//            print("didDeselectItemAt: \(selectedIndexPathDic)")
+            checkNumberOfItemsSelected()
+        }
         
     }
     
@@ -593,6 +632,35 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
     }
     
 }
+
+// MARK: - UserAuthSingleton Extension
+extension FavoriteVC: UserAuthSingleton {
+    
+    func userAuthCallBack(errorMessage: String) {
+        print(errorMessage)
+    }
+
+    // User Signed in successfully
+    func didEndFetchingUserInfo(didFetchInfo state: Bool, userUID: String, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
+        
+        realObject.forEach({ (list) in
+            tempString = list.realmUserUID!
+        })
+        
+        if tempString != userUID {
+            let newUserUID = RecipeRealmObject(realmUserUID: userUID)
+            RealmService.shared.create(newUserUID)
+            print("new UserUID: \(newUserUID.realmUserUID ?? "N/A")")
+        } else {
+            print("old UserUID: \(tempString)")
+//            tempString == userUID ? (tempString = tempString) : ()
+        }
+        self.userUID = userUID
+    }
+    
+    
+}
+
 
     // MARK: - UIContextMenuInteraction Extension
 //extension FavoriteVC: UIContextMenuInteractionDelegate {

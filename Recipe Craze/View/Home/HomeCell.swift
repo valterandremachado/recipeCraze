@@ -292,8 +292,6 @@ final class HomeCell: UICollectionViewCell {
 //        let imageUnsaved = UIImage(systemName: "heart")
 
         linkDelegate?.saveRecipeLinkMethod(cell: self, button: sender)
-
-        print("123 homeCell")
     }
     
     required init?(coder: NSCoder) {

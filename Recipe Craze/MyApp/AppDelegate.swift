@@ -74,7 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if error != nil {
             if error.localizedDescription == "The user canceled the sign-in flow." {
                 NotificationCenter.default.post(name: Notification.Name("ProgressIndicatorDidStopNotification"), object: nil, userInfo: nil)
-                print("cancel btn toggled")
                 return
             }
 //            print("Email error: \(error.localizedDescription)")
@@ -82,9 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             guard let usersInfo = user.profile else { return }
             userInfo = usersInfo
-            
-            print("User email: \(userInfo.name ?? "N/A")")
-            
+                    
             guard let authentication = user.authentication else { return }
             let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
             

@@ -469,7 +469,7 @@ extension LoginVC: UserAuthSingleton {
     }
     
     // User Signed in successfully
-    func didEndFetchingUserInfo(didFetchInfo state: Bool, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
+    func didEndFetchingUserInfo(didFetchInfo state: Bool, userUID: String, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
         didFetchUserInfo = state
         print("Value: \(didFetchUserInfo)")
         print("signed in successfully")

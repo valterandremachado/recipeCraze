@@ -323,24 +323,6 @@ class OnboardingVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(progressIndicatorStopObserver), name: NSNotification.Name("ProgressIndicatorDidStopNotification"), object: nil)
         
     }
-        
-    @objc func didSignInWithGoogleObserver()  {
-        biggerIndicator?.stop()
-        // Switch rootView after user gets signedIn
-        let mainVC = TabController()
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainVC)
-    }
-    
-    @objc func progressIndicatorStartObserver() {
-        addLoadingScreen()
-        print("start")
-    }
-    
-    @objc func progressIndicatorStopObserver() {
-        removeLoadingScreen()
-        print("stop")
-    }
-
     
     // MARK: - Methods
     func addLoadingScreen() {
@@ -385,7 +367,7 @@ class OnboardingVC: UIViewController {
             
             switch loginResult {
             case .failed(let error):
-                print(error)
+                print("emailError: "+error.localizedDescription)
                 removeLoadingScreen()
             case .cancelled:
                 print("User cancelled login.")
@@ -398,7 +380,9 @@ class OnboardingVC: UIViewController {
                 
                 Auth.auth().signIn(with: credential) { (authResult, error) in
                     if let error = error {
-                        print("SignIn error \(error.localizedDescription)")
+                        let errorMessage = error.localizedDescription
+                        print("Error: " + errorMessage)
+                        alertControllerErrorHandler(errorMessage: errorMessage)
                         return
                     }
                     
@@ -409,7 +393,8 @@ class OnboardingVC: UIViewController {
                     graphRequest.start(completionHandler: { (connection, result, error) -> Void in
                         
                         if error != nil {
-                            print("Error: "+error!.localizedDescription)
+                            let errorMessage = error!.localizedDescription
+                            print("Error: " + errorMessage)
                         } else {
                             
                             guard let userInfoDic = result as? NSDictionary else { return }
@@ -449,6 +434,27 @@ class OnboardingVC: UIViewController {
         removeLoadingScreen()
     }
     
+    func signInWithApple() {
+        let alertController = UIAlertController(title: "Oops!!!", message: "Sorry! I'm not part of the Apple Developer Program just yet.", preferredStyle: .alert)
+        let tryAgainAction = UIAlertAction(title: "OK", style: .cancel) { UIAlertAction in }
+        // presenting alertController
+        alertController.view.tintColor = .systemPink
+        alertController.addAction(tryAgainAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func alertControllerErrorHandler(errorMessage: String) {
+        removeLoadingScreen()
+        let errorTitle = "Existing account"
+        
+        let alertController = UIAlertController(title: errorTitle, message: "An account already exists with the same email address, try sign in instead.", preferredStyle: .alert)
+        let tryAgainAction = UIAlertAction(title: "OK", style: .cancel) { UIAlertAction in }
+        // presenting alertController
+        alertController.view.tintColor = .systemPink
+        alertController.addAction(tryAgainAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     func setupOnboarding() {
         [scrollView, pageControl].forEach {view.addSubview($0)}
         
@@ -479,9 +485,26 @@ class OnboardingVC: UIViewController {
     
     
     // MARK: - Selectors
+    @objc func didSignInWithGoogleObserver()  {
+        removeLoadingScreen()
+//        biggerIndicator?.stop()
+        // Switch rootView after user gets signedIn
+        let mainVC = TabController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainVC)
+    }
+    
+    @objc func progressIndicatorStartObserver() {
+        addLoadingScreen()
+        print("start")
+    }
+    
+    @objc func progressIndicatorStopObserver() {
+        removeLoadingScreen()
+        print("stop")
+    }
+    
     @objc private func signInNavBarBtn(){
         let signInVC = LoginVC()
-//        signInVC.modalPresentationStyle = .formSheet
         navigationController?.pushViewController(signInVC, animated: true)
     }
     
@@ -492,8 +515,7 @@ class OnboardingVC: UIViewController {
     }
     
     @objc private func signUpWithAppleBtnPressed() {
-//        let signUpVC = SignupVC()
-//        navigationController.pushViewController(navigationController, animated: true)
+        signInWithApple()
     }
     
     @objc private func signUpWithFacebookBtnPressed() {

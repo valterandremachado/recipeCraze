@@ -13,7 +13,7 @@ import FirebaseDatabase
 
 // Singleton
 protocol UserRegistrationSingleton {
-    func didSignUpUser(didFetchInfo state: Bool, name: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int)
+    func didSignUpUser(didFetchInfo state: Bool, userUID: String, name: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int)
     func userRegistrationCallBack(errorMessage: String)
 }
 
@@ -89,7 +89,7 @@ class UserRegistrationViewModel {
 
                 if let dict = snapshot.value as? [String: AnyObject] {
                     // retrive data from firebase snapshot
-//                    let id = dict["id"] as? String ?? ""
+                    let id = dict["id"] as? String ?? ""
                     let profileImageUrl = dict["profileImageUrl"] as? String ?? ""
                     let firstName = dict["firstName"] as? String ?? ""
 //                    let lastName = dict["lastName"] as? String ?? ""
@@ -99,7 +99,7 @@ class UserRegistrationViewModel {
                     let numberOfFaveRecipes = dict["numberOfFaveRecipes"] as? Int ?? 0
                     
 //                    self.firstName = firstName!
-                    delegate?.didSignUpUser(didFetchInfo: didFetchCurrentUserInfo, name: firstName, email: email, profileImageUrl: profileImageUrl, numberOfFaveRecipes: numberOfFaveRecipes)
+                    delegate?.didSignUpUser(didFetchInfo: didFetchCurrentUserInfo, userUID: id, name: firstName, email: email, profileImageUrl: profileImageUrl, numberOfFaveRecipes: numberOfFaveRecipes)
                     print("backEndIsPresenting: \(self.didFetchCurrentUserInfo)")
                     
                 } // End of dic block

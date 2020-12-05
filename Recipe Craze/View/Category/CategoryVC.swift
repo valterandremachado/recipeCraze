@@ -9,7 +9,8 @@
 import UIKit
 
 class CategoryVC: UIViewController {
-    var categoryArray = ["booo", "booo", "booo", "booo", "booo", "booo", "booo", "booo", "booo", "booo"]
+    
+    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Vegetarian", "Vegan", "Appetizer"]
     private let cellID = "cellID"
         
     // MARK: - Properties
@@ -50,7 +51,7 @@ class CategoryVC: UIViewController {
         nav.prefersLargeTitles = true
 //        nav.hideNavBarSeperator()
         navigationItem.largeTitleDisplayMode = .automatic
-        navigationItem.title = "Categories"
+        navigationItem.title = "Category"
 //        nav.tintColor = .white
 //        title = "Categories"
 

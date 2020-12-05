@@ -66,7 +66,7 @@ class Service: NSObject {
             do {
 //                let recipes = try JSONDecoder().decode([Recipe].self, from: data)
                 let recipes = try JSONDecoder().decode([Recipe].self, from: data)
-                print("RecipeList: \(String(describing: recipes))")
+//                print("RecipeList: \(String(describing: recipes))")
                 DispatchQueue.main.async {
                     completion(recipes, nil)
                     print("recipes: \(recipes)")
@@ -114,7 +114,7 @@ class Service2: NSObject {
             
             do {
                 let recipes = try JSONDecoder().decode(RecipeList2.self, from: data)
-                print("RecipeList: \(recipes.feed)")
+//                print("RecipeList: \(recipes.feed)")
 
                 DispatchQueue.main.async {
                     completion([recipes].first?.feed, nil)
@@ -153,7 +153,7 @@ class Service2: NSObject {
             
             do {
                 let recipes = try JSONDecoder().decode(RecipeList2.self, from: data)
-                print("RecipeList: \(recipes.feed)")
+//                print("RecipeList: \(recipes.feed)")
 
                 DispatchQueue.main.async {
                     completion([recipes].first?.feed, nil)

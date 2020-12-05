@@ -10,7 +10,7 @@ import UIKit
 
 class CategoryCell: UICollectionViewCell {
     
-    //    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Snack", "Vegetarian", "Vegan", "Appetizer"]
+    //    var categoryArray = ["Dinner", "Lunch", "Breakfast", "Bakes", "Salad", "Soup", "Vegetarian", "Vegan", "Appetizer"]
     
     // MARK: - Properties
     let recipeImage = UIImage(named: "fast food-food")?.withTintColor(.white)
@@ -69,9 +69,6 @@ class CategoryCell: UICollectionViewCell {
         super.init(frame: .zero)
         //        backgroundColor = .systemPink
         DispatchQueue.main.async { [self] in
-            //            self.addGradientBackground(firstColor: .systemPink, secondColor: .black)
-            //            self.view.addGradientBackground(firstColor: UIColor.white, secondColor: UIColor.black)
-            
             transparentFading()
         }
         
@@ -85,7 +82,7 @@ class CategoryCell: UICollectionViewCell {
     // MARK: - Methods
     fileprivate func transparentFading() {
         let mask = CAGradientLayer()
-        mask.startPoint = CGPoint(x: 1.25, y: 0)
+        mask.startPoint = CGPoint(x: 1.23, y: 0)
         mask.endPoint = CGPoint(x: 0, y: 0)
         guard let whiteColor = UIColor(named: "backgroundAppearance") else { return }
         mask.colors = [whiteColor.withAlphaComponent(0.0).cgColor,
@@ -100,8 +97,6 @@ class CategoryCell: UICollectionViewCell {
     
     fileprivate func setupViews(){
         [categoryImageView, titleLabel].forEach({contentView.addSubview($0)})
-        
-        //        categoryImageView.withHeight(20)
         categoryImageView.addSubview(view)
         contentView.bringSubviewToFront(titleLabel)
         

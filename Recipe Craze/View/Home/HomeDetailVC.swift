@@ -16,7 +16,9 @@ class HomeDetailVC: UIViewController {
     var categIsVisible = false
     
 //    var indexedIngredArray: [Ingredient] = []
-
+    var userUID = ""
+    var likedRecipeNo = 0
+    
     // MARK: - ViewModel Instantiation
     var recipeViewModels = [RecipeViewModel2]()
     var categoryViewModel = [CategoryViewModel]()
@@ -486,7 +488,7 @@ class HomeDetailVC: UIViewController {
         //        }
         
         //        let post = viewModel.recipePostArray[indexPathHomeVC.item]
-        ref.child("FavoritedRecipes/post: \(recipeID)/name").observeSingleEvent(of: .value) { (snapshot) in
+        ref.child("users/\(userUID)/favoritedRecipes/recipeID: \(recipeID)/name").observeSingleEvent(of: .value) { (snapshot) in
             let name = snapshot.value as? String
             if name == self.recipeNameLabel.text! {
                 self.heartBtn.setImage(self.imageSaved, for: .normal)
@@ -814,15 +816,24 @@ class HomeDetailVC: UIViewController {
         
         if buttonStatesHomeVC[indexPathHomeVC.item] {
             //on
-            let newRef = ref.child("FavoritedRecipes").child("post: \(recipeID)")
+            let newRef = ref.child("users/\(userUID)/favoritedRecipes").child("recipeID: \(recipeID)")
             newRef.updateChildValues(dynamicDic)
+            
+            likedRecipeNo += 1
+            let newRef2 = self.ref.child("users/\(userUID)")
+            newRef2.updateChildValues(["numberOfFaveRecipes": likedRecipeNo])
             
             coreDataDB.checkIfItemExist(id: recipeID, name: recipeNameLabel.text!, image: recipeImageView.image, ingredArray: tempIngredArray, duration: durationLabel.text!, servingsNo: Int32(servingsLbl), prepArray: self.preparationSteps, nutriArray: nutriCDArray, sourceUrl: recipeSourceUrl)
             sender.setImage(imageSaved, for: .normal)
             buttonStatesHomeVC[indexPathHomeVC.item] = true
         } else {
             //off
-            ref.child("FavoritedRecipes/post: \(recipeID)").removeValue()
+            ref.child("users/\(userUID)/favoritedRecipes/recipeID: \(recipeID)").removeValue()
+            
+            likedRecipeNo -= 1
+            let newRef2 = self.ref.child("users/\(userUID)")
+            newRef2.updateChildValues(["numberOfFaveRecipes": likedRecipeNo])
+            
             coreDataDB.deleteItem(name: recipeNameLabel.text!)
             sender.setImage(imageUnsaved, for: .normal)
             buttonStatesHomeVC[indexPathHomeVC.item] = false

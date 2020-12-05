@@ -11,20 +11,21 @@ import RealmSwift
 
 class RecipeRealmObject: Object {
     
-    @objc dynamic var id = 0
-    @objc dynamic var name: String? = nil
+//    @objc dynamic var id = 0
+    @objc dynamic var realmUserUID: String? = nil
+
+//    @objc dynamic var name: String? = nil
 //    @objc dynamic var image: Data? = nil //UIImage? = nil
-    @objc dynamic var isFavorited = false
+//    @objc dynamic var isFavorited = false
     
     override static func primaryKey() -> String? {
-       return "id"
+       return "realmUserUID"
     }
     
-    convenience init(name: String, id: Int, isFavorited: Bool){
+    convenience init(realmUserUID: String){
         self.init()
-        self.id = id
-        self.name = name
-        self.isFavorited = isFavorited
+//        self.id = id
+        self.realmUserUID = realmUserUID
     }
     
 }

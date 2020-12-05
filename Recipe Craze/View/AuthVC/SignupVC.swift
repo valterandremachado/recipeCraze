@@ -559,9 +559,7 @@ extension SignupVC: UIImagePickerControllerDelegate, UINavigationControllerDeleg
 // MARK: - UserRegistrationSingleton Extension
 extension SignupVC: UserRegistrationSingleton {
     
-    func didSignUpUser(didFetchInfo state: Bool, name: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
-        print("profileImageUrl: \(profileImageUrl)")
-        print("fetchedName: \(name)")
+    func didSignUpUser(didFetchInfo state: Bool, userUID: String, name: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
         // Switch rootView in order to avoid memory leak as well as stack of views
         let mainVC = TabController()
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainVC)

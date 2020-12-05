@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 // Singleton
 protocol UserAuthSingleton: class {
-    func didEndFetchingUserInfo(didFetchInfo state: Bool, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int)
+    func didEndFetchingUserInfo(didFetchInfo state: Bool, userUID: String, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int)
     func userAuthCallBack(errorMessage: String)
 }
 
@@ -54,7 +54,7 @@ class UserAuthViewModel {
                 
                 if let dict = snapshot.value as? [String: AnyObject] {
                     // retrive data from firebase snapshot
-//                    let id = dict["id"] as? String ?? ""
+                    let id = dict["id"] as? String ?? ""
                     let profileImageUrl = dict["profileImageUrl"] as? String ?? ""
                     let firstName = dict["firstName"] as? String ?? ""
                     let lastName = dict["lastName"] as? String ?? ""
@@ -63,7 +63,7 @@ class UserAuthViewModel {
 //                    let location = dict["location"] as? String ?? ""
                     let numberOfFaveRecipes = dict["numberOfFaveRecipes"] as? Int ?? 0
                     
-                    delegate?.didEndFetchingUserInfo(didFetchInfo: didFetchCurrentUserInfo, firstName: firstName, lastName: lastName, email: email, profileImageUrl: profileImageUrl, numberOfFaveRecipes: numberOfFaveRecipes)
+                    delegate?.didEndFetchingUserInfo(didFetchInfo: didFetchCurrentUserInfo, userUID: id, firstName: firstName, lastName: lastName, email: email, profileImageUrl: profileImageUrl, numberOfFaveRecipes: numberOfFaveRecipes)
 //                    print("backEndIsPresenting: \(didFetchCurrentUserInfo)")
                     
                 } // End of dic block

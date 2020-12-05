@@ -265,7 +265,7 @@ extension SearchVC: CollectionDataSourceAndDelegate {
         detailVC.buttonStatesHomeVC = buttonStates
         detailVC.indexPathHomeVC = indexPath
         detailVC.recipeItemIndexPath = indexedFilteredData
-        detailVC.title = "Quick and Easy".uppercased()
+        detailVC.title = "Explore".uppercased()
 //        detailVC.indexedIngredArray = indexedRecipe.ingredientArray ?? []
             
         UrlImageLoader.sharedInstance.imageForUrl(urlString: indexedFilteredData.image, completionHandler: { (image, url) in
