@@ -51,13 +51,15 @@ class UserRegistrationViewModel {
                                 let db = Database.database().reference()
                                 let useRef = db.child("users")
                                 let newUserRef = useRef.child(uid)
+                                let faveChild = newUserRef.child("favoritedRecipes").child("firstChild")
+                                faveChild.setValue("0")
                                 newUserRef.updateChildValues(["id": uid,
                                                      "firstName": userObject.firstName,
                                                      "lastName": userObject.lastName,
                                                      "email": userObject.email,
                                                      "password": userObject.password,
                                                      "profileImageUrl": profileImageUrl])
-                                
+                                                                
                                 print("signup")
                                 fetchCurrentUserInfo()
                             }

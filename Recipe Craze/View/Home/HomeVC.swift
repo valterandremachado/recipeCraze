@@ -25,6 +25,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
     
     var userUID = ""
     var likedRecipeNo = 0
+    var persistedUserName = ""
     
     // UserAuthViewModel
     var userAuthViewModel = UserAuthViewModel.shared
@@ -49,7 +50,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
     var isFetching = false
     
     struct Keys {
-        static let hearted = "hearted"
+        static let excuteOnceWhenViewWillAppear = "ExecuteOnce"
     }
     
     fileprivate let homeCellID = "cellID"
@@ -71,7 +72,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
     lazy var welcomingLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = ""//"Hello, Valter!"
+        lbl.text = "..."//"Hello, \(persistedUserName)"
         lbl.textColor = UIColor(named: "userNameLabelAppearance")
         return lbl
     }()
@@ -274,6 +275,11 @@ class HomeVC: UIViewController, HomeVCDelegate {
     profileBtn.addTarget(self, action: #selector(profileImagePressed), for: .touchUpInside)
         return profileBtn
     }()
+    
+    var recipeRealmObject: Results<RecipeRealmObject>!
+    // RealmDB
+    var realmDB = RealmService.shared.realm
+    
     // MARK: - Init
     override func loadView() {
         super.loadView()
@@ -287,16 +293,25 @@ class HomeVC: UIViewController, HomeVCDelegate {
 //        print("Real file: \(Realm.Configuration.defaultConfiguration.fileURL)")
         //setupLocalNotification()
         // Do any additional setup after loading view.
+        storeUserUIDInRealm()
         userAuthViewModel.delegate = self
         userAuthViewModel.fetchCurrentUserInfo()
-//        fetchData()
+
+        fetchData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        defaults.removeObject(forKey: Keys.hearted)
-//        coreDataDB.resetAllRecords(in: "FavoritedPost")
-
+//        defaults.removeObject(forKey: Keys.excuteOnceWhenViewWillAppear)
+//        coreDataDB.resetAllRecords(in: "FavoritedRecipeToCD")
+        // Changes userDefaults value in order to run it only once every time the HomeVC is opened
+//        defaults.set(false, forKey: Keys.excuteOnceWhenViewWillAppear)
+//        defaults.synchronize()
+        
+        // Refresh collectionView when user is coming from a different VC
+        if recipeViewModels2.isEmpty == false {
+            updateCollectionViewWithFavoritedVCChanges()
+        }
         ///updates collectionView to fetch the latest buttonStates
         collectionView.reloadData()
         transparentView.backgroundColor = UIColor(named: "backgroundAppearance")
@@ -307,10 +322,19 @@ class HomeVC: UIViewController, HomeVCDelegate {
             adjustedHeight = 67 // 87
             adjustedHeight2 = 82 // 102
         }
-        
         navigationController?.navigationBar.barStyle = .default
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+        print("deinit")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        print("deinit")
+    }
 //    override func viewWillLayoutSubviews() {
 //        super.viewWillLayoutSubviews()
 //        //        DispatchQueue.main.async {
@@ -318,28 +342,40 @@ class HomeVC: UIViewController, HomeVCDelegate {
 //        //        }
 //    }
     
-    func testFB() {
-        ref.child("users/\(userUID)/favoritedRecipes").observeSingleEvent(of: .value) { (snapshot) in
-//            let name = snapshot.value as? String
-            print("TryoutFB: \(snapshot)")
-        }
+    func storeUserUIDInRealm(){
+        recipeRealmObject = realmDB.objects(RecipeRealmObject.self)
+        
+        recipeRealmObject.forEach({ (object) in
+            persistedUserName = object.userFirstName ?? "..."
+        })
+        
+        self.welcomingLabel.text = "Hello, \(persistedUserName)!"
     }
+    
     // MARK: - Functions/Methods
     fileprivate func fetchData() {
-        Service2.shared.fetchRecipes { (recipes, err) in
-            if let err = err {
-                print("Failed to fetch recipes:", err)
-                return
+        if Auth.auth().currentUser != nil {
+            Service2.shared.fetchRecipes { (recipes, err) in
+                if let err = err {
+                    print("Failed to fetch recipes:", err)
+                    return
+                }
+                
+                let data = recipes?.map({ return RecipeViewModel2(recipe: $0)}) ?? []
+                self.recipeViewModels2.append(contentsOf: data)
+                /// Give default state to the buttons based on the amount of data retrieved
+                for _ in 0..<(self.recipeViewModels2.count) {
+                    self.buttonStates.append(false)
+                    // in my case, all buttons are off, but be sure to implement logic here
+                }
+                // Check if the user has been auth (bug fix: problem with loading even with no user auth)
+                if !self.userUID.isEmpty {
+                    // didRefreshAfter recipeViewModels2 is fetched observer
+                    NotificationCenter.default.post(name: Notification.Name("didRefreshCellsAfterFetchDataNotification"), object: nil, userInfo: nil)
+                }
+                
+                self.collectionView.reloadData()
             }
-
-            let data = recipes?.map({ return RecipeViewModel2(recipe: $0)}) ?? []
-            self.recipeViewModels2.append(contentsOf: data) 
-            /// Give default state to the buttons based on the amount of data retrieved
-            for _ in 0..<(self.recipeViewModels2.count) {
-                self.buttonStates.append(false)
-                // in my case, all buttons are off, but be sure to implement logic here
-            }
-            self.collectionView.reloadData()
         }
     }
     
@@ -388,9 +424,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
         //            navigationController?.navigationBar.prefersLargeTitles = true
         //            navigationController?.navigationBar.topItem?.largeTitleDisplayMode = .always
         //            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        
-        
-        //
+
         /// add profileBtn to UIBarButtonItem on the left side
         let profileItem = UIBarButtonItem(customView: profileBtn)
         navigationItem.rightBarButtonItem =  profileItem
@@ -399,31 +433,6 @@ class HomeVC: UIViewController, HomeVCDelegate {
         customLabel.tintColor = UIColor(named: "userNameLabelAppearance")
         navigationItem.leftBarButtonItem =  customLabel
         
-    }
-    
-    private func storeUserDefaultsData(){
-        defaults.set(buttonStates, forKey: Keys.hearted)
-        defaults.synchronize()
-    }
-    
-    private func getUserDefaultsData(){
-        guard let indexPath = collectionView.indexPathForView(collectionView) else { return }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homeCellID, for: indexPath) as! HomeCell
-        
-        if let stateArray = defaults.value(forKey: Keys.hearted) {
-            let persistedStates : [Bool] = stateArray as! [Bool]
-            //            print("View indexPath: \(indexPath)")
-            //            if persistedStates[indexPath.item] {
-            //                //on
-            //                cell.saveButton.setImage(imageSaved, for: .normal)
-            //                buttonStates[indexPath.item] = true
-            //            } else {
-            //                //off
-            //                cell.saveButton.setImage(imageUnsaved, for: .normal)
-            //                buttonStates[indexPath.item] = false
-            //            }
-        }
-        collectionView.reloadData()
     }
     
     func setupLocalNotification() {
@@ -465,6 +474,38 @@ class HomeVC: UIViewController, HomeVCDelegate {
         }
     }
     
+    func updateCollectionViewWithFavoritedVCChanges() {
+        
+        for i in 0..<collectionView.numberOfSections {
+            for j in 0..<collectionView.numberOfItems(inSection: i) {
+
+                let indexPath = IndexPath(row: j, section: i)
+                let recipeViewModel = recipeViewModels2[indexPath.item]
+//                print("recipeViewModel: \(recipeViewModel)")
+                
+                ref.child("users/\(userUID)/favoritedRecipes/recipeID: \(recipeViewModel.id)/name").observeSingleEvent(of: .value) { [self] (snapshot) in
+                    
+                    var nameArray = [String]()
+                    let name = snapshot.value as? String ?? ""
+                    nameArray.append(name)
+                    
+                    for names in nameArray {
+                        if names == recipeViewModel.name {
+                            self.buttonStates[indexPath.item] = true
+                        } else {
+                            self.buttonStates[indexPath.item] = false
+                        }
+                    }
+                    collectionView.reloadData()
+                }
+                print("update...")
+                collectionView.reloadData()
+                
+            }
+        }
+        
+    }
+    
     // MARK: - Link Method (HomeVCDelegate)
     // Using Custom Delegation (protocol): Works as a link between HomeVC and its cell to track the tapped indexPath
     func saveRecipeLinkMethod(cell: UICollectionViewCell, button: UIButton){
@@ -491,7 +532,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
         // Save recipe
         if buttonStates[tappedIndexPath.item] == true {
             likedRecipeNo += 1
-
+            buttonStates[tappedIndexPath.item] = true
             button.setImage(self.imageSaved, for: .normal)
             /// Processing backend service in the background thread
             DispatchQueue.global(qos: .background).async { [self] in
@@ -513,8 +554,9 @@ class HomeVC: UIViewController, HomeVCDelegate {
             
         // Unsave recipe
         } else {
-            likedRecipeNo -= 1
-
+            likedRecipeNo == 0 ? (likedRecipeNo = 0) : (likedRecipeNo -= 1)
+//            likedRecipeNo -= 1
+//            buttonStates[tappedIndexPath.item] = false
             button.setImage(imageUnsaved, for: .normal)
             DispatchQueue.global(qos: .background).async { [self] in
                 let newRef2 = self.ref.child("users/\(userUID)")
@@ -525,9 +567,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
             }
             print("deselected")
         }
- 
-//        print("buttonStates: \(buttonStates)")
-        
+         
         /// Reloads collectionView to update cells with the latest changes
         collectionView.reloadItems(at: [tappedIndexPath])
         Vibration.medium.vibrate()
@@ -563,17 +603,29 @@ class HomeVC: UIViewController, HomeVCDelegate {
     
     
     // MARK: - Selectors
+    @objc func collectionViewFetchedItemsObserver() {
+        updateCollectionViewWithFavoritedVCChanges()
+//        print("collectionViewFetchedItemsObserver")
+    }
+    
     @objc private func logoutBtnPressed() {
         viewTapped()
         
         let alertController = UIAlertController(title: "Log Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
         
-        let logOutAction = UIAlertAction(title: "Log Out", style: .destructive) { UIAlertAction in
+        let logOutAction = UIAlertAction(title: "Log Out", style: .destructive) { [self] UIAlertAction in
             
             // SignOut user linked with GoogleSignIn
             GIDSignIn.sharedInstance()?.signOut()
             do {
+                // SignOut user
                 try Auth.auth().signOut()
+                // Delete user's data from core Data
+                self.coreDataDB.resetAllRecords(in: "FavoritedRecipeToCD")
+                // Delete user info in the realmDB
+                try! realmDB.write {
+                    realmDB.delete(recipeRealmObject)
+                }
                 // Switch rootView in order to avoid memory leak as well as stack of views
                 let onboardingVC = UINavigationController(rootViewController: OnboardingVC())
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(onboardingVC)
@@ -715,9 +767,11 @@ extension HomeVC: CollectionDataSourceAndDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homeCellID, for: indexPath) as! HomeCell
         let loadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: loadingCellID, for: indexPath) as! LoadingCell
-        
+                
+        NotificationCenter.default.addObserver(self, selector: #selector(collectionViewFetchedItemsObserver), name: NSNotification.Name("didRefreshCellsAfterFetchDataNotification"), object: nil)
+ 
         cell.linkDelegate = self
-        
+
         // return loading collectionViewCell
         if indexPath.section == 1 {
             loadingCell.indicator.start()
@@ -727,7 +781,7 @@ extension HomeVC: CollectionDataSourceAndDelegate {
         /// check if didFinish data, if not run shimmer animation
         if recipeViewModels2.isEmpty != true {
             collectionView.isUserInteractionEnabled = true
-
+            
             cell.shimmerView.isShimmering = false
             // fadeOut viewForShimmer
             cell.viewForShimmer.fadeOut()
@@ -739,26 +793,21 @@ extension HomeVC: CollectionDataSourceAndDelegate {
             cell.saveButton.fadeIn()
             cell.reviewLabel.fadeIn()
             cell.ratingLabel.fadeIn()
-
+            
             cell.shimmerView.isHidden = true
-           
-//            let name = savedRecipes[indexPath.item].name
-
+            
             let recipeViewModel = recipeViewModels2[indexPath.item]
             cell.recipeViewModel = recipeViewModel
-            /// Check favorited recipes
-            ref.child("users/\(userUID)/favoritedRecipes/recipeID: \(recipeViewModel.id)/name").observeSingleEvent(of: .value) { (snapshot) in
-                let name = snapshot.value as? String
-                if name == recipeViewModel.name {
-                    cell.saveButton.setImage(self.imageSaved, for: .normal)
-                    /// restoure the button state to the state saved in the firebase
-                    self.buttonStates[indexPath.item] = true
-                } else {
-                    cell.saveButton.setImage(self.imageUnsaved, for: .normal)
-                    /// restoure the button state to the state saved in the firebase
-                    self.buttonStates[indexPath.item] = false
-                }
+            
+            // buttonStates switcher
+            if self.buttonStates[indexPath.item] == true {
+                cell.saveButton.setImage(self.imageSaved, for: .normal)
+                self.buttonStates[indexPath.item] = true
+            } else {
+                cell.saveButton.setImage(self.imageUnsaved, for: .normal)
+                self.buttonStates[indexPath.item] = false
             }
+            
         } else {
             // disable userInteraction while shimmer animation is running for a good UX
             collectionView.isUserInteractionEnabled = false
@@ -835,7 +884,7 @@ extension HomeVC: CollectionDataSourceAndDelegate {
         if !indexedRecipe.nutrientArray!.isEmpty {
             /// Prevent app from crash because of missing object in json array
             if indexedRecipe.nutrientArray!.contains(where: { $0.nutrientName == "FAT" }) {
-                print("FAT exists in the array")
+//                print("FAT exists in the array")
                 detailVC.calLabel.text = String(format:"%.0f", indexedRecipe.nutrientArray![0].nutrientAmount) + " kcal"
                 detailVC.fatsLabel.text = String(format:"%.0f", indexedRecipe.nutrientArray![13].nutrientAmount) + " g"
             } else {
@@ -959,7 +1008,6 @@ extension HomeVC: UserAuthSingleton {
     // User Signed in successfully
     func didEndFetchingUserInfo(didFetchInfo state: Bool, userUID: String, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
       
-//        profileBtn.tintColor = .red
         /// Load ulr image to UIImage variable
         UrlImageLoader.sharedInstance.imageForUrl(urlString: profileImageUrl, completionHandler: { (image, url) in
             if image != nil {
@@ -973,46 +1021,93 @@ extension HomeVC: UserAuthSingleton {
         self.userUID = userUID
         self.userNameLabel.text = "\(firstName) " + lastName
         self.userEmailLabel.text = email
-        self.welcomingLabel.text = "Hello, \(firstName)!"
         
-       
-        ref.child("users/\(userUID)/favoritedRecipes").observeSingleEvent(of: .value) { (snapshot) in
-//            let name = snapshot.value as? String
-//            print("TryoutFB: \(snapshot)")
+        var persistedUserUID = ""
+        recipeRealmObject.forEach({ (object) in persistedUserUID = object.realmUserUID!})
+        // Checking if it's first time user
+        if persistedUserUID.isEmpty != false {
+            let newObject = RecipeRealmObject(id: UUID().uuidString, realmUserUID: userUID, userFirstName: firstName)
+            RealmService.shared.create(newObject)
+            recipeRealmObject.forEach({ (object) in
+                persistedUserUID = object.realmUserUID!
+                persistedUserName = object.userFirstName!
+            })
+            self.welcomingLabel.text = "Hello, \(persistedUserName)!"
         }
-    }
-    
-    
-}
 
-//struct EndPoint: Codable {
-//    var q: String
-////    var count: String
-//    var hits: [Hits]
-//}
-//
-//struct Hits: Codable {
-//   
-//    var recipe: Recipe2
-//    
-//    private enum RootKeys: String, CodingKey {
-//        case recipe
-//    }
-//    init(from decoder: Decoder) throws {
-//        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-//        recipe = try rootContainer.decode(Recipe2.self, forKey: .recipe)
-//    }
-//   
-//}
-//
-//struct Recipe2: Codable {
-//    var name: String
-//    private enum RecipeKeys: String, CodingKey {
-//        case name = "label"
-//    }
-//    
-//    init(from decoder: Decoder) throws {
-//        let rootContainer = try decoder.container(keyedBy: RecipeKeys.self)
-//        name = try rootContainer.decode(String.self, forKey: .name)
-//    }
-//}
+        if persistedUserUID != userUID {
+            // Update realmDB
+            if let recipeObject = recipeRealmObject.first {
+                try! realmDB.write {
+                    recipeObject.userFirstName = firstName
+                    recipeObject.realmUserUID = userUID
+                }
+            }
+            
+            recipeRealmObject.forEach({ (object) in
+                persistedUserUID = object.realmUserUID!
+                persistedUserName = object.userFirstName ?? ""
+                
+                self.welcomingLabel.text = "Hello, \(persistedUserName)!"
+            })
+
+        } else {
+            print("old UserUID: \(persistedUserUID)")
+            self.welcomingLabel.text = "Hello, \(persistedUserName)!"
+        }
+        
+        
+        // Restore user's favorited recipes then persist it with Core Data right after user is signedIn
+        let customerRef = self.ref.child("users").child("\(userUID)").child("favoritedRecipes")
+        
+        customerRef.observe(.childAdded, with: { snapshot in
+            
+            var recipeIDArray = [String]()
+            let recipeIDs = snapshot.childSnapshot(forPath: "id")
+            
+            guard let ids = recipeIDs.value as? String else { return }
+            recipeIDArray.append(ids)
+            
+            for recipeID in recipeIDArray {
+                let customerRef = self.ref.child("users").child("\(userUID)").child("favoritedRecipes").child("recipeID: \(recipeID)")
+                customerRef.observe(.value, with: { snapshot in
+                    let recipeArray = snapshot.value as? [String : Any] ?? [:]
+                    
+                    let id = recipeArray["id"] as? String ?? "N/A"
+                    let name = recipeArray["name"] as? String ?? "N/A"
+                    let duration = recipeArray["duration"] as? String ?? "N/A"
+                    let imageUrl = recipeArray["image"] as? String ?? "N/A"
+                    let servingsNo = recipeArray["numberOfServings"] as? Int ?? 0
+                    let sourceUrl = recipeArray["sourceUrl"] as? String ?? "N/A"
+                    
+                    let stepsArray = recipeArray["preparationStepsArray"] as? [String] ?? []
+                    let nutriDict = recipeArray["nutrientArray"]
+                    let nutriArray = [NSArray(array: nutriDict as? [Any] ?? [])]
+                    let ingredDict = recipeArray["ingredientArray"] as? [NSDictionary] ?? []
+                    var ingredArray = [String]()
+                    
+                    // Iterate through the Array<Dictionary> of Strings
+                    ingredDict.forEach { ingredients in
+                        for (_ , value) in  ingredients {
+                            ingredArray.append(value as! String)
+                        }
+                    }
+                    // check if the user have saved a recipe before in order to pull it back and save in the core data
+                    if id != "N/A" {
+                        /// Load url image to UIImage using cache
+                        UrlImageLoader.sharedInstance.imageForUrl(urlString: imageUrl, completionHandler: { [self] (image, url) in
+                            if image != nil {
+                                // CoreData presistence
+                                self.coreDataDB.checkIfItemExist(id: id, name: name, image: image, ingredArray: ingredArray, duration: duration, servingsNo: Int32(servingsNo), prepArray: stepsArray, nutriArray: nutriArray, sourceUrl: sourceUrl)
+                            } // End of image scope
+                        }) // End of UrlImageLoader scope
+                        return
+                    } // End if statement
+                }) // End of inner observe scope
+            } // End of recipeIDArray loop
+        }) // End of outer observe scope
+        
+    } // End of didEndFetchingUserInfo function
+    
+    
+} // End of the class

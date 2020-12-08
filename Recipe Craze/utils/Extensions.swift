@@ -421,7 +421,7 @@ extension UINavigationBar {
     
     func showNavBarSeperator()
     {
-        let img = UIImage.pixelImageWithColor(color: UIColor.lightGray)//Use Any Color
+        let img = UIImage.pixelImageWithColor(color: UIColor.systemGray5)//Use Any Color
         self.shadowImage = img
     }
 }

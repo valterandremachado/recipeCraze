@@ -291,7 +291,6 @@ class OnboardingVC: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-        print("deinit")
     }
     
     // MARK: - SetupView

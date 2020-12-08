@@ -256,7 +256,7 @@ extension SearchVC: CollectionDataSourceAndDelegate {
         let detailVC = HomeDetailVC()
         
         let indexedFilteredData = self.filteredData[indexPath.item]
-        print("tryout: \(indexPath.item)")
+//        print("tryout: \(indexPath.item)")
         detailVC.recipeID = indexedFilteredData.id
         detailVC.recipeNameLabel.text = indexedFilteredData.name
 //        detailVC.recipeImageView.image = UIImage(imageLiteralResourceName: indexedRecipe.image)
@@ -281,7 +281,7 @@ extension SearchVC: CollectionDataSourceAndDelegate {
         if !indexedFilteredData.nutrientArray!.isEmpty {
             /// Prevent app from crash because of missing object in json array
             if indexedFilteredData.nutrientArray!.contains(where: { $0.nutrientName == "FAT" }) {
-                print("FAT exists in the array")
+//                print("FAT exists in the array")
                 detailVC.calLabel.text = String(format:"%.0f", indexedFilteredData.nutrientArray![0].nutrientAmount) + " kcal"
                 detailVC.fatsLabel.text = String(format:"%.0f", indexedFilteredData.nutrientArray![13].nutrientAmount) + " g"
             } else {

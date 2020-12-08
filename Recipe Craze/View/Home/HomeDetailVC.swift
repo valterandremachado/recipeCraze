@@ -447,15 +447,11 @@ class HomeDetailVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //        self.moreBtn.removeFromSuperview()
         
         guard let nav = navigationController?.navigationBar else { return }
-        nav.titleTextAttributes = [.foregroundColor: UIColor.black]
+        nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+        //change statusBarStyle to dark
         nav.barStyle = .default
-
-        //        storeUserDefaults()
-        //        fetchUserDefaults()
-        
     }
     
     override func viewWillLayoutSubviews() {
@@ -783,7 +779,7 @@ class HomeDetailVC: UIViewController {
     }
     
     @objc func heartPressed(_ sender: UIButton){
-        print("indexPathHomeVC: \(indexPathHomeVC)")
+//        print("indexPathHomeVC: \(indexPathHomeVC)")
         buttonStatesHomeVC[indexPathHomeVC.item] = !buttonStatesHomeVC[indexPathHomeVC.item]
 //        : try JSONEncoder().encode(recipeItemIndexPath)
         var dynamicDic: [String: Any] = [:]
@@ -806,7 +802,7 @@ class HomeDetailVC: UIViewController {
 //            nutriCDArray.append(nutriArray)
 //        }
         
-        print("nutritionArrayCD: \(nutriCDArray)")
+//        print("nutritionArrayCD: \(nutriCDArray)")
         
 //        var tempIngredArray: [String] = []
 //        let temp = ingredientArray ?? []

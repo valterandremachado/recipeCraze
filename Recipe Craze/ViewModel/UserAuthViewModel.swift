@@ -59,6 +59,8 @@ class UserAuthViewModel {
                     let firstName = dict["firstName"] as? String ?? ""
                     let lastName = dict["lastName"] as? String ?? ""
                     let email = dict["email"] as? String ?? ""
+                   
+//                    print("TRy123: \(recipeArray)")
 //                    let password = dict["password"] as? String ?? ""
 //                    let location = dict["location"] as? String ?? ""
                     let numberOfFaveRecipes = dict["numberOfFaveRecipes"] as? Int ?? 0

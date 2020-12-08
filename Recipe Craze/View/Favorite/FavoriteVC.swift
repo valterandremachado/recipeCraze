@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import FirebaseDatabase
 import RealmSwift
+import FirebaseAuth
 
 enum SelectionMode {
     case edit
@@ -158,7 +159,7 @@ class FavoriteVC: UIViewController {
         super.loadView()
         view.backgroundColor = UIColor(named: "backgroundAppearance")
         setupViews()
-//        setupNavBar()
+        setupNavBar()
     }
     
     override func viewDidLoad() {
@@ -166,30 +167,69 @@ class FavoriteVC: UIViewController {
         // Do any additional setup after loading view.
         userAuthViewModel.delegate = self
         userAuthViewModel.fetchCurrentUserInfo()
-//        viewModel.getFavoritedPost()
-//        print("CoreData: \(favoritedPostArray.first?.ingredientCDArray)")
-//        print("recipeViewModels: \(recipeViewModels)")
-//        checkNumberOfItemsSelected()
+        
+//        guard let nav = navigationController?.navigationBar else { return }
+//        nav.hideNavBarSeperator()
+//        if #available(iOS 13.0, *) {
+//            switch UITraitCollection.current.userInterfaceStyle {
+//            case .dark:
+//                nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+//                print("dark1")
+//            case .light:
+//                nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+//                print("light1")
+//            case .unspecified:
+////                nav.titleTextAttributes = [.foregroundColor: UIColor.black]
+//                nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+//                print("unspecified1")
+//            default:
+//                break
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-//        coreDataDB.resetAllRecords(in: "FavoritedPost")
-        self.setupNavBar()
+        super.viewWillAppear(animated)
+//        coreDataDB.resetAllRecords(in: "FavoritedRecipeToCD")
+        
         self.fetchDataFromCoreData()
-//        storeUserUIDInRealm()
+        guard let nav = navigationController?.navigationBar else { return }
+        // Checks current systemAppearance
+        UIScreen.main.traitCollection.userInterfaceStyle == .dark ? (nav.titleTextAttributes = [.foregroundColor: UIColor.white]) : (nav.titleTextAttributes = [.foregroundColor: UIColor.black])
+
 //        retrieveUserUIDInRealm()
-        storeUserUIDInRealm()
+//        storeUserUIDInRealm()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
+//        UIView.animate(withDuration: 0.2, delay: 0, options: .transitionCrossDissolve) { [self] in
             guard let nav = navigationController?.navigationBar else { return }
-            /// Make navBar visible again
+//            /// Make navBar visible again
             nav.isTranslucent = true
+//        }
+    }
+    
+    // Detects system appearance
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let nav = navigationController?.navigationBar else { return }
+        let userInterfaceStyle = traitCollection.userInterfaceStyle // Either .unspecified, .light, or .dark
+        // Update your user interface based on the appearance
+        print("userInterfaceStyle: \(userInterfaceStyle)")
+        switch userInterfaceStyle {
+        case .dark:
+            print("userInterfaceStyle: \(userInterfaceStyle)")
+            nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+        case .light:
+            print("userInterfaceStyle2: \(userInterfaceStyle)")
+            nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+        case .unspecified:
+            nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
+            print("userInterfaceStyle3: \(userInterfaceStyle)")
+        default:
+            break
         }
-       
     }
     
     // MARK: - Methods
@@ -318,12 +358,13 @@ class FavoriteVC: UIViewController {
         
         nav.prefersLargeTitles = false
         nav.barStyle = .default
+//        UIScreen.main.traitCollection.userInterfaceStyle == .dark ? (nav.titleTextAttributes = [.foregroundColor: UIColor.white]) : (nav.titleTextAttributes = [.foregroundColor: UIColor.black])
+
         nav.titleTextAttributes = [.foregroundColor: UIColor(named: "labelAppearance")!]
         navigationItem.title = "Favorited"
         self.navigationItem.rightBarButtonItem = editBarButton
-        
         nav.isTranslucent = false
-//        nav.showNavBarSeperator()
+        nav.hideNavBarSeperator()
     }
     
     func getAllIndexPaths() {
@@ -376,6 +417,8 @@ class FavoriteVC: UIViewController {
                 /// removes item from CoreData (must delete this item last to avoid index out of bound error)
                 self.coreDataDB.deleteItem(name: self.favoritedPostArray[i.item].name!)
                 self.favoritedPostArray.remove(at: i.item)
+//                NotificationCenter.default.post(name: Notification.Name("itemDeletedNotification"), object: nil, userInfo: nil)
+
             }
             
             self.collectionView.deleteItems(at: deleteNeededIndexPaths)
@@ -417,10 +460,10 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: faveCellID, for: indexPath) as! FavoriteCell
 //        print("indexPaths2: \(selectedIndexPathDic)")
 
-        if userUID != tempString {
-            print("Different UID")
-            coreDataDB.resetAllRecords(in: "FavoritedRecipeToCD")
-        }
+//        if userUID != tempString {
+//            print("Different UID")
+//            coreDataDB.resetAllRecords(in: "FavoritedRecipeToCD")
+//        }
         
         let favorited = favoritedPostArray[indexPath.item]
 
@@ -470,15 +513,17 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
             let ingredArray = (try? JSONSerialization.jsonObject(with: recipe.ingredientCDArray!, options: [])) as? [String]
             let prepArray = (try? JSONSerialization.jsonObject(with: recipe.preparationCDArray!, options: [])) as? [String]
             let nutriArray = (try? JSONSerialization.jsonObject(with: recipe.nutritionCDArray!, options: [])) as? [Any]
+//            print("nutriArray123: \(nutriArray)")
 
             let nutritionArrayCD = nutriArray![0] as? [NSDictionary]
+//            print("nutriArray1234: \(nutriArray)")
 
             if !nutritionArrayCD!.isEmpty {
                 // This condition handles the data coming from the CategoryVC (categoryVC is using a different API)
                 if nutritionArrayCD!.count < 16 {
                     /// Prevent app from crash because of missing object in json array
                     if nutritionArrayCD!.count >= 4 {
-                        print("FAT exists in the array")
+//                        print("FAT exists in the array")
                         detailVC.calLabel.text = "\(nutritionArrayCD![0]["nutrientAmount"] ?? "") kcal"
                         detailVC.fatsLabel.text = "\(nutritionArrayCD![13]["nutrientAmount"] ?? "") g"
                     } else {
@@ -486,7 +531,7 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
                         detailVC.calLabel.text = "\(nutritionArrayCD![1]["nutrientAmount"] ?? "") kcal"
                         detailVC.fatsLabel.text = "\(nutritionArrayCD![2]["nutrientAmount"] ?? "") g"
                     }
-                    print("indexedRecipe: \(indexPath.item)")
+//                    print("indexedRecipe: \(indexPath.item)")
                 } else {
                     detailVC.calLabel.text = "\(nutritionArrayCD![0]["amount"] ?? "") kcal"
                     detailVC.fatsLabel.text = "\(nutritionArrayCD![1]["amount"] ?? "") g"
@@ -635,30 +680,35 @@ extension FavoriteVC: CollectionDataSourceAndDelegate {
 
 // MARK: - UserAuthSingleton Extension
 extension FavoriteVC: UserAuthSingleton {
-    
+
     func userAuthCallBack(errorMessage: String) {
         print(errorMessage)
     }
 
     // User Signed in successfully
     func didEndFetchingUserInfo(didFetchInfo state: Bool, userUID: String, firstName: String, lastName: String, email: String, profileImageUrl: String, numberOfFaveRecipes: Int) {
-        
-        realObject.forEach({ (list) in
-            tempString = list.realmUserUID!
-        })
-        
-        if tempString != userUID {
-            let newUserUID = RecipeRealmObject(realmUserUID: userUID)
-            RealmService.shared.create(newUserUID)
-            print("new UserUID: \(newUserUID.realmUserUID ?? "N/A")")
+
+//        realObject.forEach({ (list) in
+//            tempString = list.realmUserUID!
+//        })
+//
+//        if tempString != userUID {
+//            let newUserUID = RecipeRealmObject(realmUserUID: userUID)
+//            RealmService.shared.create(newUserUID)
+//            print("new UserUID: \(newUserUID.realmUserUID ?? "N/A")")
+//        } else {
+//            print("old UserUID: \(tempString)")
+////            tempString == userUID ? (tempString = tempString) : ()
+//        }
+        if Auth.auth().currentUser != nil {
+            self.userUID = userUID
+            print("user is signed in")
         } else {
-            print("old UserUID: \(tempString)")
-//            tempString == userUID ? (tempString = tempString) : ()
+            print("user is nil")
         }
-        self.userUID = userUID
     }
-    
-    
+
+
 }
 
 

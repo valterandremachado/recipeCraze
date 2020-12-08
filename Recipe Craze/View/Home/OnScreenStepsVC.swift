@@ -193,6 +193,12 @@ class OnScreenStepsVC: UIViewController {
         setupLabel()
     }
     
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        guard let nav = navigationController?.navigationBar else { return }
+//        nav.barStyle = .default
+//    }
+    
     // MARK: - Functions/Methods
     fileprivate func setupViews() {
         [topStackViewMain, onboardingView].forEach({view.addSubview($0)})

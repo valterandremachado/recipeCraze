@@ -35,6 +35,7 @@ class RealmService {
             try realm.write {
                 for (key, value) in dictionary {
                     object.setValue(value, forKey: key)
+//                    realm.add(object)
                 }
             }
             

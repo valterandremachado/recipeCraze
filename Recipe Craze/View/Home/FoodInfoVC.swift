@@ -57,19 +57,20 @@ class FoodInfoVC: UIViewController {
     }
     
     func customizeChart(dataPoints: [String], values: [Double]) {
-        
+
+//        print("dataPoints: \(dataPoints)")
         // 1. Set ChartDataEntry
         var dataEntries: [ChartDataEntry] = []
         for i in 0..<dataPoints.count {
             let dataEntry = PieChartDataEntry(value: values[i], label: dataPoints[i], data: dataPoints[i] as AnyObject)
             dataEntries.append(dataEntry)
         }
-        
+
         // 2. Set ChartDataSet
         let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
         pieChartDataSet.colors = colorsOfCharts(numbersOfColor: dataPoints.count)
         pieChartDataSet.sliceSpace = 20
-        
+
         // 3. Set ChartData
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
         let format = NumberFormatter()
@@ -78,20 +79,20 @@ class FoodInfoVC: UIViewController {
         format.maximumFractionDigits = 1
         format.multiplier = 1
         format.percentSymbol = "%"
-        
+
         let formatter = DefaultValueFormatter(formatter: format)
-        
+
         pieChartData.setValueFormatter(formatter)
         pieChartData.setValueFormatter(DefaultValueFormatter(formatter: format))
         pieChartData.setValueFont(.systemFont(ofSize: 11, weight: .light))
         pieChartData.setValueTextColor(UIColor(named: "labelAppearance")!)
-        
+
         // 4. Setup pieChartView
         pieChartView.drawEntryLabelsEnabled = false
         pieChartView.drawHoleEnabled = false
         //        pieChartView.usePercentValuesEnabled = true
         //        pieChartView.entryLabelColor = .black
-        
+
         // 5. Assign it to the chart’s data
         pieChartView.data = pieChartData
     }
@@ -200,7 +201,8 @@ extension FoodInfoVC {
         
         if !value!.isEmpty {
             //            if nutrientNameValue != 0 {
-            if value!.count > 14 {
+//            print("value: \(value!.count)")
+            if value!.count < 14 {
                 
                 nutrientEntryValues = [value![0]["amount"], value![1]["amount"],value![2]["amount"], value![3]["amount"], value![4]["amount"], value![5]["amount"], value![6]["amount"], value![7]["amount"], value![8]["amount"], value![9]["amount"], value![10]["amount"], value![11]["amount"], value![12]["amount"], value![13]["amount"]] as? [Double] ?? []
                 
