@@ -654,7 +654,6 @@ class HomeVC: UIViewController, HomeVCDelegate {
     }
     
     @objc private func profileImagePressed(){
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         transparentView.addGestureRecognizer(tap)
         
@@ -698,7 +697,7 @@ class HomeVC: UIViewController, HomeVCDelegate {
             
             self.profileMainView.roundCorners(corners: [.topLeft, .topRight], radius: 15.0)
             self.fetchDataFromCoreData()
-
+            
         }, completion: nil)
         
     } // End of profileImagePressed selector
@@ -1012,8 +1011,11 @@ extension HomeVC: UserAuthSingleton {
         UrlImageLoader.sharedInstance.imageForUrl(urlString: profileImageUrl, completionHandler: { (image, url) in
             if image != nil {
                 
-                self.userProfileView.image = image
-                self.profileBtn.setImage(image, for: .normal)
+                DispatchQueue.main.async {
+                    self.userProfileView.image = image
+                    let resizedImage = image?.imageResize(sizeChange: CGSize(width: 200, height: 200))
+                    self.profileBtn.setImage(resizedImage, for: .normal)
+                }
 
             }
         })

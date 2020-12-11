@@ -23,7 +23,7 @@ class PopUpWindow: UIView {
             guard let success = showSuccessMessage else { return }
             if success {
                 checkLabel.text = "✓"
-                notificationLabel.text = "Added"
+                notificationLabel.text = "Favorited"
                 checkLabel.textColor = .systemPink
             } else {
                 checkLabel.text = "X"
