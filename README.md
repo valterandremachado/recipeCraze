@@ -9,7 +9,7 @@
 
 ### Overview 
 * [App Description](#app-description)
-* [Technologies/Frameworks](#technologies-/-frameworks)
+* [Technologies](#technologies)
 * [What I Learnt](#what-i-learnt)
 
 ---
@@ -23,7 +23,7 @@
 * Dark Mode
 * MVVM Design Pattern
 
-### Technologies/Frameworks
+### Technologies
 * UIKit
 * Core Data
 * Firebase
