@@ -9,7 +9,7 @@
 
 ### Overview 
 * [App Description](#app-description)
-* [Technologies/Frameworks](#technologies/frameworks)
+* [Technologies/Frameworks](#technologies-/-frameworks)
 * [What I Learnt](#what-i-learnt)
 
 ---
