@@ -1,7 +1,7 @@
 # RecipeCraze
 
 ### Screenshots
-![Screenshot](https://res.cloudinary.com/valtermachado/image/upload/v1619528933/GitHub%20ReadMe%20Pics/craze_tqin1x.png)
+![Screenshot](https://res.cloudinary.com/valtermachado/image/upload/v1619585878/GitHub%20ReadMe%20Pics/transparentBG_dvej1y.png)
 
 ### Gif
 
