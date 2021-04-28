@@ -4,6 +4,7 @@
 ![Screenshot](https://res.cloudinary.com/valtermachado/image/upload/v1619585878/GitHub%20ReadMe%20Pics/transparentBG_dvej1y.png)
 
 ### Gif
+![Gif](https://firebasestorage.googleapis.com/v0/b/recipeapp-39b49.appspot.com/o/RecipeCrazeGif.gif?alt=media&token=cdec9d48-4b39-4010-93f4-759c35635696)
 
 ---
 
