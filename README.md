@@ -4,7 +4,7 @@
 ![Screenshot](https://res.cloudinary.com/valtermachado/image/upload/v1619585878/GitHub%20ReadMe%20Pics/transparentBG_dvej1y.png)
 
 ### Gif
-![Gif](https://firebasestorage.googleapis.com/v0/b/recipeapp-39b49.appspot.com/o/Gifs2Modi.gif?alt=media&token=3e1c2867-4998-4951-acb2-cd0410239ba2)
+![Gif](https://github.com/valterandremachado/lfs/blob/master/Gifs3.gif)
 
 ---
 
