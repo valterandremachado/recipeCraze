@@ -3,9 +3,6 @@
 ### Screenshots
 ![Screenshot](https://res.cloudinary.com/valtermachado/image/upload/v1619585878/GitHub%20ReadMe%20Pics/transparentBG_dvej1y.png)
 
-### Gif
-![Gif](https://github.com/valterandremachado/lfs/blob/master/Gifs3.gif)
-
 ---
 
 ### Overview 
