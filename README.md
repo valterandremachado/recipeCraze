@@ -34,7 +34,9 @@
 * MVVM Design Pattern
 * UIPanGestures
 
-
+### Social Media
+* [LinkedIn](https://www.linkedin.com/in/valter-a-machado/)
+* [Twitter](https://twitter.com/valtermachadovm)
 
 
 
